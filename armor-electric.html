@@ -42,7 +42,6 @@
             padding: 80px 20px;
             text-align: center;
             position: relative;
-            overflow: hidden;
         }
 
         .hero::before {
@@ -52,7 +51,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L35 25 L30 20 L25 25 Z' fill='rgba(255,255,255,0.05)'/%3E%3C/svg%3E");
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2"/></svg>') repeat;
             opacity: 0.3;
         }
 
@@ -63,51 +62,50 @@
             margin: 0 auto;
         }
 
-        .hero-logo {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
         .hero h1 {
-            font-size: 42px;
-            font-weight: 700;
+            font-size: 3rem;
             margin-bottom: 10px;
+            font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
-        .hero-tagline {
-            font-size: 20px;
+        .hero .tagline {
+            font-size: 1.3rem;
             margin-bottom: 30px;
             opacity: 0.95;
         }
 
-        .hero-cta {
+        .hero .cta-button {
             display: inline-block;
-            background: #ff9800;
+            background: #ff6f00;
             color: #fff;
             padding: 18px 40px;
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 1.2rem;
             text-decoration: none;
             border-radius: 50px;
+            font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.4);
+            box-shadow: 0 4px 15px rgba(255,111,0,0.4);
         }
 
-        .hero-cta:hover {
-            background: #f57c00;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(255, 152, 0, 0.5);
+        .hero .cta-button:hover {
+            background: #ff8f00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,111,0,0.5);
         }
 
-        .hero-phone {
-            display: block;
-            margin-top: 20px;
-            font-size: 24px;
+        .hero .phone-display {
+            margin-top: 25px;
+            font-size: 1.5rem;
             font-weight: 600;
         }
 
-        .section {
+        .hero .phone-display a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        section {
             padding: 60px 20px;
         }
 
@@ -116,25 +114,15 @@
             margin: 0 auto;
         }
 
-        .section-title {
+        h2 {
             text-align: center;
-            font-size: 32px;
+            font-size: 2.2rem;
             margin-bottom: 40px;
             color: #0d47a1;
         }
 
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background: #ff9800;
-            margin: 15px auto 0;
-            border-radius: 2px;
-        }
-
         .services {
-            background: #f5f7fa;
+            background: #f8f9fa;
         }
 
         .services-grid {
@@ -146,40 +134,46 @@
         .service-card {
             background: #fff;
             padding: 40px 30px;
-            border-radius: 12px;
+            border-radius: 10px;
             text-align: center;
             box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         .service-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
         }
 
         .service-icon {
-            font-size: 50px;
-            margin-bottom: 20px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .service-icon svg {
+            width: 35px;
+            height: 35px;
+            fill: #fff;
         }
 
         .service-card h3 {
-            font-size: 22px;
+            font-size: 1.4rem;
             margin-bottom: 15px;
-            color: #0d47a1;
+            color: #1a1a2e;
         }
 
         .service-card p {
             color: #666;
-            font-size: 16px;
+            line-height: 1.7;
         }
 
         .testimonials {
-            background: #0d47a1;
-            color: #fff;
-        }
-
-        .testimonials .section-title {
-            color: #fff;
+            background: #fff;
         }
 
         .testimonials-grid {
@@ -189,254 +183,232 @@
         }
 
         .testimonial-card {
-            background: rgba(255,255,255,0.1);
-            padding: 30px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
+            background: #f8f9fa;
+            padding: 35px;
+            border-radius: 10px;
+            border-left: 4px solid #0d47a1;
         }
 
-        .testimonial-stars {
-            color: #ffc107;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-
-        .testimonial-text {
+        .testimonial-card .quote {
             font-style: italic;
+            color: #555;
             margin-bottom: 20px;
-            font-size: 16px;
-            line-height: 1.7;
+            font-size: 1.05rem;
+            line-height: 1.8;
         }
 
-        .testimonial-author {
+        .testimonial-card .author {
             font-weight: 600;
-            color: #ff9800;
+            color: #0d47a1;
+        }
+
+        .testimonial-card .location {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .stars {
+            color: #ffc107;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
         }
 
         .contact {
-            background: #fff;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #fff;
         }
 
-        .contact-wrapper {
+        .contact h2 {
+            color: #fff;
+        }
+
+        .contact-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            text-align: center;
         }
 
-        .contact-info h3 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #0d47a1;
-        }
-
-        .contact-info p {
+        .contact-item h3 {
+            font-size: 1.3rem;
             margin-bottom: 15px;
-            font-size: 16px;
-            color: #555;
+            color: #4fc3f7;
         }
 
-        .contact-phone {
-            font-size: 32px;
-            font-weight: 700;
-            color: #0d47a1;
+        .contact-item p {
+            color: #ccc;
+            line-height: 1.8;
+        }
+
+        .contact-item a {
+            color: #fff;
             text-decoration: none;
-            display: inline-block;
-            margin: 20px 0;
+            font-size: 1.4rem;
+            font-weight: 600;
         }
 
-        .contact-phone:hover {
-            color: #ff9800;
-        }
-
-        .contact-address {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-top: 20px;
-            padding: 20px;
-            background: #f5f7fa;
-            border-radius: 8px;
+        .contact-item a:hover {
+            color: #4fc3f7;
         }
 
         .contact-cta {
-            background: linear-gradient(135deg, #ff9800, #f57c00);
-            padding: 50px 40px;
-            border-radius: 12px;
             text-align: center;
-            color: #fff;
+            margin-top: 40px;
         }
 
-        .contact-cta h3 {
-            font-size: 26px;
-            margin-bottom: 15px;
-        }
-
-        .contact-cta p {
-            margin-bottom: 25px;
-            opacity: 0.95;
-        }
-
-        .contact-cta .cta-btn {
+        .contact-cta .cta-button {
             display: inline-block;
-            background: #fff;
-            color: #f57c00;
-            padding: 15px 35px;
-            font-size: 18px;
-            font-weight: 700;
+            background: #ff6f00;
+            color: #fff;
+            padding: 16px 35px;
+            font-size: 1.1rem;
             text-decoration: none;
             border-radius: 50px;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
 
-        .contact-cta .cta-btn:hover {
-            background: #0d47a1;
-            color: #fff;
+        .contact-cta .cta-button:hover {
+            background: #ff8f00;
         }
 
         footer {
-            background: #1a1a2e;
-            color: #fff;
+            background: #0d0d15;
+            color: #888;
             text-align: center;
             padding: 30px 20px;
         }
 
         footer p {
-            opacity: 0.8;
-            font-size: 14px;
+            margin-bottom: 5px;
         }
 
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 32px;
+                font-size: 2.2rem;
             }
 
-            .hero-tagline {
-                font-size: 18px;
+            .hero .tagline {
+                font-size: 1.1rem;
             }
 
-            .hero-cta {
+            .hero .cta-button {
                 padding: 15px 30px;
-                font-size: 18px;
+                font-size: 1rem;
             }
 
-            .hero-phone {
-                font-size: 20px;
+            h2 {
+                font-size: 1.8rem;
             }
 
-            .section {
+            section {
                 padding: 50px 15px;
             }
 
-            .section-title {
-                font-size: 26px;
-            }
-
-            .contact-wrapper {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-
-            .contact-phone {
-                font-size: 26px;
-            }
-
-            .services-grid,
-            .testimonials-grid {
-                grid-template-columns: 1fr;
+            .service-card, .testimonial-card {
+                padding: 30px 20px;
             }
         }
     </style>
 </head>
 <body>
     <div class="preview-banner">
-        ⚡ PREVIEW - Built by <a href="https://Digiwei.com">Digiwei.com</a>
+        PREVIEW - Built by <a href="https://Digiwei.com" target="_blank">Digiwei.com</a>
     </div>
 
-    <section class="hero">
+    <header class="hero">
         <div class="hero-content">
-            <div class="hero-logo">⚡🛡️</div>
             <h1>Armor Electric</h1>
-            <p class="hero-tagline">Licensed Electricians Serving Torrance & South Bay Since Day One</p>
-            <a href="tel:+13107739938" class="hero-cta">Call For Free Estimate</a>
-            <a href="tel:+13107739938" class="hero-phone">📞 (310) 773-9938</a>
+            <p class="tagline">Licensed Electricians Serving Torrance and the South Bay</p>
+            <a href="tel:+13107739938" class="cta-button">Call For Free Estimate</a>
+            <p class="phone-display"><a href="tel:+13107739938">(310) 773-9938</a></p>
         </div>
-    </section>
+    </header>
 
-    <section class="services section">
+    <section class="services">
         <div class="container">
-            <h2 class="section-title">Our Services</h2>
+            <h2>Our Services</h2>
             <div class="services-grid">
                 <div class="service-card">
-                    <div class="service-icon">🔌</div>
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+                    </div>
                     <h3>EV Charger Installation</h3>
-                    <p>Expert Tesla and electric vehicle charger installation for your home or business. Level 2 charging solutions with fast, reliable service.</p>
+                    <p>Expert Tesla and electric vehicle charger installation for your home or business. Level 2 charging stations installed safely and up to code.</p>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">🏠</div>
-                    <h3>Residential Electrical</h3>
-                    <p>Complete home electrical services including panel upgrades, rewiring, outlet installation, and lighting. Safe, code-compliant work guaranteed.</p>
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
+                    </div>
+                    <h3>Panel Upgrades</h3>
+                    <p>Upgrade your electrical panel to handle modern power demands. 100, 200, and 400 amp service upgrades for residential and commercial properties.</p>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">⚡</div>
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    </div>
                     <h3>Electrical Repairs</h3>
-                    <p>Fast response for electrical emergencies, troubleshooting, and repairs. Available when you need us most to keep your home powered safely.</p>
+                    <p>Fast, reliable electrical repairs for outlets, switches, wiring issues, and more. Available for emergency service throughout the South Bay area.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="testimonials section">
+    <section class="testimonials">
         <div class="container">
-            <h2 class="section-title">What Our Customers Say</h2>
+            <h2>What Our Customers Say</h2>
             <div class="testimonials-grid">
                 <div class="testimonial-card">
-                    <div class="testimonial-stars">★★★★★</div>
-                    <p class="testimonial-text">"Armor Electric installed our Tesla charger in just one day. Professional, clean work, and they handled all the permits. Couldn't be happier!"</p>
-                    <span class="testimonial-author">— Michael R., Torrance</span>
+                    <div class="stars">*****</div>
+                    <p class="quote">"Armor Electric installed our Tesla charger quickly and professionally. They handled the permit process and made everything simple. Highly recommend for any EV owner in Torrance!"</p>
+                    <p class="author">Michael R.</p>
+                    <p class="location">Torrance, CA</p>
                 </div>
                 <div class="testimonial-card">
-                    <div class="testimonial-stars">★★★★★</div>
-                    <p class="testimonial-text">"After another company no-showed twice, Armor Electric came out same day and fixed our panel issue. Fair pricing and excellent communication throughout."</p>
-                    <span class="testimonial-author">— Jennifer T., Redondo Beach</span>
+                    <div class="stars">*****</div>
+                    <p class="quote">"We needed a panel upgrade for our older home. The team was knowledgeable, clean, and finished ahead of schedule. Fair pricing and excellent communication throughout the project."</p>
+                    <p class="author">Jennifer L.</p>
+                    <p class="location">Redondo Beach, CA</p>
                 </div>
                 <div class="testimonial-card">
-                    <div class="testimonial-stars">★★★★★</div>
-                    <p class="testimonial-text">"They rewired our 1960s home with minimal disruption. The crew was respectful, cleaned up every day, and finished ahead of schedule. Highly recommend!"</p>
-                    <span class="testimonial-author">— David & Lisa M., Gardena</span>
+                    <div class="stars">*****</div>
+                    <p class="quote">"Called them for an electrical emergency on a Sunday and they responded within an hour. Fixed the problem fast and the price was very reasonable. This is my go-to electrician now."</p>
+                    <p class="author">David K.</p>
+                    <p class="location">Lomita, CA</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="contact section">
+    <section class="contact">
         <div class="container">
-            <h2 class="section-title">Contact Us</h2>
-            <div class="contact-wrapper">
-                <div class="contact-info">
-                    <h3>Ready to Get Started?</h3>
-                    <p>Whether you need an EV charger installed, a panel upgrade, or emergency electrical repair, our licensed electricians are here to help.</p>
-                    <a href="tel:+13107739938" class="contact-phone">📞 (310) 773-9938</a>
-                    <div class="contact-address">
-                        <span>📍</span>
-                        <div>
-                            <strong>Armor Electric</strong><br>
-                            1556 W 214th St<br>
-                            Torrance, CA 90501
-                        </div>
-                    </div>
+            <h2>Contact Us Today</h2>
+            <div class="contact-content">
+                <div class="contact-item">
+                    <h3>Call Us</h3>
+                    <a href="tel:+13107739938">(310) 773-9938</a>
+                    <p>Available Monday - Saturday</p>
                 </div>
-                <div class="contact-cta">
-                    <h3>Free Estimates</h3>
-                    <p>Call now for a no-obligation quote on your electrical project. Same-day appointments often available.</p>
-                    <a href="tel:+13107739938" class="cta-btn">Call Now</a>
+                <div class="contact-item">
+                    <h3>Visit Us</h3>
+                    <p>1556 W 214th St<br>Torrance, CA 90501</p>
                 </div>
+                <div class="contact-item">
+                    <h3>Service Area</h3>
+                    <p>Torrance, Redondo Beach, Lomita,<br>Carson, Gardena, and South Bay</p>
+                </div>
+            </div>
+            <div class="contact-cta">
+                <a href="tel:+13107739938" class="cta-button">Get Your Free Estimate</a>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2026 Armor Electric. Licensed Electrician serving Torrance, CA and the South Bay.</p>
+        <p>Armor Electric - Licensed Electrical Contractor</p>
+        <p>1556 W 214th St, Torrance, CA 90501 | (310) 773-9938</p>
+        <p>Serving the South Bay since day one</p>
     </footer>
 </body>
 </html>
