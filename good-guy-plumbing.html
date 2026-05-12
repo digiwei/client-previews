@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Good Guy Plumbing | Plumbing Services | Torrance, CA</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Open Sans',sans-serif;color:#222;line-height:1.6;}
+h1,h2,h3,h4{font-family:'Montserrat',sans-serif;}
+.preview-bar{background:#111;color:#fff;text-align:center;padding:10px 20px;font-size:13px;letter-spacing:.3px;}
+.preview-bar span{color:#E85D26;font-weight:700;}
+.header{background:#fff;padding:16px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.logo{font-family:'Montserrat',sans-serif;font-size:22px;font-weight:800;color:#1B4F8A;text-decoration:none;}
+.header-right{display:flex;align-items:center;gap:16px;}
+.header-phone{font-weight:700;color:#222;font-size:17px;}
+.btn-call{background:#E85D26;color:#fff;padding:10px 22px;border-radius:6px;text-decoration:none;font-weight:700;font-size:14px;transition:opacity .2s;}
+.btn-call:hover{opacity:.88;}
+.hero{background:#1B4F8A;padding:90px 24px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 1px,transparent 1px,transparent 12px);}
+.hero-inner{position:relative;z-index:1;max-width:780px;margin:0 auto;}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.15);color:#fff;padding:6px 18px;border-radius:40px;font-size:13px;font-weight:600;letter-spacing:.5px;margin-bottom:22px;border:1px solid rgba(255,255,255,.25);}
+.hero h1{font-size:clamp(32px,5.5vw,58px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:18px;}
+.hero h1 em{color:#E85D26;font-style:normal;}
+.hero-sub{font-size:18px;color:rgba(255,255,255,.88);margin-bottom:34px;max-width:560px;margin-left:auto;margin-right:auto;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+.btn-primary{background:#E85D26;color:#fff;padding:16px 34px;border-radius:8px;text-decoration:none;font-weight:700;font-size:16px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.25);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3);}
+.btn-outline{background:transparent;color:#fff;padding:16px 34px;border-radius:8px;text-decoration:none;font-weight:700;font-size:16px;border:2px solid rgba(255,255,255,.6);transition:border-color .2s;}
+.btn-outline:hover{border-color:#fff;}
+.badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.badge{background:rgba(255,255,255,.12);color:#fff;padding:8px 16px;border-radius:40px;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,.2);}
+.badge::before{content:'&#10003; ';color:#E85D26;}
+.social-proof{background:#E85D26;padding:18px 24px;text-align:center;}
+.social-proof p{color:#fff;font-weight:700;font-size:15px;letter-spacing:.3px;}
+.section{padding:80px 24px;}
+.container{max-width:1100px;margin:0 auto;}
+.section-label{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#E85D26;margin-bottom:10px;}
+.section-title{font-size:clamp(26px,4vw,40px);font-weight:800;color:#1B4F8A;margin-bottom:14px;}
+.section-sub{font-size:16px;color:#666;max-width:560px;}
+.services{background:#EEF5FF;}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;margin-top:44px;}
+.service-card{background:#fff;padding:32px 26px;border-radius:12px;box-shadow:0 2px 16px rgba(0,0,0,.07);transition:transform .25s,box-shadow .25s;border-top:4px solid #E85D26;}
+.service-card:hover{transform:translateY(-4px);box-shadow:0 8px 28px rgba(0,0,0,.11);}
+.service-dot{width:44px;height:44px;background:#E85D26;border-radius:10px;margin-bottom:16px;}
+.service-card h3{font-size:17px;font-weight:700;color:#1B4F8A;margin-bottom:8px;}
+.service-card p{font-size:14px;color:#666;line-height:1.6;}
+.why-section{background:#fff;}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:44px;}
+.stats-block{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.stat-box{background:#EEF5FF;border-radius:12px;padding:28px 20px;text-align:center;border-left:4px solid #E85D26;}
+.stat-box .num{font-family:'Montserrat',sans-serif;font-size:38px;font-weight:800;color:#1B4F8A;}
+.stat-box .lbl{font-size:13px;color:#666;font-weight:600;margin-top:4px;}
+.why-list{list-style:none;}
+.why-list li{padding:14px 0;border-bottom:1px solid #eee;font-size:15px;color:#333;display:flex;gap:12px;align-items:flex-start;}
+.why-list li::before{content:'&#10003;';color:#E85D26;font-weight:700;font-size:18px;flex-shrink:0;margin-top:1px;}
+.why-list li:last-child{border-bottom:none;}
+.testimonials{background:#1B4F8A;padding:80px 24px;}
+.testimonials .section-label{color:rgba(255,255,255,.6);}
+.testimonials .section-title{color:#fff;}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;margin-top:44px;}
+.review-card{background:rgba(255,255,255,.1);border-radius:12px;padding:32px 26px;border:1px solid rgba(255,255,255,.15);}
+.stars{display:flex;gap:4px;margin-bottom:16px;}
+.star{width:16px;height:16px;background:#E85D26;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.review-card p{font-size:14px;color:rgba(255,255,255,.88);line-height:1.75;font-style:italic;margin-bottom:20px;}
+.review-author{font-weight:700;color:#fff;font-size:14px;}
+.review-loc{font-size:12px;color:rgba(255,255,255,.55);margin-top:2px;}
+.contact-section{background:#EEF5FF;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:44px;align-items:start;}
+.contact-info h3{font-size:22px;font-weight:700;color:#1B4F8A;margin-bottom:24px;}
+.contact-item{display:flex;gap:14px;margin-bottom:22px;align-items:flex-start;}
+.contact-icon{width:42px;height:42px;background:#E85D26;border-radius:8px;flex-shrink:0;}
+.contact-text strong{display:block;font-size:14px;color:#888;font-weight:600;margin-bottom:3px;}
+.contact-text a,.contact-text span{font-size:16px;color:#222;text-decoration:none;font-weight:600;}
+.contact-text a:hover{color:#E85D26;}
+.contact-form{background:#fff;padding:36px;border-radius:14px;box-shadow:0 4px 24px rgba(0,0,0,.08);}
+.contact-form h3{font-size:20px;font-weight:700;color:#1B4F8A;margin-bottom:22px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:13px;font-weight:600;color:#444;margin-bottom:6px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 14px;border:1.5px solid #ddd;border-radius:7px;font-size:14px;font-family:'Open Sans',sans-serif;transition:border-color .2s;background:#fafafa;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:#E85D26;background:#fff;}
+.form-group textarea{height:90px;resize:vertical;}
+.btn-submit{width:100%;background:#E85D26;color:#fff;padding:14px;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;transition:opacity .2s;}
+.btn-submit:hover{opacity:.88;}
+footer{background:#111;color:#fff;text-align:center;padding:36px 24px;}
+footer .biz{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px;}
+footer p{font-size:13px;color:rgba(255,255,255,.5);}
+@media(max-width:768px){.why-grid,.contact-grid{grid-template-columns:1fr;}.header{justify-content:center;}.hero{padding:60px 20px;}.section{padding:54px 20px;}}
+@media(max-width:480px){.hero h1{font-size:28px;}.stats-block{grid-template-columns:1fr 1fr;}.hero-btns{flex-direction:column;align-items:center;}}
+</style>
+</head>
+<body>
+
+<div class="preview-bar">PREVIEW ONLY &mdash; Designed by <span>Digiwei.com</span> &mdash; This could be Good Guy Plumbing's new website</div>
+
+<header class="header">
+  <a class="logo" href="#">Good Guy Plumbing</a>
+  <div class="header-right">
+    <span class="header-phone">(310) 879-5509</span>
+    <a class="btn-call" href="tel:3108795509">Call For Free Estimate</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Plumbing Services &mdash; Torrance, CA</div>
+    <h1>Torrance's Trusted Plumbing Experts Since Day <em>One</em></h1>
+    <p class="hero-sub">Fast, reliable plumbing service when you need it most – available 24/7 for emergencies.</p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="tel:3108795509">Call For Free Estimate</a>
+      <a class="btn-outline" href="#services">See Our Services</a>
+    </div>
+    <div class="badges">
+      <span class="badge">Licensed & Insured</span>
+      <span class="badge">24/7 Emergency</span>
+      <span class="badge">Same-Day Service</span>
+      <span class="badge">Upfront Pricing</span>
+    </div>
+  </div>
+</section>
+
+<div class="social-proof">
+  <p>500+ Happy Customers &nbsp;&bull;&nbsp; 4.9 Star Rating &nbsp;&bull;&nbsp; Serving Torrance & South Bay Since 2012 &nbsp;&bull;&nbsp; Same-Day Availability</p>
+</div>
+
+<section class="section services" id="services">
+  <div class="container">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-sub">Professional, reliable service for homeowners and businesses across Torrance and the South Bay.</p>
+    <div class="services-grid">
+      <div class="service-card"><div class="service-dot"></div><h3>Emergency Plumbing</h3><p>Burst pipes and urgent repairs fixed fast, any time.</p></div>
+      <div class="service-card"><div class="service-dot"></div><h3>Drain Cleaning</h3><p>Powerful solutions for clogged drains and sewer line blockages.</p></div>
+      <div class="service-card"><div class="service-dot"></div><h3>Water Heater Repair</h3><p>Expert installation and repair for all water heater types.</p></div>
+      <div class="service-card"><div class="service-dot"></div><h3>Leak Detection</h3><p>Advanced technology finds hidden leaks before major damage occurs.</p></div>
+      <div class="service-card"><div class="service-dot"></div><h3>Toilet Repair</h3><p>Quick fixes for running, clogged, or broken toilet systems.</p></div>
+      <div class="service-card"><div class="service-dot"></div><h3>Repiping Services</h3><p>Complete pipe replacement to upgrade your home's plumbing system.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section why-section">
+  <div class="container">
+    <div class="section-label">Why Choose Us</div>
+    <h2 class="section-title">The Good Guy Plumbing Difference</h2>
+    <div class="why-grid">
+      <div class="stats-block">
+        <div class="stat-box"><div class="num">500+</div><div class="lbl">Jobs Completed</div></div>
+        <div class="stat-box"><div class="num">12+</div><div class="lbl">Years Experience</div></div>
+        <div class="stat-box"><div class="num">60 min</div><div class="lbl">Response Time</div></div>
+        <div class="stat-box"><div class="num">100%</div><div class="lbl">Satisfaction</div></div>
+      </div>
+      <ul class="why-list">
+        <li>Licensed local experts serving Torrance and South Bay communities</li>
+        <li>Rapid 60-minute emergency response when disasters strike</li>
+        <li>Upfront pricing with no hidden fees or surprises</li>
+        <li>Friendly, respectful technicians who treat your home right</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="container">
+    <div class="section-label">Customer Reviews</div>
+    <h2 class="section-title">What Our Customers Say</h2>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <p>"Called at 10pm with a flooded bathroom and they arrived in 45 minutes. Truly the good guys of plumbing!"</p>
+        <div class="review-author">Michael R.</div>
+        <div class="review-loc">Torrance, CA</div>
+      </div>
+      <div class="review-card">
+        <div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <p>"Fair pricing and honest work. They fixed my water heater and even showed me how to maintain it."</p>
+        <div class="review-author">Sandra L.</div>
+        <div class="review-loc">Redondo Beach, CA</div>
+      </div>
+      <div class="review-card">
+        <div class="stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <p>"Professional from start to finish. They cleaned up perfectly and my drains work better than ever."</p>
+        <div class="review-author">James T.</div>
+        <div class="review-loc">Carson, CA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section contact-section" id="contact">
+  <div class="container">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Contact Good Guy Plumbing</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>We're Ready to Help</h3>
+        <div class="contact-item">
+          <div class="contact-icon"></div>
+          <div class="contact-text"><strong>Phone</strong><a href="tel:3108795509">(310) 879-5509</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"></div>
+          <div class="contact-text"><strong>Address</strong><span>1450 W 228th St Suite 5, Torrance, CA 90501, USA</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"></div>
+          <div class="contact-text"><strong>Hours</strong><span>Mon&ndash;Sat 7am&ndash;7pm &bull; Emergency 24/7</span></div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <h3>Request a Free Quote</h3>
+        <div class="form-group"><label>Your Name</label><input type="text" placeholder="John Smith"></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="(310) 555-0100"></div>
+        <div class="form-group"><label>Service Needed</label><select><option>Select a service...</option><option>Emergency Plumbing</option><option>Drain Cleaning</option><option>Water Heater Repair</option><option>Leak Detection</option><option>Other</option></select></div>
+        <div class="form-group"><label>Message</label><textarea placeholder="Tell us about your project..."></textarea></div>
+        <button class="btn-submit">Call For Free Estimate</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="biz">Good Guy Plumbing</div>
+  <p>1450 W 228th St Suite 5, Torrance, CA 90501, USA &bull; (310) 879-5509</p>
+  <p style="margin-top:8px;">&copy; 2026 Good Guy Plumbing. Preview designed by <a href="https://digiwei.com" style="color:#E85D26;text-decoration:none;">Digiwei.com</a></p>
+</footer>
+
+</body>
+</html>
