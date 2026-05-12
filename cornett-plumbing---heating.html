@@ -1,0 +1,383 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cornett Plumbing & Heating | Torrance, CA | (310) 320-6171</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .preview-banner {
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            color: white;
+            text-align: center;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .preview-banner a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1a3a5c 0%, #2d5a87 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            background-size: 50px 50px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-tagline {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            opacity: 0.95;
+        }
+
+        .hero-location {
+            font-size: 1rem;
+            margin-bottom: 30px;
+            opacity: 0.85;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #e63946;
+            color: white;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);
+        }
+
+        .cta-button:hover {
+            background: #c1121f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 57, 70, 0.5);
+        }
+
+        .section {
+            padding: 60px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #1a3a5c;
+        }
+
+        .services {
+            background: #f8f9fa;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #1a3a5c;
+        }
+
+        .service-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .testimonials {
+            background: white;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid #2d5a87;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 15px;
+            color: #444;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: #1a3a5c;
+        }
+
+        .stars {
+            color: #f7931e;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .contact {
+            background: linear-gradient(135deg, #1a3a5c 0%, #2d5a87 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .contact .section-title {
+            color: white;
+        }
+
+        .contact-info {
+            margin-bottom: 30px;
+        }
+
+        .phone-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .phone-number a {
+            color: #ffd166;
+            text-decoration: none;
+        }
+
+        .phone-number a:hover {
+            text-decoration: underline;
+        }
+
+        .address {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+
+        .contact-cta {
+            background: #e63946;
+            color: white;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .contact-cta:hover {
+            background: #c1121f;
+            transform: translateY(-2px);
+        }
+
+        .hours {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .hours h4 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            background: #0d1f2d;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: rgba(255,255,255,0.9);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-tagline {
+                font-size: 1.1rem;
+            }
+
+            .cta-button {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 45px 15px;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .phone-number {
+                font-size: 1.8rem;
+            }
+
+            .services-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-banner">
+        PREVIEW - Built by <a href="https://Digiwei.com" target="_blank">Digiwei.com</a>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Cornett Plumbing & Heating</h1>
+            <p class="hero-tagline">Your Trusted Local Plumbing & Heating Experts Since 1985</p>
+            <p class="hero-location">📍 Serving Torrance, CA & Surrounding Areas</p>
+            <a href="tel:+13103206171" class="cta-button">📞 Call Now: (310) 320-6171</a>
+        </div>
+    </section>
+
+    <section class="services section">
+        <div class="container">
+            <h2 class="section-title">Our Professional Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🔧</div>
+                    <h3>Plumbing Repairs</h3>
+                    <p>From leaky faucets to burst pipes, our licensed plumbers handle all repairs quickly and efficiently. Available for emergencies 24/7.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔥</div>
+                    <h3>Heating Systems</h3>
+                    <p>Expert installation, repair, and maintenance of furnaces, boilers, and heating systems to keep your home warm and comfortable.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🚿</div>
+                    <h3>Water Heaters</h3>
+                    <p>Tank and tankless water heater installation and repair. We help you choose the right system for your home and budget.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials section">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"Cornett Plumbing saved us during a weekend emergency! They arrived within an hour and fixed our burst pipe professionally. Highly recommend their fast, honest service."</p>
+                    <p class="testimonial-author">— Maria S., Torrance</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"We've used Cornett for over 10 years. They installed our new furnace and it's been running perfectly. Fair prices and the technicians are always courteous and clean."</p>
+                    <p class="testimonial-author">— Robert T., Redondo Beach</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"Best plumber in the South Bay! They replaced our old water heater with a tankless model. The installation was quick and they explained everything clearly. Great work!"</p>
+                    <p class="testimonial-author">— Jennifer L., Hermosa Beach</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact section">
+        <div class="container">
+            <h2 class="section-title">Contact Us Today</h2>
+            <div class="contact-info">
+                <p>Ready to solve your plumbing or heating problem? Call us now!</p>
+                <div class="phone-number">
+                    <a href="tel:+13103206171">(310) 320-6171</a>
+                </div>
+                <p class="address">📍 1715 Cabrillo Ave, Torrance, CA 90501</p>
+                <a href="tel:+13103206171" class="contact-cta">Schedule Your Service</a>
+            </div>
+            <div class="hours">
+                <h4>Business Hours</h4>
+                <p>Monday - Friday: 7:00 AM - 6:00 PM<br>
+                Saturday: 8:00 AM - 4:00 PM<br>
+                Emergency Service Available 24/7</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Cornett Plumbing & Heating. All rights reserved.</p>
+        <p>1715 Cabrillo Ave, Torrance, CA 90501 | <a href="tel:+13103206171">(310) 320-6171</a></p>
+    </footer>
+</body>
+</html>
+```

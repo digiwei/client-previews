@@ -1,0 +1,529 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Comfort HVAC | Torrance, CA Heating & Cooling Experts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .preview-banner {
+            background: linear-gradient(90deg, #1a1a2e, #16213e);
+            color: #fff;
+            text-align: center;
+            padding: 10px 15px;
+            font-size: 14px;
+        }
+
+        .preview-banner a {
+            color: #4fc3f7;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .preview-banner a:hover {
+            text-decoration: underline;
+        }
+
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0277bd;
+        }
+
+        .logo span {
+            color: #ff6f00;
+        }
+
+        .header-phone {
+            background: #ff6f00;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .header-phone:hover {
+            background: #e65100;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0277bd 0%, #01579b 50%, #004c8c 100%);
+            color: #fff;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='2'/%3E%3C/svg%3E") repeat;
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero .tagline {
+            font-size: 22px;
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }
+
+        .hero .location {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .hero .location svg {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #ff6f00;
+            color: #fff;
+            padding: 18px 40px;
+            font-size: 20px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(255,111,0,0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255,111,0,0.5);
+        }
+
+        .trust-badges {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.15);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        section {
+            padding: 70px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #0277bd;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .services {
+            background: #f8f9fa;
+        }
+
+        .services-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0277bd, #01579b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+
+        .service-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: #fff;
+        }
+
+        .service-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .service-card p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .testimonials {
+            background: #fff;
+        }
+
+        .testimonials-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: linear-gradient(135deg, #f8f9fa, #fff);
+            border-radius: 15px;
+            padding: 35px;
+            border-left: 4px solid #ff6f00;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+        }
+
+        .stars {
+            color: #ffc107;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .testimonial-location {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .contact {
+            background: linear-gradient(135deg, #0277bd, #01579b);
+            color: #fff;
+            text-align: center;
+        }
+
+        .contact .section-title {
+            color: #fff;
+        }
+
+        .contact .section-subtitle {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .contact-info {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .phone-display {
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .phone-display a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .address {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .address svg {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        .contact .cta-button {
+            background: #fff;
+            color: #0277bd;
+        }
+
+        .contact .cta-button:hover {
+            background: #f5f5f5;
+        }
+
+        .hours-box {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 40px;
+            display: inline-block;
+        }
+
+        .hours-box h4 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        footer {
+            background: #1a1a2e;
+            color: #fff;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        footer p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero .tagline {
+                font-size: 18px;
+            }
+
+            .cta-button {
+                padding: 15px 30px;
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .phone-display {
+                font-size: 28px;
+            }
+
+            .trust-badges {
+                gap: 15px;
+            }
+
+            .badge {
+                padding: 8px 15px;
+                font-size: 12px;
+            }
+
+            .header-container {
+                justify-content: center;
+            }
+
+            .logo {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 50px 15px;
+            }
+
+            section {
+                padding: 50px 15px;
+            }
+
+            .service-card, .testimonial-card {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-banner">
+        PREVIEW - Built by <a href="https://Digiwei.com" target="_blank">Digiwei.com</a>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">Cloud Comfort <span>HVAC</span></div>
+            <a href="tel:+14242263457" class="header-phone">📞 (424) 226-3457</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Cloud Comfort HVAC</h1>
+            <p class="tagline">Your Trusted Heating & Cooling Experts in Torrance</p>
+            <p class="location">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                Serving Torrance, CA & Surrounding Areas
+            </p>
+            <a href="tel:+14242263457" class="cta-button">Call Now - Free Estimate!</a>
+            <div class="trust-badges">
+                <div class="badge">✓ Licensed & Insured</div>
+                <div class="badge">✓ 24/7 Emergency Service</div>
+                <div class="badge">✓ 100% Satisfaction Guaranteed</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">Professional HVAC solutions to keep your home comfortable year-round</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 11h-4.17l3.24-3.24-1.41-1.42L15 11h-2V9l4.66-4.66-1.42-1.41L13 6.17V2h-2v4.17L7.76 2.93 6.34 4.34 11 9v2H9L4.34 6.34 2.93 7.76 6.17 11H2v2h4.17l-3.24 3.24 1.41 1.42L9 13h2v2l-4.66 4.66 1.42 1.41L11 17.83V22h2v-4.17l3.24 3.24 1.42-1.41L13 15v-2h2l4.66 4.66 1.41-1.42L17.83 13H22z"/></svg>
+                </div>
+                <h3>AC Repair & Installation</h3>
+                <p>Beat the Torrance heat with expert air conditioning services. From emergency repairs to new system installations, we keep you cool and comfortable.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                </div>
+                <h3>Heating Services</h3>
+                <p>Stay warm during cooler months with our heating repair and installation services. We service all major brands of furnaces and heat pumps.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+                </div>
+                <h3>Maintenance & Tune-Ups</h3>
+                <p>Prevent costly breakdowns with regular HVAC maintenance. Our comprehensive tune-ups extend system life and improve energy efficiency.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <h2 class="section-title">What Our Customers Say</h2>
+        <p class="section-subtitle">Real reviews from satisfied homeowners in Torrance and beyond</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>"Our AC broke down on the hottest day of summer. Cloud Comfort came out within 2 hours and had us back up and running the same day. Incredible service!"</p>
+                <div class="testimonial-author">Michael R.</div>
+                <div class="testimonial-location">Torrance, CA</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>"Very professional team. They explained everything clearly, gave us options, and didn't pressure us into anything. Fair pricing and excellent workmanship."</p>
+                <div class="testimonial-author">Sandra K.</div>
+                <div class="testimonial-location">Redondo Beach, CA</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>"We've used Cloud Comfort for years now. They installed our new system and handle all our maintenance. Reliable, honest, and always on time. Highly recommend!"</p>
+                <div class="testimonial-author">David & Lisa T.</div>
+                <div class="testimonial-location">Torrance, CA</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact">
+        <h2 class="section-title">Contact Us Today</h2>
+        <p class="section-subtitle">Ready to experience the Cloud Comfort difference? Give us a call!</p>
+        <div class="contact-info">
+            <div class="phone-display">
+                <a href="tel:+14242263457">(424) 226-3457</a>
+            </div>
+            <div class="address">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                1732 Border Ave, Torrance, CA 90501
+            </div>
+            <a href="tel:+14242263457" class="cta-button">📞 Call For Free Estimate</a>
+            <div class="hours-box">
+                <h4>Business Hours</h4>
+                <p>Monday - Friday: 8AM - 6PM<br>
+                Saturday: 9AM - 4PM<br>
+                24/7 Emergency Service Available</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Cloud Comfort HVAC. All Rights Reserved.</p>
+        <p>Serving Torrance, Redondo Beach, Carson, Gardena & South Bay Area</p>
+    </footer>
+</body>
+</html>
+```
