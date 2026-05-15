@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Digiwei Dashboard</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --primary: #0F3460;
+  --accent: #E94560;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --gray: #6b7280;
+  --bg: #f3f4f6;
+  --card: #ffffff;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: #111; min-height: 100vh; }
+
+/* LOGIN */
+.login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; background: var(--primary); }
+.login-card { background: #fff; border-radius: 16px; padding: 40px 32px; width: 100%; max-width: 360px; text-align: center; }
+.login-logo { font-size: 28px; font-weight: 900; color: var(--primary); margin-bottom: 6px; }
+.login-logo span { color: var(--accent); }
+.login-sub { font-size: 14px; color: var(--gray); margin-bottom: 32px; }
+.login-input { width: 100%; padding: 14px 16px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 16px; margin-bottom: 14px; outline: none; }
+.login-input:focus { border-color: var(--primary); }
+.login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; }
+.login-error { color: var(--accent); font-size: 13px; margin-top: 10px; display: none; }
+
+/* HEADER */
+.header { background: var(--primary); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.header-logo { font-size: 20px; font-weight: 900; color: #fff; }
+.header-logo span { color: var(--accent); }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.header-date { font-size: 12px; color: rgba(255,255,255,0.6); }
+.logout-btn { background: rgba(255,255,255,0.1); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+
+/* STATS BAR */
+.stats-bar { background: #fff; padding: 16px 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; border-bottom: 1px solid #e5e7eb; }
+.stat { text-align: center; }
+.stat-num { font-size: 22px; font-weight: 800; color: var(--primary); }
+.stat-num.green { color: var(--green); }
+.stat-num.yellow { color: var(--yellow); }
+.stat-num.accent { color: var(--accent); }
+.stat-label { font-size: 10px; color: var(--gray); font-weight: 600; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* FILTERS */
+.filters { padding: 12px 16px; display: flex; gap: 8px; overflow-x: auto; background: #fff; border-bottom: 1px solid #e5e7eb; }
+.filter-btn { flex-shrink: 0; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1.5px solid #e5e7eb; background: #fff; color: var(--gray); cursor: pointer; }
+.filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* SEARCH */
+.search-wrap { padding: 12px 16px; background: #fff; border-bottom: 1px solid #e5e7eb; }
+.search-input { width: 100%; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 15px; outline: none; }
+.search-input:focus { border-color: var(--primary); }
+
+/* LEADS LIST */
+.leads-list { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+
+.lead-card { background: var(--card); border-radius: 14px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border-left: 4px solid #e5e7eb; cursor: pointer; transition: box-shadow 0.15s; }
+.lead-card:active { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.lead-card.status-pitched { border-left-color: var(--yellow); }
+.lead-card.status-replied { border-left-color: var(--green); }
+.lead-card.status-booked { border-left-color: var(--primary); }
+.lead-card.status-closed { border-left-color: var(--accent); }
+.lead-card.status-not-sent { border-left-color: #e5e7eb; }
+
+.lead-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+.lead-name { font-size: 15px; font-weight: 700; color: #111; flex: 1; margin-right: 8px; }
+.lead-status { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+.status-not-sent .lead-status { background: #f3f4f6; color: var(--gray); }
+.status-pitched .lead-status { background: #fef3c7; color: #92400e; }
+.status-replied .lead-status { background: #d1fae5; color: #065f46; }
+.status-booked .lead-status { background: #dbeafe; color: #1e40af; }
+.status-closed .lead-status { background: #fee2e2; color: #991b1b; }
+
+.lead-meta { font-size: 12px; color: var(--gray); margin-bottom: 10px; }
+.lead-actions { display: flex; gap: 8px; }
+.action-btn { flex: 1; padding: 8px 10px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px; }
+.btn-call { background: var(--green); color: #fff; }
+.btn-preview { background: var(--primary); color: #fff; }
+.btn-video { background: var(--accent); color: #fff; }
+.btn-zoom { background: #2563eb; color: #fff; }
+.btn-status { background: #f3f4f6; color: #374151; font-size: 12px; }
+
+/* MODAL */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-end; }
+.modal-overlay.open { display: flex; }
+.modal { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 20px; width: 100%; max-height: 80vh; overflow-y: auto; }
+.modal-handle { width: 36px; height: 4px; background: #e5e7eb; border-radius: 2px; margin: 0 auto 20px; }
+.modal-title { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+.modal-sub { font-size: 13px; color: var(--gray); margin-bottom: 20px; }
+.modal-section { margin-bottom: 16px; }
+.modal-label { font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.modal-value { font-size: 15px; color: #111; font-weight: 500; }
+.modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.modal-btn { padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.status-select { width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 15px; font-weight: 600; outline: none; margin-bottom: 10px; }
+.notes-input { width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 14px; outline: none; height: 80px; resize: none; font-family: inherit; }
+.save-btn { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+.close-modal { width: 100%; background: #f3f4f6; color: var(--gray); border: none; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+
+/* EMPTY STATE */
+.empty { text-align: center; padding: 60px 20px; color: var(--gray); }
+.empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">Digi<span>wei</span></div>
+    <div class="login-sub">Lead Management Dashboard</div>
+    <input type="password" class="login-input" id="passwordInput" placeholder="Enter password" onkeypress="if(event.key==='Enter')login()">
+    <button class="login-btn" onclick="login()">Sign In</button>
+    <div class="login-error" id="loginError">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+
+  <div class="header">
+    <div class="header-logo">Digi<span>wei</span></div>
+    <div class="header-right">
+      <div class="header-date" id="headerDate"></div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Total</div></div>
+    <div class="stat"><div class="stat-num yellow" id="statPitched">0</div><div class="stat-label">Pitched</div></div>
+    <div class="stat"><div class="stat-num green" id="statReplied">0</div><div class="stat-label">Replied</div></div>
+    <div class="stat"><div class="stat-num accent" id="statClosed">0</div><div class="stat-label">Closed</div></div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" onclick="setFilter('not-sent', this)">Not Sent</button>
+    <button class="filter-btn" onclick="setFilter('pitched', this)">Pitched</button>
+    <button class="filter-btn" onclick="setFilter('replied', this)">Replied</button>
+    <button class="filter-btn" onclick="setFilter('booked', this)">Call Booked</button>
+    <button class="filter-btn" onclick="setFilter('closed', this)">Closed</button>
+  </div>
+
+  <div class="search-wrap">
+    <input type="search" class="search-input" placeholder="Search businesses..." oninput="renderLeads()" id="searchInput">
+  </div>
+
+  <div class="leads-list" id="leadsList"></div>
+
+</div>
+
+<!-- LEAD MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalName"></div>
+    <div class="modal-sub" id="modalMeta"></div>
+
+    <div class="modal-actions">
+      <a class="modal-btn btn-call" id="modalCallBtn" href="#">
+        &#9742; Call
+      </a>
+      <a class="modal-btn btn-zoom" href="https://calendly.com" target="_blank">
+        &#128197; Book Zoom
+      </a>
+      <a class="modal-btn btn-preview" id="modalPreviewBtn" href="#" target="_blank">
+        &#128279; Preview
+      </a>
+      <a class="modal-btn btn-video" id="modalVideoBtn" href="#" target="_blank">
+        &#9654; Video
+      </a>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-label">Update Status</div>
+      <select class="status-select" id="modalStatus" onchange="updateStatus()">
+        <option value="not-sent">Not Sent</option>
+        <option value="pitched">Pitched</option>
+        <option value="replied">Replied</option>
+        <option value="booked">Call Booked</option>
+        <option value="closed">Closed - Won</option>
+        <option value="lost">Closed - Lost</option>
+      </select>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-label">Notes</div>
+      <textarea class="notes-input" id="modalNotes" placeholder="Add notes about this lead..."></textarea>
+    </div>
+
+    <button class="save-btn" onclick="saveLead()">Save Changes</button>
+    <button class="close-modal" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+const PASSWORD = 'digiwei2026';
+const PREVIEW_BASE = 'https://digiweipreview.com';
+const VIDEO_BASE = 'https://digiwei.github.io/client-previews/videos';
+
+let allLeads = [];
+let leadData = {};
+let currentFilter = 'all';
+let currentLead = null;
+
+// Load saved data from localStorage
+function loadData() {
+  const saved = localStorage.getItem('digiwei_leads');
+  if (saved) leadData = JSON.parse(saved);
+}
+
+function saveData() {
+  localStorage.setItem('digiwei_leads', JSON.stringify(leadData));
+}
+
+function login() {
+  const pw = document.getElementById('passwordInput').value;
+  if (pw === PASSWORD) {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    localStorage.setItem('digiwei_auth', '1');
+    init();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('digiwei_auth');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('dashboard').classList.add('hidden');
+}
+
+function getSlug(name) {
+  return name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+}
+
+function getPreviewSlug(name) {
+  return name.replace(/[^a-z0-9]/gi, '-').toLowerCase().replace(/-+/g, '-').replace(/^-|-$/g, '');
+}
+
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLeads();
+}
+
+function getLeadStatus(lead) {
+  const slug = getSlug(lead.name);
+  return leadData[slug] ? leadData[slug].status || 'not-sent' : 'not-sent';
+}
+
+function getStatusLabel(status) {
+  const labels = {
+    'not-sent': 'Not Sent',
+    'pitched': 'Pitched',
+    'replied': 'Replied',
+    'booked': 'Call Booked',
+    'closed': 'Closed - Won',
+    'lost': 'Closed - Lost'
+  };
+  return labels[status] || 'Not Sent';
+}
+
+function updateStats() {
+  const total = allLeads.length;
+  const pitched = allLeads.filter(l => ['pitched','replied','booked','closed'].includes(getLeadStatus(l))).length;
+  const replied = allLeads.filter(l => ['replied','booked'].includes(getLeadStatus(l))).length;
+  const closed = allLeads.filter(l => getLeadStatus(l) === 'closed').length;
+
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statPitched').textContent = pitched;
+  document.getElementById('statReplied').textContent = replied;
+  document.getElementById('statClosed').textContent = closed;
+}
+
+function renderLeads() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  let leads = allLeads.filter(l => {
+    const status = getLeadStatus(l);
+    const matchFilter = currentFilter === 'all' || status === currentFilter;
+    const matchSearch = !search || l.name.toLowerCase().includes(search) || (l.found_via || '').toLowerCase().includes(search);
+    return matchFilter && matchSearch;
+  });
+
+  const container = document.getElementById('leadsList');
+
+  if (leads.length === 0) {
+    container.innerHTML = '<div class="empty"><div class="empty-icon">&#128270;</div><div>No leads found</div></div>';
+    return;
+  }
+
+  container.innerHTML = leads.map(lead => {
+    const status = getLeadStatus(lead);
+    const slug = getSlug(lead.name);
+    const data = leadData[slug] || {};
+    const industry = (lead.found_via || '').split(' ')[0];
+
+    return `
+      <div class="lead-card status-${status}" onclick="openModal('${slug}')">
+        <div class="lead-top">
+          <div class="lead-name">${lead.name}</div>
+          <div class="lead-status">${getStatusLabel(status)}</div>
+        </div>
+        <div class="lead-meta">${industry} &bull; ${lead.phone || 'No phone'} &bull; ${lead.googleRating ? lead.googleRating + '&#9733; (' + lead.googleReviews + ')' : ''}</div>
+        <div class="lead-actions">
+          <a class="action-btn btn-call" href="tel:${(lead.phone || '').replace(/\D/g,'')}" onclick="event.stopPropagation()">&#9742; Call</a>
+          <a class="action-btn btn-preview" href="${PREVIEW_BASE}/${getPreviewSlug(lead.name)}.html" target="_blank" onclick="event.stopPropagation()">&#128279; Preview</a>
+          <a class="action-btn btn-video" href="${VIDEO_BASE}/${slug}.mp4" target="_blank" onclick="event.stopPropagation()">&#9654; Video</a>
+        </div>
+      </div>`;
+  }).join('');
+
+  updateStats();
+}
+
+function openModal(slug) {
+  currentLead = allLeads.find(l => getSlug(l.name) === slug);
+  if (!currentLead) return;
+
+  const data = leadData[slug] || {};
+  const previewSlug = getPreviewSlug(currentLead.name);
+
+  document.getElementById('modalName').textContent = currentLead.name;
+  document.getElementById('modalMeta').textContent = (currentLead.found_via || '') + ' · ' + (currentLead.phone || 'No phone') + ' · ' + (currentLead.address || '');
+  document.getElementById('modalCallBtn').href = 'tel:' + (currentLead.phone || '').replace(/\D/g,'');
+  document.getElementById('modalPreviewBtn').href = PREVIEW_BASE + '/' + previewSlug + '.html';
+  document.getElementById('modalVideoBtn').href = VIDEO_BASE + '/' + slug + '.mp4';
+  document.getElementById('modalStatus').value = data.status || 'not-sent';
+  document.getElementById('modalNotes').value = data.notes || '';
+
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  currentLead = null;
+}
+
+function updateStatus() {
+  if (!currentLead) return;
+  const slug = getSlug(currentLead.name);
+  if (!leadData[slug]) leadData[slug] = {};
+  leadData[slug].status = document.getElementById('modalStatus').value;
+  saveData();
+  renderLeads();
+}
+
+function saveLead() {
+  if (!currentLead) return;
+  const slug = getSlug(currentLead.name);
+  if (!leadData[slug]) leadData[slug] = {};
+  leadData[slug].status = document.getElementById('modalStatus').value;
+  leadData[slug].notes = document.getElementById('modalNotes').value;
+  leadData[slug].updated = new Date().toISOString();
+  saveData();
+  renderLeads();
+  closeModal();
+}
+
+function init() {
+  loadData();
+
+  // Set date
+  const now = new Date();
+  document.getElementById('headerDate').textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+  // Load leads from embedded data
+  renderLeads();
+  updateStats();
+}
+
+// Check if already logged in
+window.onload = function() {
+  if (localStorage.getItem('digiwei_auth') === '1') {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    init();
+  }
+
+  // Load leads data - will be populated by the generator script
+  allLeads = LEADS_DATA;
+  renderLeads();
+  updateStats();
+};
+</script>
+
+<script>
+// LEADS DATA - populated automatically by dashboard-generator.js
+const LEADS_DATA = [
+  {
+    "name": "V-Max Plumbing Torrance",
+    "phone": "(310) 614-3579",
+    "address": "21250 Hawthorne Blvd Suite 500, Torrance, CA 90503, USA",
+    "website": "https://vmaxplumbing.com/about/plumber-torrance/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@vmaxplumbing.com",
+    "previewUrl": "https://digiweipreview.com/v-max-plumbing-torrance.html",
+    "googleRating": 5,
+    "googleReviews": 123,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Top Plumbers of Torrance",
+    "phone": "(424) 208-0492",
+    "address": "1309 Cabrillo Ave, Torrance, CA 90501, USA",
+    "website": "http://topplumbersoftorrance.com/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@topplumbersoftorrance.com",
+    "previewUrl": "https://digiweipreview.com/top-plumbers-of-torrance.html",
+    "googleRating": 5,
+    "googleReviews": 12,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Master Plumber Torrance CA",
+    "phone": "(424) 294-2658",
+    "address": "4709 Torrance Blvd, Torrance, CA 90503, USA",
+    "website": "http://masterplumbertorranceca.com/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@masterplumbertorranceca.com",
+    "previewUrl": "https://digiweipreview.com/master-plumber-torrance-ca.html",
+    "googleRating": 5,
+    "googleReviews": 11,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Sal's Plumbing Company Inc",
+    "phone": "(310) 782-1978",
+    "address": "20602 Normandie Ave, Torrance, CA 90502, USA",
+    "website": "http://salsplumbing.com/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@salsplumbing.com",
+    "previewUrl": "https://digiweipreview.com/sal-s-plumbing-company-inc.html",
+    "googleRating": 4.5,
+    "googleReviews": 239,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "3 Ten Plumbing",
+    "phone": "(310) 461-9691",
+    "address": "2802 Winlock Rd, Torrance, CA 90505, USA",
+    "website": "http://www.3tenplumbing.com/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@3tenplumbing.com",
+    "previewUrl": "https://digiweipreview.com/3-ten-plumbing.html",
+    "googleRating": 5,
+    "googleReviews": 83,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "LA Plumbing Company | Plumber in Torrance Redondo Beach, CA",
+    "phone": "(424) 677-2359",
+    "address": "609 Amapola Ave, Torrance, CA 90501, USA",
+    "website": "http://losangelescaplumbing.com/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@losangelescaplumbing.com",
+    "previewUrl": "https://digiweipreview.com/la-plumbing-company-plumber-in-torrance-redondo-beach-ca.html",
+    "googleRating": 4.9,
+    "googleReviews": 106,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "FlowFix Plumber Torrance",
+    "phone": "(424) 507-3273",
+    "address": "4743 Torrance Blvd, Torrance, CA 90503, USA",
+    "website": "http://flowfixplumbertorrance.com/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@flowfixplumbertorrance.com",
+    "previewUrl": "https://digiweipreview.com/flowfix-plumber-torrance.html",
+    "googleRating": 5,
+    "googleReviews": 15,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Soo Hipp Plumbing and Drains",
+    "phone": "(310) 697-5822",
+    "address": "3655 Torrance Blvd STE 300, Torrance, CA 90503, USA",
+    "website": "https://www.soohippplumbing.com/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@soohippplumbing.com",
+    "previewUrl": "https://digiweipreview.com/soo-hipp-plumbing-and-drains.html",
+    "googleRating": 4.9,
+    "googleReviews": 204,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "South Park Plumber's",
+    "phone": "(310) 388-3890",
+    "address": "1316 Sartori Ave #57b, Torrance, CA 90501, USA",
+    "website": "https://sounthparkplumbers.com/Torrance-plumbing-services/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@sounthparkplumbers.com",
+    "previewUrl": "https://digiweipreview.com/south-park-plumber-s.html",
+    "googleRating": 5,
+    "googleReviews": 117,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Fast Response Plumbers Torrance",
+    "phone": "(310) 504-2481",
+    "address": "22932 Lockness Ave, Torrance, CA 90501, USA",
+    "website": "http://fastresponseplumberstorrance.com/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@fastresponseplumberstorrance.com",
+    "previewUrl": "https://digiweipreview.com/fast-response-plumbers-torrance.html",
+    "googleRating": 5,
+    "googleReviews": 15,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Peacock Plumbing",
+    "phone": "(888) 650-3880",
+    "address": "2539 W 237th St Ste B, Torrance, CA 90505, USA",
+    "website": "http://www.callpeacockplumbing.com/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@callpeacockplumbing.com",
+    "previewUrl": "https://digiweipreview.com/peacock-plumbing.html",
+    "googleRating": 4.8,
+    "googleReviews": 232,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "So Cal Plumbing Heating & Air Conditioning",
+    "phone": "(310) 686-0777",
+    "address": "4811 Darien St, Torrance, CA 90503, USA",
+    "website": "https://socalphac.com/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@socalphac.com",
+    "previewUrl": "https://digiweipreview.com/so-cal-plumbing-heating-air-conditioning.html",
+    "googleRating": 4.9,
+    "googleReviews": 195,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Most Valuable Plumber",
+    "phone": "(818) 714-7812",
+    "address": "2029 Border Ave, Torrance, CA 90501, USA",
+    "website": "https://mvp-plumbing.com/torrance/?utm_source=GBP&utm_medium=organic",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@mvp-plumbing.com",
+    "previewUrl": "https://digiweipreview.com/most-valuable-plumber.html",
+    "googleRating": 4.9,
+    "googleReviews": 40,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Plumber's Kingdom",
+    "phone": "(310) 388-4002",
+    "address": "23473 Hawthorne Blvd, Torrance, CA 90505, USA",
+    "website": "https://plumbingkingdom.com/Torrance",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@plumbingkingdom.com",
+    "previewUrl": "https://digiweipreview.com/plumber-s-kingdom.html",
+    "googleRating": 5,
+    "googleReviews": 58,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Cornett Plumbing & Heating",
+    "phone": "(310) 320-6171",
+    "address": "1715 Cabrillo Ave, Torrance, CA 90501, USA",
+    "website": "http://www.cornettplumbing.com/",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@cornettplumbing.com",
+    "previewUrl": "https://digiweipreview.com/cornett-plumbing-heating.html",
+    "googleRating": 4.3,
+    "googleReviews": 49,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Leak Hounds Plumbing, Leak Detection & Repiping",
+    "phone": "(310) 361-8696",
+    "address": "2501 W 237th St B, Torrance, CA 90505, USA",
+    "website": "https://leakhounds.com/torrance-plumbers/?utm_source=google&utm_medium=organic&utm_campaign=gbp_torrance",
+    "found_via": "plumber in Torrance CA",
+    "email": "info@leakhounds.com",
+    "previewUrl": "https://digiweipreview.com/leak-hounds-plumbing-leak-detection-repiping.html",
+    "googleRating": 4.9,
+    "googleReviews": 185,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Vando Construction",
+    "phone": "(310) 978-5437",
+    "address": "22629 Ellinwood Dr, Torrance, CA 90505, USA",
+    "website": "http://vandoconstruction.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@vandoconstruction.com",
+    "previewUrl": "https://digiweipreview.com/vando-construction.html",
+    "googleRating": 5,
+    "googleReviews": 63,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Pulsar Construction Inc. Bathroom Remodel & Kitchen Remodel Torrance, Rancho Palos Verdes",
+    "phone": "(424) 241-0577",
+    "address": "3868 W Carson St #300, Torrance, CA 90503, USA",
+    "website": "https://www.pulsarconst.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@pulsarconst.com",
+    "previewUrl": "https://digiweipreview.com/pulsar-construction-inc-bathroom-remodel-kitchen-remodel-torrance-rancho-palos-verdes.html",
+    "googleRating": 4.9,
+    "googleReviews": 38,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "AK PRO CONSTRUCTION",
+    "phone": "(310) 320-5757",
+    "address": "1840 W 220th St #370, Torrance, CA 90501, USA",
+    "website": "http://akproconstruction.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@akproconstruction.com",
+    "previewUrl": "https://digiweipreview.com/ak-pro-construction.html",
+    "googleRating": 4.8,
+    "googleReviews": 17,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Bay Cities Construction",
+    "phone": "(888) 881-7355",
+    "address": "22760 Hawthorne Blvd #230, Torrance, CA 90505, USA",
+    "website": "http://www.baycitiesconstruction.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@baycitiesconstruction.com",
+    "previewUrl": "https://digiweipreview.com/bay-cities-construction.html",
+    "googleRating": 5,
+    "googleReviews": 8,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Hiva & Sons Construction",
+    "phone": "(424) 200-7664",
+    "address": "2119 Gramercy Ave, Torrance, CA 90501, USA",
+    "website": "https://hivansonsconstruction.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@hivansonsconstruction.com",
+    "previewUrl": "https://digiweipreview.com/hiva-sons-construction.html",
+    "googleRating": 5,
+    "googleReviews": 14,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Del Amo Construction",
+    "phone": "(310) 378-6203",
+    "address": "19191 S Vermont Ave Suite 950, Torrance, CA 90502, USA",
+    "website": "http://www.delamoconstruction.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@delamoconstruction.com",
+    "previewUrl": "https://digiweipreview.com/del-amo-construction.html",
+    "googleRating": 4.3,
+    "googleReviews": 7,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Cut Once Remodeling",
+    "phone": "(888) 655-0125",
+    "address": "22828 Lockness Ave, Torrance, CA 90501, USA",
+    "website": "http://www.cutonceremodeling.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@cutonceremodeling.com",
+    "previewUrl": "https://digiweipreview.com/cut-once-remodeling.html",
+    "googleRating": 4.4,
+    "googleReviews": 189,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "McGuire Builders, Inc.",
+    "phone": "(562) 424-3636",
+    "address": "2293 W 190th St, Torrance, CA 90504, USA",
+    "website": "http://www.mcguirebuilders.net/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@mcguirebuilders.net",
+    "previewUrl": "https://digiweipreview.com/mcguire-builders-inc.html",
+    "googleRating": 5,
+    "googleReviews": 5,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "F. Roberts Construction",
+    "phone": "(949) 689-6711",
+    "address": "19807 Hamilton Ave, Torrance, CA 90502, USA",
+    "website": "https://www.frobertsconstruction.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@frobertsconstruction.com",
+    "previewUrl": "https://digiweipreview.com/f-roberts-construction.html",
+    "googleRating": 4.8,
+    "googleReviews": 13,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Southline Construction",
+    "phone": "(310) 347-9131",
+    "address": "3476 Garnet St Apt #343, Torrance, CA 90503, USA",
+    "website": "http://www.southlineconstruction.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@southlineconstruction.com",
+    "previewUrl": "https://digiweipreview.com/southline-construction.html",
+    "googleRating": 5,
+    "googleReviews": 3,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Horizon Construction & Remodeling -Torrance",
+    "phone": "(424) 484-5858",
+    "address": "21250 Hawthorne Blvd Suite 500, Torrance, CA 90503, USA",
+    "website": "https://horizonremodelinginc.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@horizonremodelinginc.com",
+    "previewUrl": "https://digiweipreview.com/horizon-construction-remodeling-torrance.html",
+    "googleRating": 4.7,
+    "googleReviews": 117,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Build Pros Construction",
+    "phone": "(424) 376-3311",
+    "address": "4025 Spencer St # 104, Torrance, CA 90503, USA",
+    "website": "http://buildpros.la/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@buildpros.la",
+    "previewUrl": "https://digiweipreview.com/build-pros-construction.html",
+    "googleRating": 4,
+    "googleReviews": 81,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Envision More Renovations",
+    "phone": "(310) 736-7990",
+    "address": "21515 Hawthorne Blvd, Torrance, CA 90503, USA",
+    "website": "http://www.emrbuilds.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@emrbuilds.com",
+    "previewUrl": "https://digiweipreview.com/envision-more-renovations.html",
+    "googleRating": 5,
+    "googleReviews": 36,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Arias General Construction, Inc",
+    "phone": "(310) 350-8198",
+    "address": "17015 Casimir Ave, Torrance, CA 90504, USA",
+    "website": "http://ariasgeneral.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@ariasgeneral.com",
+    "previewUrl": "https://digiweipreview.com/arias-general-construction-inc.html",
+    "googleRating": 4.3,
+    "googleReviews": 3,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Torrance Kitchens, Baths and Flooring",
+    "phone": "(310) 370-1911",
+    "address": "3953 Artesia Blvd, Torrance, CA 90504, USA",
+    "website": "https://torrancekitchenbathandflooring.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@torrancekitchenbathandflooring.com",
+    "previewUrl": "https://digiweipreview.com/torrance-kitchens-baths-and-flooring.html",
+    "googleRating": 4.8,
+    "googleReviews": 60,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Sucro Painting Contractors",
+    "phone": "(424) 484-6956",
+    "address": "4203 Spencer St, Torrance, CA 90503, USA",
+    "website": "https://sucropainting.com/?utm_campaign=gmb",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@sucropainting.com",
+    "previewUrl": "https://digiweipreview.com/sucro-painting-contractors.html",
+    "googleRating": 4.9,
+    "googleReviews": 151,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Aza Construction",
+    "phone": "(310) 713-5160",
+    "address": "4304 W 149th St, Lawndale, CA 90260, USA",
+    "website": "https://azaconstructioninc.com/",
+    "found_via": "contractor in Torrance CA",
+    "email": "info@azaconstructioninc.com",
+    "previewUrl": "https://digiweipreview.com/aza-construction.html",
+    "googleRating": 5,
+    "googleReviews": 17,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "GetPro Handyman Services",
+    "phone": "(424) 376-7520",
+    "address": "3138 Newton St, Torrance, CA 90505, USA",
+    "website": "https://getpro.now/",
+    "found_via": "handyman in Torrance CA",
+    "email": "info@getpro.now",
+    "previewUrl": "https://digiweipreview.com/getpro-handyman-services.html",
+    "googleRating": 5,
+    "googleReviews": 6,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Aska Handyman Services",
+    "phone": "(213) 293-5095",
+    "address": "1337 252nd St, Harbor City, CA 90710, USA",
+    "website": "https://askahandymanandremodelingservices.com/",
+    "found_via": "handyman in Torrance CA",
+    "email": "info@askahandymanandremodelingservices.com",
+    "previewUrl": "https://digiweipreview.com/aska-handyman-services.html",
+    "googleRating": 5,
+    "googleReviews": 36,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "The Handy Geeks",
+    "phone": "(818) 835-0556",
+    "address": "1219 Steinhart Ave, Redondo Beach, CA 90278, USA",
+    "website": "https://www.thehandygeeks.co/",
+    "found_via": "handyman in Torrance CA",
+    "email": "info@thehandygeeks.co",
+    "previewUrl": "https://digiweipreview.com/the-handy-geeks.html",
+    "googleRating": 5,
+    "googleReviews": 104,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "The Fix It Lass",
+    "phone": "(310) 947-6131",
+    "address": "1820 W Carson St #202-208, Torrance, CA 90501, USA",
+    "website": "http://thefixitlass.com/",
+    "found_via": "handyman in Torrance CA",
+    "email": "info@thefixitlass.com",
+    "previewUrl": "https://digiweipreview.com/the-fix-it-lass.html",
+    "googleRating": 5,
+    "googleReviews": 3,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "AMI Handyman Services LLC",
+    "phone": "(424) 264-7207",
+    "address": "646 W 23rd St, San Pedro, CA 90731, USA",
+    "website": "http://amihandyman.com/",
+    "found_via": "handyman in Torrance CA",
+    "email": "info@amihandyman.com",
+    "previewUrl": "https://digiweipreview.com/ami-handyman-services-llc.html",
+    "googleRating": 4.7,
+    "googleReviews": 12,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Flash Electrician Service",
+    "phone": "(844) 760-2924",
+    "address": "1315 El Prado Ave #315, Torrance, CA 90501, USA",
+    "website": "https://flash-electrician-service.com/",
+    "found_via": "electrician in Torrance CA",
+    "email": "info@flash-electrician-service.com",
+    "previewUrl": "https://digiweipreview.com/flash-electrician-service.html",
+    "googleRating": 5,
+    "googleReviews": 73,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Marvel Electricians",
+    "phone": "(310) 388-3878",
+    "address": "1212 Felbar Ave, Torrance, CA 90503, USA",
+    "website": "https://marvelelectricians.com/torrance/",
+    "found_via": "electrician in Torrance CA",
+    "email": "info@marvelelectricians.com",
+    "previewUrl": "https://digiweipreview.com/marvel-electricians.html",
+    "googleRating": 4.8,
+    "googleReviews": 80,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Electricians Service Team",
+    "phone": "(424) 349-7844",
+    "address": "1005 Hickory Ave, Torrance, CA 90503, USA",
+    "website": "https://electriciansserviceteam.com/locations/Torrance",
+    "found_via": "electrician in Torrance CA",
+    "email": "info@electriciansserviceteam.com",
+    "previewUrl": "https://digiweipreview.com/electricians-service-team.html",
+    "googleRating": 4.9,
+    "googleReviews": 57,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Seaside Electric",
+    "phone": "(310) 487-2137",
+    "address": "4314 Cathann St, Torrance, CA 90503, USA",
+    "website": "https://seaside-electric310.com/",
+    "found_via": "electrician in Torrance CA",
+    "email": "info@seaside-electric310.com",
+    "previewUrl": "https://digiweipreview.com/seaside-electric.html",
+    "googleRating": 5,
+    "googleReviews": 8,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Armor Electric",
+    "phone": "(310) 773-9938",
+    "address": "1556 W 214th St, Torrance, CA 90501, USA",
+    "website": "http://www.armorelectric.com/",
+    "found_via": "electrician in Torrance CA",
+    "email": "info@armorelectric.com",
+    "previewUrl": "https://digiweipreview.com/armor-electric.html",
+    "googleRating": 4.8,
+    "googleReviews": 26,
+    "pitched": true,
+    "pitched_at": "2026-05-13T01:35:02.939Z"
+  },
+  {
+    "name": "Magnum Electric",
+    "phone": "(310) 340-1640",
+    "address": "1737 Border Ave B, Torrance, CA 90501, USA",
+    "website": "https://magnumelectric.net/",
+    "found_via": "electrician in Torrance CA",
+    "email": "info@magnumelectric.net",
+    "previewUrl": "https://digiweipreview.com/magnum-electric.html",
+    "googleRating": 5,
+    "googleReviews": 14,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Electrical Help",
+    "phone": "(310) 906-5944",
+    "address": "23104 Samuel St, Torrance, CA 90505, USA",
+    "website": "https://electricalhelp.us/",
+    "found_via": "electrician in Torrance CA",
+    "email": "info@electricalhelp.us",
+    "previewUrl": "https://digiweipreview.com/electrical-help.html",
+    "googleRating": 5,
+    "googleReviews": 15,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "The Torrance Electrician",
+    "phone": "(310) 361-2453",
+    "address": "5409 Clearsite St, Torrance, CA 90505, USA",
+    "website": "http://www.electriciantorranceca.com/",
+    "found_via": "electrician in Torrance CA",
+    "email": "info@electriciantorranceca.com",
+    "previewUrl": "https://digiweipreview.com/the-torrance-electrician.html",
+    "googleRating": null,
+    "googleReviews": null,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Kings Electric",
+    "phone": "(424) 215-1991",
+    "address": "1414 Plaza del Amo, Torrance, CA 90501, USA",
+    "website": "https://gokingselectric.com/",
+    "found_via": "electrician in Torrance CA",
+    "email": "info@gokingselectric.com",
+    "previewUrl": "https://digiweipreview.com/kings-electric.html",
+    "googleRating": 5,
+    "googleReviews": 3,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "FirstToCall Electrician Lawndale",
+    "phone": "(818) 322-0248",
+    "address": "15705 Hawthorne Blvd, Lawndale, CA 90260, USA",
+    "website": "https://electricianlawndale.com/",
+    "found_via": "electrician in Torrance CA",
+    "email": "info@electricianlawndale.com",
+    "previewUrl": "https://digiweipreview.com/firsttocall-electrician-lawndale.html",
+    "googleRating": 5,
+    "googleReviews": 35,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Fastwire Electric",
+    "phone": "(310) 896-1944",
+    "address": "2537 CA-1 d190, Torrance, CA 90505, USA",
+    "website": "http://www.fastwireelectric.com/?utm_source=GBP&utm_medium=google&utm_campaign=click",
+    "found_via": "electrician in Torrance CA",
+    "email": "info@fastwireelectric.com",
+    "previewUrl": "https://digiweipreview.com/fastwire-electric.html",
+    "googleRating": 5,
+    "googleReviews": 17,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Torrance Air Conditioning Experts",
+    "phone": "(424) 888-6431",
+    "address": "4608 Pacific Coast Hwy, Torrance, CA 90505, USA",
+    "website": "http://torranceacrepair.com/",
+    "found_via": "HVAC in Torrance CA",
+    "email": "info@torranceacrepair.com",
+    "previewUrl": "https://digiweipreview.com/torrance-air-conditioning-experts.html",
+    "googleRating": 4.9,
+    "googleReviews": 36,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Lucas & Son AC Repair Torrance",
+    "phone": "(424) 492-2228",
+    "address": "385 Van Ness Ave #182, Torrance, CA 90501, USA",
+    "website": "https://modernfamilyairconditioning.com/torrance/",
+    "found_via": "HVAC in Torrance CA",
+    "email": "info@modernfamilyairconditioning.com",
+    "previewUrl": "https://digiweipreview.com/lucas-son-ac-repair-torrance.html",
+    "googleRating": 4.9,
+    "googleReviews": 96,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Royal Heating & AC Repair Torrance",
+    "phone": "(424) 305-1170",
+    "address": "1618 Cabrillo Ave, Torrance, CA 90501, USA",
+    "website": "https://royalheatingairllc.com/",
+    "found_via": "HVAC in Torrance CA",
+    "email": "info@royalheatingairllc.com",
+    "previewUrl": "https://digiweipreview.com/royal-heating-ac-repair-torrance.html",
+    "googleRating": 5,
+    "googleReviews": 6,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "74 Degrees Heating & Air, Inc.",
+    "phone": "(310) 431-4444",
+    "address": "2367 W 208th St UNIT 7, Torrance, CA 90501, USA",
+    "website": "https://www.74degreesheatandair.com/",
+    "found_via": "HVAC in Torrance CA",
+    "email": "info@74degreesheatandair.com",
+    "previewUrl": "https://digiweipreview.com/74-degrees-heating-air-inc.html",
+    "googleRating": 4.9,
+    "googleReviews": 131,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "HVAC Pros Torrance",
+    "phone": "(424) 306-1757",
+    "address": "2703 Arlington Ave, Torrance, CA 90501, USA",
+    "website": "http://hvac-pros-torrance.com/",
+    "found_via": "HVAC in Torrance CA",
+    "email": "info@hvac-pros-torrance.com",
+    "previewUrl": "https://digiweipreview.com/hvac-pros-torrance.html",
+    "googleRating": 4.8,
+    "googleReviews": 17,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "HVAC Expert - Heating & Air Conditioning",
+    "phone": "(310) 861-4144",
+    "address": "22255 S Western Ave, Torrance, CA 90501, USA",
+    "website": "https://hvacallianceexpert.com/locations/torrance/",
+    "found_via": "HVAC in Torrance CA",
+    "email": "info@hvacallianceexpert.com",
+    "previewUrl": "https://digiweipreview.com/hvac-expert-heating-air-conditioning.html",
+    "googleRating": 4.7,
+    "googleReviews": 47,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "P & M Mechanical Heating & AC",
+    "phone": "(310) 530-6642",
+    "address": "23991 Arlington Ave, Torrance, CA 90501, USA",
+    "website": "http://www.pmmech.com/",
+    "found_via": "HVAC in Torrance CA",
+    "email": "info@pmmech.com",
+    "previewUrl": "https://digiweipreview.com/p-m-mechanical-heating-ac.html",
+    "googleRating": 4.9,
+    "googleReviews": 73,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Heating & Air Conditioning",
+    "phone": "(323) 831-8636",
+    "address": "22530 Ladeene Ave, Torrance, CA 90505, USA",
+    "website": "http://heating-and-airconditioning.com/",
+    "found_via": "HVAC in Torrance CA",
+    "email": "info@heating-and-airconditioning.com",
+    "previewUrl": "https://digiweipreview.com/heating-air-conditioning.html",
+    "googleRating": 5,
+    "googleReviews": 2,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Torrance Cooling & Heating",
+    "phone": "(304) 453-4350",
+    "address": "20051 S Vermont Ave, Torrance, CA 90502, USA",
+    "website": "http://roofingforless.shop/",
+    "found_via": "HVAC in Torrance CA",
+    "email": "info@roofingforless.shop",
+    "previewUrl": "https://digiweipreview.com/torrance-cooling-heating.html",
+    "googleRating": 4.6,
+    "googleReviews": 18,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "K & L HVAC & Construction",
+    "phone": "(424) 258-0945",
+    "address": "3525 W Carson St, Torrance, CA 90503, USA",
+    "website": "https://www.kandlhvacandconstruction.com/",
+    "found_via": "HVAC in Torrance CA",
+    "email": "info@kandlhvacandconstruction.com",
+    "previewUrl": "https://digiweipreview.com/k-l-hvac-construction.html",
+    "googleRating": 5,
+    "googleReviews": 67,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "Torrance Central HVAC & Heating",
+    "phone": "(424) 279-5985",
+    "address": "1914 S Pacific Coast Hwy, Redondo Beach, CA 90277, USA",
+    "website": "https://greenairconditioningservice.com/redondo-beach/",
+    "found_via": "HVAC in Torrance CA",
+    "email": "info@greenairconditioningservice.com",
+    "previewUrl": "https://digiweipreview.com/torrance-central-hvac-heating.html",
+    "googleRating": 4.8,
+    "googleReviews": 70,
+    "pitched": false,
+    "pitched_at": null
+  },
+  {
+    "name": "One Way Heating & Air Conditioning",
+    "phone": "(310) 212-5554",
+    "address": "22395 S Western Ave UNIT 301, Torrance, CA 90501, USA",
+    "website": "https://www.onewayair.com/",
+    "found_via": "HVAC in Torrance CA",
+    "email": "info@onewayair.com",
+    "previewUrl": "https://digiweipreview.com/one-way-heating-air-conditioning.html",
+    "googleRating": 3.9,
+    "googleReviews": 31,
+    "pitched": false,
+    "pitched_at": null
+  }
+];
+</script>
+
+</body>
+</html>
