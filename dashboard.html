@@ -7,105 +7,114 @@
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
-  --primary: #0F3460;
-  --accent: #E94560;
-  --green: #10b981;
-  --yellow: #f59e0b;
+  --primary: #58595B;
+  --green: #8DC63F;
+  --blue: #29ABE2;
+  --accent: #8DC63F;
+  --dark: #3a3b3d;
   --gray: #6b7280;
   --bg: #f3f4f6;
   --card: #ffffff;
+  --replied: #29ABE2;
+  --closed: #8DC63F;
+  --pitched: #f59e0b;
 }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: #111; min-height: 100vh; }
 
 /* LOGIN */
-.login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; background: var(--primary); }
-.login-card { background: #fff; border-radius: 16px; padding: 40px 32px; width: 100%; max-width: 360px; text-align: center; }
-.login-logo { font-size: 28px; font-weight: 900; color: var(--primary); margin-bottom: 6px; }
-.login-logo span { color: var(--accent); }
-.login-sub { font-size: 14px; color: var(--gray); margin-bottom: 32px; }
+.login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; background: var(--dark); }
+.login-card { background: #fff; border-radius: 20px; padding: 44px 32px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.login-logo { width: 180px; margin: 0 auto 8px; }
+.login-logo img { width: 100%; height: auto; }
+.login-sub { font-size: 14px; color: var(--gray); margin-bottom: 32px; font-weight: 500; }
 .login-input { width: 100%; padding: 14px 16px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 16px; margin-bottom: 14px; outline: none; }
-.login-input:focus { border-color: var(--primary); }
-.login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; }
-.login-error { color: var(--accent); font-size: 13px; margin-top: 10px; display: none; }
+.login-input:focus { border-color: var(--green); }
+.login-btn { width: 100%; background: var(--green); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; }
+.login-btn:hover { background: #7ab535; }
+.login-error { color: #ef4444; font-size: 13px; margin-top: 10px; display: none; }
 
 /* HEADER */
-.header { background: var(--primary); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-.header-logo { font-size: 20px; font-weight: 900; color: #fff; }
-.header-logo span { color: var(--accent); }
+.header { background: var(--dark); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.header-logo { height: 32px; }
+.header-logo img { height: 100%; width: auto; }
 .header-right { display: flex; align-items: center; gap: 12px; }
-.header-date { font-size: 12px; color: rgba(255,255,255,0.6); }
+.header-date { font-size: 12px; color: rgba(255,255,255,0.55); }
 .logout-btn { background: rgba(255,255,255,0.1); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
 
 /* STATS BAR */
 .stats-bar { background: #fff; padding: 16px 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; border-bottom: 1px solid #e5e7eb; }
 .stat { text-align: center; }
-.stat-num { font-size: 22px; font-weight: 800; color: var(--primary); }
+.stat-num { font-size: 24px; font-weight: 900; color: var(--dark); }
 .stat-num.green { color: var(--green); }
-.stat-num.yellow { color: var(--yellow); }
-.stat-num.accent { color: var(--accent); }
+.stat-num.blue { color: var(--blue); }
+.stat-num.yellow { color: var(--pitched); }
 .stat-label { font-size: 10px; color: var(--gray); font-weight: 600; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
 
 /* FILTERS */
 .filters { padding: 12px 16px; display: flex; gap: 8px; overflow-x: auto; background: #fff; border-bottom: 1px solid #e5e7eb; }
 .filter-btn { flex-shrink: 0; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1.5px solid #e5e7eb; background: #fff; color: var(--gray); cursor: pointer; }
-.filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.filter-btn.active { background: var(--dark); color: #fff; border-color: var(--dark); }
 
 /* SEARCH */
 .search-wrap { padding: 12px 16px; background: #fff; border-bottom: 1px solid #e5e7eb; }
 .search-input { width: 100%; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 15px; outline: none; }
-.search-input:focus { border-color: var(--primary); }
+.search-input:focus { border-color: var(--green); }
 
 /* LEADS LIST */
 .leads-list { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
 
-.lead-card { background: var(--card); border-radius: 14px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border-left: 4px solid #e5e7eb; cursor: pointer; transition: box-shadow 0.15s; }
-.lead-card:active { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
-.lead-card.status-pitched { border-left-color: var(--yellow); }
-.lead-card.status-replied { border-left-color: var(--green); }
-.lead-card.status-booked { border-left-color: var(--primary); }
-.lead-card.status-closed { border-left-color: var(--accent); }
+.lead-card { background: var(--card); border-radius: 14px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border-left: 4px solid #e5e7eb; cursor: pointer; }
+.lead-card.status-pitched { border-left-color: var(--pitched); }
+.lead-card.status-replied { border-left-color: var(--blue); }
+.lead-card.status-booked { border-left-color: var(--dark); }
+.lead-card.status-closed { border-left-color: var(--green); }
+.lead-card.status-lost { border-left-color: #ef4444; }
 .lead-card.status-not-sent { border-left-color: #e5e7eb; }
 
 .lead-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
-.lead-name { font-size: 15px; font-weight: 700; color: #111; flex: 1; margin-right: 8px; }
-.lead-status { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+.lead-name { font-size: 15px; font-weight: 700; color: #111; flex: 1; margin-right: 8px; line-height: 1.3; }
+.lead-status { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
 .status-not-sent .lead-status { background: #f3f4f6; color: var(--gray); }
 .status-pitched .lead-status { background: #fef3c7; color: #92400e; }
-.status-replied .lead-status { background: #d1fae5; color: #065f46; }
-.status-booked .lead-status { background: #dbeafe; color: #1e40af; }
-.status-closed .lead-status { background: #fee2e2; color: #991b1b; }
+.status-replied .lead-status { background: #dbeafe; color: #1e40af; }
+.status-booked .lead-status { background: #e0f2fe; color: #0369a1; }
+.status-closed .lead-status { background: #dcfce7; color: #166534; }
+.status-lost .lead-status { background: #fee2e2; color: #991b1b; }
 
 .lead-meta { font-size: 12px; color: var(--gray); margin-bottom: 10px; }
+.lead-notes { font-size: 12px; color: var(--dark); background: #f9fafb; padding: 6px 10px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--green); }
 .lead-actions { display: flex; gap: 8px; }
-.action-btn { flex: 1; padding: 8px 10px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px; }
+.action-btn { flex: 1; padding: 8px 6px; border-radius: 8px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px; }
 .btn-call { background: var(--green); color: #fff; }
-.btn-preview { background: var(--primary); color: #fff; }
-.btn-video { background: var(--accent); color: #fff; }
-.btn-zoom { background: #2563eb; color: #fff; }
-.btn-status { background: #f3f4f6; color: #374151; font-size: 12px; }
+.btn-preview { background: var(--dark); color: #fff; }
+.btn-video { background: var(--blue); color: #fff; }
 
 /* MODAL */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-end; }
 .modal-overlay.open { display: flex; }
-.modal { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 20px; width: 100%; max-height: 80vh; overflow-y: auto; }
+.modal { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 20px 40px; width: 100%; max-height: 85vh; overflow-y: auto; }
 .modal-handle { width: 36px; height: 4px; background: #e5e7eb; border-radius: 2px; margin: 0 auto 20px; }
-.modal-title { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
-.modal-sub { font-size: 13px; color: var(--gray); margin-bottom: 20px; }
-.modal-section { margin-bottom: 16px; }
-.modal-label { font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-.modal-value { font-size: 15px; color: #111; font-weight: 500; }
-.modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-.modal-btn { padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; }
-.status-select { width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 15px; font-weight: 600; outline: none; margin-bottom: 10px; }
-.notes-input { width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 14px; outline: none; height: 80px; resize: none; font-family: inherit; }
-.save-btn { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+.modal-title { font-size: 18px; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
+.modal-sub { font-size: 13px; color: var(--gray); margin-bottom: 20px; line-height: 1.5; }
+.modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.modal-btn { padding: 13px; border-radius: 10px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.modal-label { font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: block; }
+.status-select { width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 15px; font-weight: 600; outline: none; margin-bottom: 16px; }
+.status-select:focus { border-color: var(--green); }
+.notes-input { width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 14px; outline: none; height: 90px; resize: none; font-family: inherit; }
+.notes-input:focus { border-color: var(--green); }
+.save-btn { width: 100%; background: var(--green); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; }
 .close-modal { width: 100%; background: #f3f4f6; color: var(--gray); border: none; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 8px; }
 
-/* EMPTY STATE */
 .empty { text-align: center; padding: 60px 20px; color: var(--gray); }
 .empty-icon { font-size: 40px; margin-bottom: 12px; }
-
 .hidden { display: none !important; }
+
+/* Pipeline indicator */
+.pipeline { display: flex; gap: 4px; margin-bottom: 10px; }
+.pipe-step { flex: 1; height: 3px; border-radius: 2px; background: #e5e7eb; }
+.pipe-step.done { background: var(--green); }
+.pipe-step.current { background: var(--blue); }
 </style>
 </head>
 <body>
@@ -113,7 +122,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
   <div class="login-card">
-    <div class="login-logo">Digi<span>wei</span></div>
+    <div class="login-logo">
+      <img src="DigiWEI_logo.jpg" alt="Digiwei" onerror="this.style.display='none';document.getElementById('loginTextLogo').style.display='block';">
+      <div id="loginTextLogo" style="display:none;font-size:28px;font-weight:900;color:#58595B;">digi<span style="color:#8DC63F;">WEI</span></div>
+    </div>
     <div class="login-sub">Lead Management Dashboard</div>
     <input type="password" class="login-input" id="passwordInput" placeholder="Enter password" onkeypress="if(event.key==='Enter')login()">
     <button class="login-btn" onclick="login()">Sign In</button>
@@ -125,7 +137,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div id="dashboard" class="hidden">
 
   <div class="header">
-    <div class="header-logo">Digi<span>wei</span></div>
+    <div class="header-logo">
+      <img src="DigiWEI_logo.jpg" alt="Digiwei" onerror="this.outerHTML='<span style=\'color:#8DC63F;font-weight:900;font-size:18px;\'>digiWEI</span>'">
+    </div>
     <div class="header-right">
       <div class="header-date" id="headerDate"></div>
       <button class="logout-btn" onclick="logout()">Logout</button>
@@ -135,17 +149,17 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <div class="stats-bar">
     <div class="stat"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Total</div></div>
     <div class="stat"><div class="stat-num yellow" id="statPitched">0</div><div class="stat-label">Pitched</div></div>
-    <div class="stat"><div class="stat-num green" id="statReplied">0</div><div class="stat-label">Replied</div></div>
-    <div class="stat"><div class="stat-num accent" id="statClosed">0</div><div class="stat-label">Closed</div></div>
+    <div class="stat"><div class="stat-num blue" id="statReplied">0</div><div class="stat-label">Replied</div></div>
+    <div class="stat"><div class="stat-num green" id="statClosed">0</div><div class="stat-label">Closed</div></div>
   </div>
 
   <div class="filters">
-    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-    <button class="filter-btn" onclick="setFilter('not-sent', this)">Not Sent</button>
-    <button class="filter-btn" onclick="setFilter('pitched', this)">Pitched</button>
-    <button class="filter-btn" onclick="setFilter('replied', this)">Replied</button>
-    <button class="filter-btn" onclick="setFilter('booked', this)">Call Booked</button>
-    <button class="filter-btn" onclick="setFilter('closed', this)">Closed</button>
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('not-sent',this)">Not Sent</button>
+    <button class="filter-btn" onclick="setFilter('pitched',this)">Pitched</button>
+    <button class="filter-btn" onclick="setFilter('replied',this)">Replied</button>
+    <button class="filter-btn" onclick="setFilter('booked',this)">Call Booked</button>
+    <button class="filter-btn" onclick="setFilter('closed',this)">Closed</button>
   </div>
 
   <div class="search-wrap">
@@ -153,47 +167,42 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 
   <div class="leads-list" id="leadsList"></div>
-
 </div>
 
-<!-- LEAD MODAL -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title" id="modalName"></div>
     <div class="modal-sub" id="modalMeta"></div>
 
+    <div class="pipeline" id="modalPipeline">
+      <div class="pipe-step" id="pipe1"></div>
+      <div class="pipe-step" id="pipe2"></div>
+      <div class="pipe-step" id="pipe3"></div>
+      <div class="pipe-step" id="pipe4"></div>
+      <div class="pipe-step" id="pipe5"></div>
+    </div>
+
     <div class="modal-actions">
-      <a class="modal-btn btn-call" id="modalCallBtn" href="#">
-        &#9742; Call
-      </a>
-      <a class="modal-btn btn-zoom" href="https://calendly.com" target="_blank">
-        &#128197; Book Zoom
-      </a>
-      <a class="modal-btn btn-preview" id="modalPreviewBtn" href="#" target="_blank">
-        &#128279; Preview
-      </a>
-      <a class="modal-btn btn-video" id="modalVideoBtn" href="#" target="_blank">
-        &#9654; Video
-      </a>
+      <a class="modal-btn btn-call" id="modalCallBtn" href="#" style="background:var(--green);color:#fff;">&#9742; Call Now</a>
+      <a class="modal-btn" href="https://calendly.com" target="_blank" style="background:var(--dark);color:#fff;">&#128197; Book Zoom</a>
+      <a class="modal-btn" id="modalPreviewBtn" href="#" target="_blank" style="background:#f3f4f6;color:var(--dark);">&#128279; Preview Site</a>
+      <a class="modal-btn btn-video" id="modalVideoBtn" href="#" target="_blank" style="background:var(--blue);color:#fff;">&#9654; Watch Video</a>
     </div>
 
-    <div class="modal-section">
-      <div class="modal-label">Update Status</div>
-      <select class="status-select" id="modalStatus" onchange="updateStatus()">
-        <option value="not-sent">Not Sent</option>
-        <option value="pitched">Pitched</option>
-        <option value="replied">Replied</option>
-        <option value="booked">Call Booked</option>
-        <option value="closed">Closed - Won</option>
-        <option value="lost">Closed - Lost</option>
-      </select>
-    </div>
+    <label class="modal-label">Update Status</label>
+    <select class="status-select" id="modalStatus">
+      <option value="not-sent">Not Sent</option>
+      <option value="pitched">Pitched</option>
+      <option value="replied">Replied</option>
+      <option value="booked">Call Booked</option>
+      <option value="closed">Closed - Won</option>
+      <option value="lost">Closed - Lost</option>
+    </select>
 
-    <div class="modal-section">
-      <div class="modal-label">Notes</div>
-      <textarea class="notes-input" id="modalNotes" placeholder="Add notes about this lead..."></textarea>
-    </div>
+    <label class="modal-label">Notes</label>
+    <textarea class="notes-input" id="modalNotes" placeholder="Add notes about this lead..."></textarea>
 
     <button class="save-btn" onclick="saveLead()">Save Changes</button>
     <button class="close-modal" onclick="closeModal()">Close</button>
@@ -210,7 +219,6 @@ let leadData = {};
 let currentFilter = 'all';
 let currentLead = null;
 
-// Load saved data from localStorage
 function loadData() {
   const saved = localStorage.getItem('digiwei_leads');
   if (saved) leadData = JSON.parse(saved);
@@ -255,39 +263,36 @@ function setFilter(filter, btn) {
 
 function getLeadStatus(lead) {
   const slug = getSlug(lead.name);
-  return leadData[slug] ? leadData[slug].status || 'not-sent' : 'not-sent';
+  const saved = leadData[slug];
+  if (saved && saved.status) return saved.status;
+  if (lead.pitched) return 'pitched';
+  return 'not-sent';
 }
 
 function getStatusLabel(status) {
-  const labels = {
-    'not-sent': 'Not Sent',
-    'pitched': 'Pitched',
-    'replied': 'Replied',
-    'booked': 'Call Booked',
-    'closed': 'Closed - Won',
-    'lost': 'Closed - Lost'
-  };
+  const labels = { 'not-sent':'Not Sent','pitched':'Pitched','replied':'Replied','booked':'Call Booked','closed':'Closed Won','lost':'Closed Lost' };
   return labels[status] || 'Not Sent';
 }
 
-function updateStats() {
-  const total = allLeads.length;
-  const pitched = allLeads.filter(l => ['pitched','replied','booked','closed'].includes(getLeadStatus(l))).length;
-  const replied = allLeads.filter(l => ['replied','booked'].includes(getLeadStatus(l))).length;
-  const closed = allLeads.filter(l => getLeadStatus(l) === 'closed').length;
+function getPipelineSteps(status) {
+  const order = ['not-sent','pitched','replied','booked','closed'];
+  const idx = order.indexOf(status);
+  return order.map((s, i) => i < idx ? 'done' : i === idx ? 'current' : '');
+}
 
-  document.getElementById('statTotal').textContent = total;
-  document.getElementById('statPitched').textContent = pitched;
-  document.getElementById('statReplied').textContent = replied;
-  document.getElementById('statClosed').textContent = closed;
+function updateStats() {
+  document.getElementById('statTotal').textContent = allLeads.length;
+  document.getElementById('statPitched').textContent = allLeads.filter(l => ['pitched','replied','booked','closed'].includes(getLeadStatus(l))).length;
+  document.getElementById('statReplied').textContent = allLeads.filter(l => ['replied','booked'].includes(getLeadStatus(l))).length;
+  document.getElementById('statClosed').textContent = allLeads.filter(l => getLeadStatus(l) === 'closed').length;
 }
 
 function renderLeads() {
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  let leads = allLeads.filter(l => {
+  const search = (document.getElementById('searchInput').value || '').toLowerCase();
+  const leads = allLeads.filter(l => {
     const status = getLeadStatus(l);
     const matchFilter = currentFilter === 'all' || status === currentFilter;
-    const matchSearch = !search || l.name.toLowerCase().includes(search) || (l.found_via || '').toLowerCase().includes(search);
+    const matchSearch = !search || l.name.toLowerCase().includes(search) || (l.found_via||'').toLowerCase().includes(search);
     return matchFilter && matchSearch;
   });
 
@@ -295,6 +300,7 @@ function renderLeads() {
 
   if (leads.length === 0) {
     container.innerHTML = '<div class="empty"><div class="empty-icon">&#128270;</div><div>No leads found</div></div>';
+    updateStats();
     return;
   }
 
@@ -302,21 +308,19 @@ function renderLeads() {
     const status = getLeadStatus(lead);
     const slug = getSlug(lead.name);
     const data = leadData[slug] || {};
-    const industry = (lead.found_via || '').split(' ')[0];
+    const industry = (lead.found_via||'').split(' in ')[0];
+    const rating = lead.googleRating ? lead.googleRating + '&#9733; (' + lead.googleReviews + ' reviews)' : '';
+    const notesHtml = data.notes ? '<div class="lead-notes">' + data.notes + '</div>' : '';
 
-    return `
-      <div class="lead-card status-${status}" onclick="openModal('${slug}')">
-        <div class="lead-top">
-          <div class="lead-name">${lead.name}</div>
-          <div class="lead-status">${getStatusLabel(status)}</div>
-        </div>
-        <div class="lead-meta">${industry} &bull; ${lead.phone || 'No phone'} &bull; ${lead.googleRating ? lead.googleRating + '&#9733; (' + lead.googleReviews + ')' : ''}</div>
-        <div class="lead-actions">
-          <a class="action-btn btn-call" href="tel:${(lead.phone || '').replace(/\D/g,'')}" onclick="event.stopPropagation()">&#9742; Call</a>
-          <a class="action-btn btn-preview" href="${PREVIEW_BASE}/${getPreviewSlug(lead.name)}.html" target="_blank" onclick="event.stopPropagation()">&#128279; Preview</a>
-          <a class="action-btn btn-video" href="${VIDEO_BASE}/${slug}.mp4" target="_blank" onclick="event.stopPropagation()">&#9654; Video</a>
-        </div>
-      </div>`;
+    return '<div class="lead-card status-' + status + '" onclick="openModal(\'' + slug + '\')">' +
+      '<div class="lead-top"><div class="lead-name">' + lead.name + '</div><div class="lead-status">' + getStatusLabel(status) + '</div></div>' +
+      '<div class="lead-meta">' + industry + (rating ? ' &bull; ' + rating : '') + (lead.phone ? ' &bull; ' + lead.phone : '') + '</div>' +
+      notesHtml +
+      '<div class="lead-actions">' +
+      '<a class="action-btn btn-call" href="tel:' + (lead.phone||'').replace(/\D/g,'') + '" onclick="event.stopPropagation()">&#9742; Call</a>' +
+      '<a class="action-btn btn-preview" href="' + PREVIEW_BASE + '/' + getPreviewSlug(lead.name) + '.html" target="_blank" onclick="event.stopPropagation()">&#128279; Preview</a>' +
+      '<a class="action-btn btn-video" href="' + VIDEO_BASE + '/' + slug + '.mp4" target="_blank" onclick="event.stopPropagation()">&#9654; Video</a>' +
+      '</div></div>';
   }).join('');
 
   updateStats();
@@ -327,15 +331,26 @@ function openModal(slug) {
   if (!currentLead) return;
 
   const data = leadData[slug] || {};
+  const status = getLeadStatus(currentLead);
   const previewSlug = getPreviewSlug(currentLead.name);
 
   document.getElementById('modalName').textContent = currentLead.name;
-  document.getElementById('modalMeta').textContent = (currentLead.found_via || '') + ' · ' + (currentLead.phone || 'No phone') + ' · ' + (currentLead.address || '');
-  document.getElementById('modalCallBtn').href = 'tel:' + (currentLead.phone || '').replace(/\D/g,'');
+  document.getElementById('modalMeta').textContent =
+    (currentLead.found_via||'') + ' · ' + (currentLead.phone||'No phone') +
+    (currentLead.googleRating ? ' · ' + currentLead.googleRating + '★ (' + currentLead.googleReviews + ' reviews)' : '') +
+    (currentLead.address ? '\n' + currentLead.address : '');
+
+  document.getElementById('modalCallBtn').href = 'tel:' + (currentLead.phone||'').replace(/\D/g,'');
   document.getElementById('modalPreviewBtn').href = PREVIEW_BASE + '/' + previewSlug + '.html';
   document.getElementById('modalVideoBtn').href = VIDEO_BASE + '/' + slug + '.mp4';
-  document.getElementById('modalStatus').value = data.status || 'not-sent';
+  document.getElementById('modalStatus').value = status;
   document.getElementById('modalNotes').value = data.notes || '';
+
+  const steps = getPipelineSteps(status);
+  steps.forEach((s, i) => {
+    const el = document.getElementById('pipe' + (i+1));
+    el.className = 'pipe-step' + (s ? ' ' + s : '');
+  });
 
   document.getElementById('modal').classList.add('open');
 }
@@ -343,15 +358,6 @@ function openModal(slug) {
 function closeModal() {
   document.getElementById('modal').classList.remove('open');
   currentLead = null;
-}
-
-function updateStatus() {
-  if (!currentLead) return;
-  const slug = getSlug(currentLead.name);
-  if (!leadData[slug]) leadData[slug] = {};
-  leadData[slug].status = document.getElementById('modalStatus').value;
-  saveData();
-  renderLeads();
 }
 
 function saveLead() {
@@ -368,33 +374,24 @@ function saveLead() {
 
 function init() {
   loadData();
-
-  // Set date
   const now = new Date();
-  document.getElementById('headerDate').textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-
-  // Load leads from embedded data
+  document.getElementById('headerDate').textContent = now.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+  allLeads = LEADS_DATA;
   renderLeads();
   updateStats();
 }
 
-// Check if already logged in
 window.onload = function() {
+  allLeads = LEADS_DATA;
   if (localStorage.getItem('digiwei_auth') === '1') {
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('dashboard').classList.remove('hidden');
     init();
   }
-
-  // Load leads data - will be populated by the generator script
-  allLeads = LEADS_DATA;
-  renderLeads();
-  updateStats();
 };
 </script>
 
 <script>
-// LEADS DATA - populated automatically by dashboard-generator.js
 const LEADS_DATA = [
   {
     "name": "V-Max Plumbing Torrance",
