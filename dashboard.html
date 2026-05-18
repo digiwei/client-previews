@@ -5,140 +5,147 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Digiwei Dashboard</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --primary: #58595B;
-  --green: #8DC63F;
-  --blue: #29ABE2;
-  --accent: #8DC63F;
-  --dark: #3a3b3d;
-  --gray: #6b7280;
-  --bg: #f3f4f6;
-  --card: #ffffff;
-  --replied: #29ABE2;
-  --closed: #8DC63F;
-  --pitched: #f59e0b;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --green:#8DC63F;--dark:#58595B;--blue:#29ABE2;
+  --pitched:#f59e0b;--replied:#29ABE2;--booked:#6366f1;
+  --closed:#8DC63F;--lost:#ef4444;--notsent:#d1d5db;
+  --bg:#f1f5f9;--card:#fff;--border:#e2e8f0;--text:#1e293b;--muted:#64748b;
 }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: #111; min-height: 100vh; }
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
 /* LOGIN */
-.login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; background: var(--dark); }
-.login-card { background: #fff; border-radius: 20px; padding: 44px 32px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-.login-logo { width: 180px; margin: 0 auto 8px; }
-.login-logo img { width: 100%; height: auto; }
-.login-sub { font-size: 14px; color: var(--gray); margin-bottom: 32px; font-weight: 500; }
-.login-input { width: 100%; padding: 14px 16px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 16px; margin-bottom: 14px; outline: none; }
-.login-input:focus { border-color: var(--green); }
-.login-btn { width: 100%; background: var(--green); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; }
-.login-btn:hover { background: #7ab535; }
-.login-error { color: #ef4444; font-size: 13px; margin-top: 10px; display: none; }
+.login{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--dark);}
+.login-card{background:#fff;border-radius:16px;padding:40px 32px;width:100%;max-width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.login-logo{width:160px;margin:0 auto 6px;}
+.login-logo img{width:100%;height:auto;}
+.login-title{font-size:13px;color:var(--muted);margin-bottom:28px;font-weight:500;}
+.login-input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:16px;margin-bottom:12px;outline:none;}
+.login-input:focus{border-color:var(--green);}
+.login-btn{width:100%;background:var(--green);color:#fff;border:none;padding:13px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;}
+.login-error{color:#ef4444;font-size:13px;margin-top:8px;display:none;}
+
+/* LAYOUT */
+.app{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 
 /* HEADER */
-.header { background: var(--dark); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-.header-logo { height: 32px; }
-.header-logo img { height: 100%; width: auto; }
-.header-right { display: flex; align-items: center; gap: 12px; }
-.header-date { font-size: 12px; color: rgba(255,255,255,0.55); }
-.logout-btn { background: rgba(255,255,255,0.1); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+.header{background:var(--dark);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.header-logo{height:28px;}
+.header-logo img{height:100%;width:auto;}
+.header-right{display:flex;align-items:center;gap:16px;}
+.header-date{font-size:12px;color:rgba(255,255,255,0.5);}
+.logout-btn{background:rgba(255,255,255,0.1);color:#fff;border:none;padding:5px 12px;border-radius:5px;font-size:12px;cursor:pointer;}
 
-/* STATS BAR */
-.stats-bar { background: #fff; padding: 16px 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; border-bottom: 1px solid #e5e7eb; }
-.stat { text-align: center; }
-.stat-num { font-size: 24px; font-weight: 900; color: var(--dark); }
-.stat-num.green { color: var(--green); }
-.stat-num.blue { color: var(--blue); }
-.stat-num.yellow { color: var(--pitched); }
-.stat-label { font-size: 10px; color: var(--gray); font-weight: 600; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+/* STATS */
+.stats{background:#fff;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;gap:0;flex-shrink:0;}
+.stat{flex:1;text-align:center;padding:8px 0;border-right:1px solid var(--border);}
+.stat:last-child{border-right:none;}
+.stat-num{font-size:22px;font-weight:800;color:var(--dark);line-height:1;}
+.stat-num.green{color:var(--green);}
+.stat-num.blue{color:var(--blue);}
+.stat-num.yellow{color:var(--pitched);}
+.stat-num.purple{color:var(--booked);}
+.stat-label{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;}
 
-/* FILTERS */
-.filters { padding: 12px 16px; display: flex; gap: 8px; overflow-x: auto; background: #fff; border-bottom: 1px solid #e5e7eb; }
-.filter-btn { flex-shrink: 0; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1.5px solid #e5e7eb; background: #fff; color: var(--gray); cursor: pointer; }
-.filter-btn.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+/* TOOLBAR */
+.toolbar{background:#fff;border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.search-box{flex:1;position:relative;}
+.search-box input{width:100%;padding:7px 12px 7px 32px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;outline:none;}
+.search-box input:focus{border-color:var(--green);}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;}
+.filter-tabs{display:flex;gap:4px;}
+.filter-tab{padding:5px 11px;border-radius:5px;font-size:12px;font-weight:600;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;white-space:nowrap;}
+.filter-tab.active{background:var(--dark);color:#fff;border-color:var(--dark);}
 
-/* SEARCH */
-.search-wrap { padding: 12px 16px; background: #fff; border-bottom: 1px solid #e5e7eb; }
-.search-input { width: 100%; padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 15px; outline: none; }
-.search-input:focus { border-color: var(--green); }
+/* TABLE */
+.table-wrap{flex:1;overflow-y:auto;}
+table{width:100%;border-collapse:collapse;}
+thead{position:sticky;top:0;z-index:10;background:#f8fafc;}
+th{padding:8px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);white-space:nowrap;}
+td{padding:9px 12px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr{cursor:pointer;transition:background .1s;}
+tr:hover td{background:#f8fafc;}
+tr.selected td{background:#f0f9ff;}
+.col-name{font-weight:600;color:var(--text);max-width:200px;}
+.col-name span{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:1px;}
+.col-email{color:var(--muted);font-size:12px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.col-email.guessed{color:#f59e0b;}
+.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;}
+.s-not-sent{background:#f1f5f9;color:var(--muted);}
+.s-pitched{background:#fef3c7;color:#92400e;}
+.s-replied{background:#dbeafe;color:#1e40af;}
+.s-booked{background:#ede9fe;color:#5b21b6;}
+.s-closed{background:#dcfce7;color:#166534;}
+.s-lost{background:#fee2e2;color:#991b1b;}
+.col-actions{white-space:nowrap;}
+.action-icon{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;font-size:14px;text-decoration:none;border:none;cursor:pointer;margin-right:3px;transition:opacity .15s;}
+.action-icon:hover{opacity:.75;}
+.ai-call{background:#dcfce7;color:#166534;}
+.ai-preview{background:#dbeafe;color:#1e40af;}
+.ai-video{background:#ede9fe;color:#5b21b6;}
+.notes-indicator{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-left:4px;vertical-align:middle;}
 
-/* LEADS LIST */
-.leads-list { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+/* SLIDE PANEL */
+.panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:100;}
+.panel-overlay.open{display:block;}
+.panel{position:fixed;right:0;top:0;bottom:0;width:360px;background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,0.12);z-index:101;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s ease;}
+.panel.open{transform:translateX(0);}
+.panel-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;background:#f8fafc;}
+.panel-name{font-size:16px;font-weight:800;color:var(--dark);line-height:1.3;}
+.panel-industry{font-size:12px;color:var(--muted);margin-top:3px;}
+.panel-close{background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;padding:2px 6px;border-radius:4px;}
+.panel-close:hover{background:var(--border);}
+.panel-body{flex:1;overflow-y:auto;padding:16px 20px;}
+.panel-section{margin-bottom:20px;}
+.panel-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.panel-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+.panel-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:opacity .15s;}
+.panel-btn:hover{opacity:.85;}
+.pb-call{background:var(--green);color:#fff;}
+.pb-zoom{background:var(--booked);color:#fff;}
+.pb-preview{background:var(--dark);color:#fff;}
+.pb-video{background:var(--blue);color:#fff;}
+.info-row{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
+.info-row-label{font-size:11px;font-weight:700;color:var(--muted);min-width:60px;margin-top:1px;}
+.info-row-value{font-size:13px;color:var(--text);flex:1;word-break:break-all;}
+.info-row-value a{color:var(--green);text-decoration:none;}
+.status-select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-weight:600;outline:none;margin-bottom:12px;}
+.status-select:focus{border-color:var(--green);}
+.notes-textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none;height:90px;resize:none;font-family:inherit;}
+.notes-textarea:focus{border-color:var(--green);}
+.save-btn{width:100%;background:var(--green);color:#fff;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:10px;}
+.save-btn:hover{opacity:.9;}
+.pipeline-steps{display:flex;gap:3px;margin-bottom:16px;}
+.ps{flex:1;height:4px;border-radius:2px;background:var(--border);}
+.ps.done{background:var(--green);}
+.ps.current{background:var(--blue);}
 
-.lead-card { background: var(--card); border-radius: 14px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border-left: 4px solid #e5e7eb; cursor: pointer; }
-.lead-card.status-pitched { border-left-color: var(--pitched); }
-.lead-card.status-replied { border-left-color: var(--blue); }
-.lead-card.status-booked { border-left-color: var(--dark); }
-.lead-card.status-closed { border-left-color: var(--green); }
-.lead-card.status-lost { border-left-color: #ef4444; }
-.lead-card.status-not-sent { border-left-color: #e5e7eb; }
-
-.lead-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
-.lead-name { font-size: 15px; font-weight: 700; color: #111; flex: 1; margin-right: 8px; line-height: 1.3; }
-.lead-status { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
-.status-not-sent .lead-status { background: #f3f4f6; color: var(--gray); }
-.status-pitched .lead-status { background: #fef3c7; color: #92400e; }
-.status-replied .lead-status { background: #dbeafe; color: #1e40af; }
-.status-booked .lead-status { background: #e0f2fe; color: #0369a1; }
-.status-closed .lead-status { background: #dcfce7; color: #166534; }
-.status-lost .lead-status { background: #fee2e2; color: #991b1b; }
-
-.lead-meta { font-size: 12px; color: var(--gray); margin-bottom: 10px; }
-.lead-notes { font-size: 12px; color: var(--dark); background: #f9fafb; padding: 6px 10px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--green); }
-.lead-actions { display: flex; gap: 8px; }
-.action-btn { flex: 1; padding: 8px 6px; border-radius: 8px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px; }
-.btn-call { background: var(--green); color: #fff; }
-.btn-preview { background: var(--dark); color: #fff; }
-.btn-video { background: var(--blue); color: #fff; }
-
-/* MODAL */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-end; }
-.modal-overlay.open { display: flex; }
-.modal { background: #fff; border-radius: 20px 20px 0 0; padding: 24px 20px 40px; width: 100%; max-height: 85vh; overflow-y: auto; }
-.modal-handle { width: 36px; height: 4px; background: #e5e7eb; border-radius: 2px; margin: 0 auto 20px; }
-.modal-title { font-size: 18px; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
-.modal-sub { font-size: 13px; color: var(--gray); margin-bottom: 20px; line-height: 1.5; }
-.modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.modal-btn { padding: 13px; border-radius: 10px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; }
-.modal-label { font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: block; }
-.status-select { width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 15px; font-weight: 600; outline: none; margin-bottom: 16px; }
-.status-select:focus { border-color: var(--green); }
-.notes-input { width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 14px; outline: none; height: 90px; resize: none; font-family: inherit; }
-.notes-input:focus { border-color: var(--green); }
-.save-btn { width: 100%; background: var(--green); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 12px; }
-.close-modal { width: 100%; background: #f3f4f6; color: var(--gray); border: none; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 8px; }
-
-.empty { text-align: center; padding: 60px 20px; color: var(--gray); }
-.empty-icon { font-size: 40px; margin-bottom: 12px; }
-.hidden { display: none !important; }
-
-/* Pipeline indicator */
-.pipeline { display: flex; gap: 4px; margin-bottom: 10px; }
-.pipe-step { flex: 1; height: 3px; border-radius: 2px; background: #e5e7eb; }
-.pipe-step.done { background: var(--green); }
-.pipe-step.current { background: var(--blue); }
+.empty{text-align:center;padding:60px 20px;color:var(--muted);}
+.hidden{display:none!important;}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
-<div class="login-screen" id="loginScreen">
+<div class="login" id="loginScreen">
   <div class="login-card">
     <div class="login-logo">
-      <img src="DigiWEI_logo.jpg" alt="Digiwei" onerror="this.style.display='none';document.getElementById('loginTextLogo').style.display='block';">
-      <div id="loginTextLogo" style="display:none;font-size:28px;font-weight:900;color:#58595B;">digi<span style="color:#8DC63F;">WEI</span></div>
+      <img src="DigiWEI_logo.jpg" alt="Digiwei" onerror="this.style.display='none'">
     </div>
-    <div class="login-sub">Lead Management Dashboard</div>
-    <input type="password" class="login-input" id="passwordInput" placeholder="Enter password" onkeypress="if(event.key==='Enter')login()">
+    <div class="login-title">Lead Management Dashboard</div>
+    <input type="password" class="login-input" id="passwordInput" placeholder="Password" onkeypress="if(event.key==='Enter')login()">
     <button class="login-btn" onclick="login()">Sign In</button>
-    <div class="login-error" id="loginError">Incorrect password. Try again.</div>
+    <div class="login-error" id="loginError">Incorrect password</div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard" class="hidden">
+<!-- APP -->
+<div class="app hidden" id="app">
 
+  <!-- Header -->
   <div class="header">
     <div class="header-logo">
-      <img src="DigiWEI_logo.jpg" alt="Digiwei" onerror="this.outerHTML='<span style=\'color:#8DC63F;font-weight:900;font-size:18px;\'>digiWEI</span>'">
+      <img src="DigiWEI_logo.jpg" alt="Digiwei" onerror="this.outerHTML='<span style=\'color:#8DC63F;font-weight:900;font-size:16px;\'>digiWEI</span>'">
     </div>
     <div class="header-right">
       <div class="header-date" id="headerDate"></div>
@@ -146,73 +153,117 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     </div>
   </div>
 
-  <div class="stats-bar">
-    <div class="stat"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Total</div></div>
-    <div class="stat"><div class="stat-num yellow" id="statPitched">0</div><div class="stat-label">Pitched</div></div>
-    <div class="stat"><div class="stat-num blue" id="statReplied">0</div><div class="stat-label">Replied</div></div>
-    <div class="stat"><div class="stat-num green" id="statClosed">0</div><div class="stat-label">Closed</div></div>
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="sTotal">0</div><div class="stat-label">Total</div></div>
+    <div class="stat"><div class="stat-num yellow" id="sPitched">0</div><div class="stat-label">Pitched</div></div>
+    <div class="stat"><div class="stat-num blue" id="sReplied">0</div><div class="stat-label">Replied</div></div>
+    <div class="stat"><div class="stat-num purple" id="sBooked">0</div><div class="stat-label">Booked</div></div>
+    <div class="stat"><div class="stat-num green" id="sClosed">0</div><div class="stat-label">Closed</div></div>
   </div>
 
-  <div class="filters">
-    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
-    <button class="filter-btn" onclick="setFilter('not-sent',this)">Not Sent</button>
-    <button class="filter-btn" onclick="setFilter('pitched',this)">Pitched</button>
-    <button class="filter-btn" onclick="setFilter('replied',this)">Replied</button>
-    <button class="filter-btn" onclick="setFilter('booked',this)">Call Booked</button>
-    <button class="filter-btn" onclick="setFilter('closed',this)">Closed</button>
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-box">
+      <span class="search-icon">&#128269;</span>
+      <input type="search" placeholder="Search businesses..." oninput="renderTable()" id="searchInput">
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-tab" onclick="setFilter('not-sent',this)">Not Sent</button>
+      <button class="filter-tab" onclick="setFilter('pitched',this)">Pitched</button>
+      <button class="filter-tab" onclick="setFilter('replied',this)">Replied</button>
+      <button class="filter-tab" onclick="setFilter('booked',this)">Booked</button>
+      <button class="filter-tab" onclick="setFilter('closed',this)">Closed</button>
+    </div>
   </div>
 
-  <div class="search-wrap">
-    <input type="search" class="search-input" placeholder="Search businesses..." oninput="renderLeads()" id="searchInput">
+  <!-- Table -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:220px;">Business</th>
+          <th style="width:170px;">Email</th>
+          <th style="width:100px;">Status</th>
+          <th style="width:90px;">Actions</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <div class="empty hidden" id="emptyState">&#128270; No leads found</div>
   </div>
 
-  <div class="leads-list" id="leadsList"></div>
 </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title" id="modalName"></div>
-    <div class="modal-sub" id="modalMeta"></div>
+<!-- Panel Overlay -->
+<div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
 
-    <div class="pipeline" id="modalPipeline">
-      <div class="pipe-step" id="pipe1"></div>
-      <div class="pipe-step" id="pipe2"></div>
-      <div class="pipe-step" id="pipe3"></div>
-      <div class="pipe-step" id="pipe4"></div>
-      <div class="pipe-step" id="pipe5"></div>
+<!-- Slide Panel -->
+<div class="panel" id="panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-name" id="panelName"></div>
+      <div class="panel-industry" id="panelIndustry"></div>
+    </div>
+    <button class="panel-close" onclick="closePanel()">&#10005;</button>
+  </div>
+  <div class="panel-body">
+
+    <!-- Pipeline -->
+    <div class="pipeline-steps" id="panelPipeline">
+      <div class="ps" id="pp1"></div>
+      <div class="ps" id="pp2"></div>
+      <div class="ps" id="pp3"></div>
+      <div class="ps" id="pp4"></div>
+      <div class="ps" id="pp5"></div>
     </div>
 
-    <div class="modal-actions">
-      <a class="modal-btn btn-call" id="modalCallBtn" href="#" style="background:var(--green);color:#fff;">&#9742; Call Now</a>
-      <a class="modal-btn" href="https://calendly.com/digiwei/meet" target="_blank" style="background:var(--dark);color:#fff;">&#128197; Book Zoom</a>
-      <a class="modal-btn" id="modalPreviewBtn" href="#" target="_blank" style="background:#f3f4f6;color:var(--dark);">&#128279; Preview Site</a>
-      <a class="modal-btn btn-video" id="modalVideoBtn" href="#" target="_blank" style="background:var(--blue);color:#fff;">&#9654; Watch Video</a>
+    <!-- Actions -->
+    <div class="panel-actions">
+      <a class="panel-btn pb-call" id="panelCall" href="#">&#9742; Call Now</a>
+      <a class="panel-btn pb-zoom" href="https://calendly.com/digiwei/meet" target="_blank">&#128197; Book Zoom</a>
+      <a class="panel-btn pb-preview" id="panelPreview" href="#" target="_blank">&#128279; Preview Site</a>
+      <a class="panel-btn pb-video" id="panelVideo" href="#" target="_blank">&#9654; Watch Video</a>
     </div>
 
-    <label class="modal-label">Update Status</label>
-    <select class="status-select" id="modalStatus">
-      <option value="not-sent">Not Sent</option>
-      <option value="pitched">Pitched</option>
-      <option value="replied">Replied</option>
-      <option value="booked">Call Booked</option>
-      <option value="closed">Closed - Won</option>
-      <option value="lost">Closed - Lost</option>
-    </select>
+    <!-- Info -->
+    <div class="panel-section">
+      <div class="panel-label">Contact Info</div>
+      <div class="info-row"><div class="info-row-label">Phone</div><div class="info-row-value" id="panelPhone"></div></div>
+      <div class="info-row"><div class="info-row-label">Email</div><div class="info-row-value" id="panelEmail"></div></div>
+      <div class="info-row"><div class="info-row-label">Website</div><div class="info-row-value" id="panelWebsite"></div></div>
+      <div class="info-row"><div class="info-row-label">Rating</div><div class="info-row-value" id="panelRating"></div></div>
+    </div>
 
-    <label class="modal-label">Notes</label>
-    <textarea class="notes-input" id="modalNotes" placeholder="Add notes about this lead..."></textarea>
+    <!-- Status -->
+    <div class="panel-section">
+      <div class="panel-label">Pipeline Status</div>
+      <select class="status-select" id="panelStatus">
+        <option value="not-sent">Not Sent</option>
+        <option value="pitched">Pitched</option>
+        <option value="replied">Replied</option>
+        <option value="booked">Call Booked</option>
+        <option value="closed">Closed — Won</option>
+        <option value="lost">Closed — Lost</option>
+      </select>
+    </div>
+
+    <!-- Notes -->
+    <div class="panel-section">
+      <div class="panel-label">Notes</div>
+      <textarea class="notes-textarea" id="panelNotes" placeholder="Add notes..."></textarea>
+    </div>
 
     <button class="save-btn" onclick="saveLead()">Save Changes</button>
-    <button class="close-modal" onclick="closeModal()">Close</button>
   </div>
 </div>
 
 <script>
 const PASSWORD = 'digiwei2026';
 const PREVIEW_BASE = 'https://digiweipreview.com';
-const VIDEO_BASE = 'https://digiwei.github.io/client-previews/videos';
+const VIDEO_BASE = 'https://digiweipreview.com/videos';
 
 let allLeads = [];
 let leadData = {};
@@ -220,143 +271,151 @@ let currentFilter = 'all';
 let currentLead = null;
 
 function loadData() {
-  const saved = localStorage.getItem('digiwei_leads');
-  if (saved) leadData = JSON.parse(saved);
+  try { leadData = JSON.parse(localStorage.getItem('digiwei_leads') || '{}'); } catch(e) { leadData = {}; }
 }
-
 function saveData() {
   localStorage.setItem('digiwei_leads', JSON.stringify(leadData));
 }
-
 function login() {
-  const pw = document.getElementById('passwordInput').value;
-  if (pw === PASSWORD) {
-    document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('dashboard').classList.remove('hidden');
+  if (document.getElementById('passwordInput').value === PASSWORD) {
     localStorage.setItem('digiwei_auth', '1');
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
     init();
   } else {
     document.getElementById('loginError').style.display = 'block';
   }
 }
-
 function logout() {
   localStorage.removeItem('digiwei_auth');
-  document.getElementById('loginScreen').classList.remove('hidden');
-  document.getElementById('dashboard').classList.add('hidden');
+  location.reload();
 }
-
-function getSlug(name) {
-  return name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-}
-
-function getPreviewSlug(name) {
-  return name.replace(/[^a-z0-9]/gi, '-').toLowerCase().replace(/-+/g, '-').replace(/^-|-$/g, '');
-}
-
-function setFilter(filter, btn) {
-  currentFilter = filter;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+function getSlug(name) { return name.replace(/[^a-z0-9]/gi,'_').toLowerCase(); }
+function getPreviewSlug(name) { return name.replace(/[^a-z0-9]/gi,'-').toLowerCase().replace(/-+/g,'-').replace(/^-|-$/g,''); }
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  renderLeads();
+  renderTable();
 }
-
-function getLeadStatus(lead) {
-  const slug = getSlug(lead.name);
-  const saved = leadData[slug];
-  if (saved && saved.status) return saved.status;
+function getStatus(lead) {
+  const d = leadData[getSlug(lead.name)];
+  if (d && d.status) return d.status;
   if (lead.pitched) return 'pitched';
   return 'not-sent';
 }
-
-function getStatusLabel(status) {
-  const labels = { 'not-sent':'Not Sent','pitched':'Pitched','replied':'Replied','booked':'Call Booked','closed':'Closed Won','lost':'Closed Lost' };
-  return labels[status] || 'Not Sent';
+function statusLabel(s) {
+  return {
+    'not-sent':'Not Sent','pitched':'Pitched','replied':'Replied',
+    'booked':'Booked','closed':'Closed','lost':'Lost'
+  }[s] || 'Not Sent';
 }
-
-function getPipelineSteps(status) {
+function statusClass(s) {
+  return {'not-sent':'s-not-sent','pitched':'s-pitched','replied':'s-replied','booked':'s-booked','closed':'s-closed','lost':'s-lost'}[s] || 's-not-sent';
+}
+function pipelineSteps(s) {
   const order = ['not-sent','pitched','replied','booked','closed'];
-  const idx = order.indexOf(status);
-  return order.map((s, i) => i < idx ? 'done' : i === idx ? 'current' : '');
+  const idx = order.indexOf(s);
+  return order.map((x,i) => i < idx ? 'done' : i === idx ? 'current' : '');
 }
-
 function updateStats() {
-  document.getElementById('statTotal').textContent = allLeads.length;
-  document.getElementById('statPitched').textContent = allLeads.filter(l => ['pitched','replied','booked','closed'].includes(getLeadStatus(l))).length;
-  document.getElementById('statReplied').textContent = allLeads.filter(l => ['replied','booked'].includes(getLeadStatus(l))).length;
-  document.getElementById('statClosed').textContent = allLeads.filter(l => getLeadStatus(l) === 'closed').length;
+  document.getElementById('sTotal').textContent = allLeads.length;
+  document.getElementById('sPitched').textContent = allLeads.filter(l => ['pitched','replied','booked','closed'].includes(getStatus(l))).length;
+  document.getElementById('sReplied').textContent = allLeads.filter(l => ['replied','booked'].includes(getStatus(l))).length;
+  document.getElementById('sBooked').textContent = allLeads.filter(l => getStatus(l) === 'booked').length;
+  document.getElementById('sClosed').textContent = allLeads.filter(l => getStatus(l) === 'closed').length;
 }
-
-function renderLeads() {
+function renderTable() {
   const search = (document.getElementById('searchInput').value || '').toLowerCase();
   const leads = allLeads.filter(l => {
-    const status = getLeadStatus(l);
-    const matchFilter = currentFilter === 'all' || status === currentFilter;
+    const matchFilter = currentFilter === 'all' || getStatus(l) === currentFilter;
     const matchSearch = !search || l.name.toLowerCase().includes(search) || (l.found_via||'').toLowerCase().includes(search);
     return matchFilter && matchSearch;
   });
 
-  const container = document.getElementById('leadsList');
+  const tbody = document.getElementById('tableBody');
+  const empty = document.getElementById('emptyState');
 
   if (leads.length === 0) {
-    container.innerHTML = '<div class="empty"><div class="empty-icon">&#128270;</div><div>No leads found</div></div>';
+    tbody.innerHTML = '';
+    empty.classList.remove('hidden');
     updateStats();
     return;
   }
+  empty.classList.add('hidden');
 
-  container.innerHTML = leads.map(lead => {
-    const status = getLeadStatus(lead);
+  const industry = v => (v||'').split(' in ')[0].split(' ')[0];
+  const phoneRaw = p => (p||'').replace(/\D/g,'');
+
+  tbody.innerHTML = leads.map(lead => {
     const slug = getSlug(lead.name);
+    const status = getStatus(lead);
     const data = leadData[slug] || {};
-    const industry = (lead.found_via||'').split(' in ')[0];
-    const rating = lead.googleRating ? lead.googleRating + '&#9733; (' + lead.googleReviews + ' reviews)' : '';
-    const notesHtml = data.notes ? '<div class="lead-notes">' + data.notes + '</div>' : '';
+    const previewSlug = getPreviewSlug(lead.name);
+    const hasNotes = data.notes && data.notes.trim().length > 0;
+    const emailGuessed = lead.emailGuessed;
 
-    return '<div class="lead-card status-' + status + '" onclick="openModal(\'' + slug + '\')">' +
-      '<div class="lead-top"><div class="lead-name">' + lead.name + '</div><div class="lead-status">' + getStatusLabel(status) + '</div></div>' +
-      '<div class="lead-meta">' + industry + (rating ? ' &bull; ' + rating : '') + (lead.phone ? ' &bull; ' + lead.phone : '') + '</div>' +
-      notesHtml +
-      '<div class="lead-actions">' +
-      '<a class="action-btn btn-call" href="tel:' + (lead.phone||'').replace(/\D/g,'') + '" onclick="event.stopPropagation()">&#9742; Call</a>' +
-      '<a class="action-btn btn-preview" href="' + PREVIEW_BASE + '/' + getPreviewSlug(lead.name) + '.html" target="_blank" onclick="event.stopPropagation()">&#128279; Preview</a>' +
-      '<a class="action-btn btn-video" href="' + VIDEO_BASE + '/' + slug + '.mp4" target="_blank" onclick="event.stopPropagation()">&#9654; Video</a>' +
-      '</div></div>';
+    return `<tr onclick="openPanel('${slug}')" id="row-${slug}">
+      <td class="col-name">${lead.name}${hasNotes ? '<span class="notes-indicator"></span>' : ''}<span>${industry(lead.found_via)} &bull; ${lead.phone||'No phone'}</span></td>
+      <td class="col-email ${emailGuessed ? 'guessed' : ''}" title="${lead.email||''}">${lead.email||'No email'}</td>
+      <td><span class="status-badge ${statusClass(status)}">${statusLabel(status)}</span></td>
+      <td class="col-actions" onclick="event.stopPropagation()">
+        <a class="action-icon ai-call" href="tel:${phoneRaw(lead.phone)}" title="Call">&#9742;</a>
+        <a class="action-icon ai-preview" href="${PREVIEW_BASE}/${previewSlug}.html" target="_blank" title="Preview">&#128279;</a>
+        <a class="action-icon ai-video" href="${VIDEO_BASE}/${slug}.mp4" target="_blank" title="Video">&#9654;</a>
+      </td>
+      <td></td>
+    </tr>`;
   }).join('');
+
+  // Highlight selected row
+  if (currentLead) {
+    const row = document.getElementById('row-' + getSlug(currentLead.name));
+    if (row) row.classList.add('selected');
+  }
 
   updateStats();
 }
 
-function openModal(slug) {
+function openPanel(slug) {
   currentLead = allLeads.find(l => getSlug(l.name) === slug);
   if (!currentLead) return;
 
   const data = leadData[slug] || {};
-  const status = getLeadStatus(currentLead);
+  const status = getStatus(currentLead);
   const previewSlug = getPreviewSlug(currentLead.name);
 
-  document.getElementById('modalName').textContent = currentLead.name;
-  document.getElementById('modalMeta').textContent =
-    (currentLead.found_via||'') + ' · ' + (currentLead.phone||'No phone') +
-    (currentLead.googleRating ? ' · ' + currentLead.googleRating + '★ (' + currentLead.googleReviews + ' reviews)' : '') +
-    (currentLead.address ? '\n' + currentLead.address : '');
+  document.getElementById('panelName').textContent = currentLead.name;
+  document.getElementById('panelIndustry').textContent = (currentLead.found_via || '') + (currentLead.googleRating ? ' · ' + currentLead.googleRating + '★' : '');
+  document.getElementById('panelCall').href = 'tel:' + (currentLead.phone||'').replace(/\D/g,'');
+  document.getElementById('panelPreview').href = PREVIEW_BASE + '/' + previewSlug + '.html';
+  document.getElementById('panelVideo').href = VIDEO_BASE + '/' + slug + '.mp4';
+  document.getElementById('panelPhone').textContent = currentLead.phone || 'No phone';
+  document.getElementById('panelEmail').innerHTML = currentLead.email ? '<a href="mailto:' + currentLead.email + '">' + currentLead.email + '</a>' : 'No email';
+  document.getElementById('panelWebsite').innerHTML = currentLead.website ? '<a href="' + currentLead.website + '" target="_blank">' + currentLead.website + '</a>' : 'No website';
+  document.getElementById('panelRating').textContent = currentLead.googleRating ? currentLead.googleRating + '★ (' + currentLead.googleReviews + ' reviews)' : 'No data';
+  document.getElementById('panelStatus').value = status;
+  document.getElementById('panelNotes').value = data.notes || '';
 
-  document.getElementById('modalCallBtn').href = 'tel:' + (currentLead.phone||'').replace(/\D/g,'');
-  document.getElementById('modalPreviewBtn').href = PREVIEW_BASE + '/' + previewSlug + '.html';
-  document.getElementById('modalVideoBtn').href = VIDEO_BASE + '/' + slug + '.mp4';
-  document.getElementById('modalStatus').value = status;
-  document.getElementById('modalNotes').value = data.notes || '';
-
-  const steps = getPipelineSteps(status);
+  const steps = pipelineSteps(status);
   steps.forEach((s, i) => {
-    const el = document.getElementById('pipe' + (i+1));
-    el.className = 'pipe-step' + (s ? ' ' + s : '');
+    const el = document.getElementById('pp' + (i+1));
+    el.className = 'ps' + (s ? ' ' + s : '');
   });
 
-  document.getElementById('modal').classList.add('open');
+  document.getElementById('panelOverlay').classList.add('open');
+  document.getElementById('panel').classList.add('open');
+
+  // Highlight row
+  document.querySelectorAll('tr.selected').forEach(r => r.classList.remove('selected'));
+  const row = document.getElementById('row-' + slug);
+  if (row) row.classList.add('selected');
 }
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
+function closePanel() {
+  document.getElementById('panelOverlay').classList.remove('open');
+  document.getElementById('panel').classList.remove('open');
+  document.querySelectorAll('tr.selected').forEach(r => r.classList.remove('selected'));
   currentLead = null;
 }
 
@@ -364,20 +423,19 @@ function saveLead() {
   if (!currentLead) return;
   const slug = getSlug(currentLead.name);
   if (!leadData[slug]) leadData[slug] = {};
-  leadData[slug].status = document.getElementById('modalStatus').value;
-  leadData[slug].notes = document.getElementById('modalNotes').value;
+  leadData[slug].status = document.getElementById('panelStatus').value;
+  leadData[slug].notes = document.getElementById('panelNotes').value;
   leadData[slug].updated = new Date().toISOString();
   saveData();
-  renderLeads();
-  closeModal();
+  renderTable();
+  closePanel();
 }
 
 function init() {
   loadData();
-  const now = new Date();
-  document.getElementById('headerDate').textContent = now.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
   allLeads = LEADS_DATA;
-  renderLeads();
+  document.getElementById('headerDate').textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+  renderTable();
   updateStats();
 }
 
@@ -385,7 +443,7 @@ window.onload = function() {
   allLeads = LEADS_DATA;
   if (localStorage.getItem('digiwei_auth') === '1') {
     document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('dashboard').classList.remove('hidden');
+    document.getElementById('app').classList.remove('hidden');
     init();
   }
 };
@@ -1162,6 +1220,5 @@ const LEADS_DATA = [
   }
 ];
 </script>
-
 </body>
 </html>
