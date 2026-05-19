@@ -8,119 +8,172 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --green:#8DC63F;--dark:#58595B;--blue:#29ABE2;
-  --pitched:#f59e0b;--replied:#29ABE2;--booked:#6366f1;
-  --closed:#8DC63F;--lost:#ef4444;--notsent:#d1d5db;
+  --s-not-sent:#94a3b8;--s-pitched:#f59e0b;--s-replied:#29ABE2;
+  --s-booked:#6366f1;--s-closed:#8DC63F;--s-lost:#ef4444;
   --bg:#f1f5f9;--card:#fff;--border:#e2e8f0;--text:#1e293b;--muted:#64748b;
+  --ind-plumber:#8DC63F;--ind-electric:#f59e0b;--ind-hvac:#29ABE2;
+  --ind-handyman:#6366f1;--ind-contractor:#ec4899;
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:13px;}
 
 /* LOGIN */
 .login{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--dark);}
-.login-card{background:#fff;border-radius:16px;padding:40px 32px;width:100%;max-width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
-.login-logo{width:160px;margin:0 auto 6px;}
-.login-logo img{width:100%;height:auto;}
-.login-title{font-size:13px;color:var(--muted);margin-bottom:28px;font-weight:500;}
-.login-input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:16px;margin-bottom:12px;outline:none;}
+.login-card{background:#fff;border-radius:16px;padding:40px 32px;width:100%;max-width:320px;text-align:center;}
+.login-logo{height:40px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;}
+.login-logo img{height:40px;width:auto;}
+.login-title{font-size:12px;color:var(--muted);margin-bottom:24px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;}
+.login-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;margin-bottom:10px;outline:none;}
 .login-input:focus{border-color:var(--green);}
-.login-btn{width:100%;background:var(--green);color:#fff;border:none;padding:13px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;}
-.login-error{color:#ef4444;font-size:13px;margin-top:8px;display:none;}
+.login-btn{width:100%;background:var(--green);color:#fff;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;}
+.login-error{color:#ef4444;font-size:12px;margin-top:6px;display:none;}
 
 /* LAYOUT */
 .app{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 
 /* HEADER */
-.header{background:var(--dark);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.header-logo{height:28px;}
+.header{background:var(--dark);padding:0 16px;height:48px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.header-logo{height:26px;display:flex;align-items:center;}
 .header-logo img{height:100%;width:auto;}
-.header-right{display:flex;align-items:center;gap:16px;}
-.header-date{font-size:12px;color:rgba(255,255,255,0.5);}
-.logout-btn{background:rgba(255,255,255,0.1);color:#fff;border:none;padding:5px 12px;border-radius:5px;font-size:12px;cursor:pointer;}
+.header-logo-text{color:#8DC63F;font-weight:900;font-size:15px;letter-spacing:1px;}
+.header-right{display:flex;align-items:center;gap:12px;}
+.header-date{font-size:11px;color:rgba(255,255,255,0.45);}
+.logout-btn{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.12);padding:4px 10px;border-radius:5px;font-size:11px;cursor:pointer;}
 
-/* STATS */
-.stats{background:#fff;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;gap:0;flex-shrink:0;}
-.stat{flex:1;text-align:center;padding:8px 0;border-right:1px solid var(--border);}
+/* STATS — 6 stats, all visible */
+.stats{background:#fff;border-bottom:1px solid var(--border);display:flex;flex-shrink:0;}
+.stat{flex:1;text-align:center;padding:10px 4px 8px;border-right:1px solid var(--border);min-width:0;}
 .stat:last-child{border-right:none;}
-.stat-num{font-size:22px;font-weight:800;color:var(--dark);line-height:1;}
-.stat-num.green{color:var(--green);}
-.stat-num.blue{color:var(--blue);}
-.stat-num.yellow{color:var(--pitched);}
-.stat-num.purple{color:var(--booked);}
-.stat-label{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;}
+.stat-num{font-size:20px;font-weight:800;line-height:1;color:var(--dark);}
+.stat-num.c-yellow{color:#f59e0b;}
+.stat-num.c-blue{color:var(--blue);}
+.stat-num.c-purple{color:#6366f1;}
+.stat-num.c-green{color:var(--green);}
+.stat-num.c-red{color:#ef4444;}
+.stat-label{font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:2px;white-space:nowrap;}
 
 /* TOOLBAR */
-.toolbar{background:#fff;border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.search-box{flex:1;position:relative;}
-.search-box input{width:100%;padding:7px 12px 7px 32px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;outline:none;}
-.search-box input:focus{border-color:var(--green);}
-.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;}
-.filter-tabs{display:flex;gap:4px;}
-.filter-tab{padding:5px 11px;border-radius:5px;font-size:12px;font-weight:600;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;white-space:nowrap;}
-.filter-tab.active{background:var(--dark);color:#fff;border-color:var(--dark);}
+.toolbar{background:#fff;border-bottom:1px solid var(--border);padding:7px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.search-wrap{position:relative;flex:1;min-width:0;}
+.search-wrap input{width:100%;padding:6px 10px 6px 28px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;outline:none;background:#f8fafc;}
+.search-wrap input:focus{border-color:var(--green);background:#fff;}
+.search-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;}
+/* Filter tabs — horizontally scrollable */
+.filter-tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;flex-shrink:0;}
+.filter-tabs::-webkit-scrollbar{display:none;}
+.ftab{padding:5px 10px;border-radius:5px;font-size:11px;font-weight:600;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.ftab.active{background:var(--dark);color:#fff;border-color:var(--dark);}
 
 /* TABLE */
 .table-wrap{flex:1;overflow-y:auto;}
-table{width:100%;border-collapse:collapse;}
+table{width:100%;border-collapse:collapse;table-layout:fixed;}
 thead{position:sticky;top:0;z-index:10;background:#f8fafc;}
-th{padding:8px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);white-space:nowrap;}
-td{padding:9px 12px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+th{padding:6px 10px;text-align:left;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--border);white-space:nowrap;overflow:hidden;}
+td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
 tr{cursor:pointer;transition:background .1s;}
 tr:hover td{background:#f8fafc;}
 tr.selected td{background:#f0f9ff;}
-.col-name{font-weight:600;color:var(--text);max-width:200px;}
-.col-name span{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:1px;}
-.col-email{color:var(--muted);font-size:12px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.col-email.guessed{color:#f59e0b;}
-.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;}
-.s-not-sent{background:#f1f5f9;color:var(--muted);}
-.s-pitched{background:#fef3c7;color:#92400e;}
-.s-replied{background:#dbeafe;color:#1e40af;}
-.s-booked{background:#ede9fe;color:#5b21b6;}
-.s-closed{background:#dcfce7;color:#166534;}
-.s-lost{background:#fee2e2;color:#991b1b;}
-.col-actions{white-space:nowrap;}
-.action-icon{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;font-size:14px;text-decoration:none;border:none;cursor:pointer;margin-right:3px;transition:opacity .15s;}
-.action-icon:hover{opacity:.75;}
-.ai-call{background:#dcfce7;color:#166534;}
-.ai-preview{background:#dbeafe;color:#1e40af;}
-.ai-video{background:#ede9fe;color:#5b21b6;}
-.notes-indicator{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-left:4px;vertical-align:middle;}
 
-/* SLIDE PANEL */
-.panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:100;}
+/* Status-based left border on first cell */
+tr.s-not-sent td:first-child{border-left:3px solid var(--s-not-sent);}
+tr.s-pitched td:first-child{border-left:3px solid var(--s-pitched);}
+tr.s-replied td:first-child{border-left:3px solid var(--s-replied);}
+tr.s-booked td:first-child{border-left:3px solid var(--s-booked);}
+tr.s-closed td:first-child{border-left:3px solid var(--s-closed);}
+tr.s-lost td:first-child{border-left:3px solid var(--s-lost);}
+
+/* Column widths */
+.col-w-name{width:36%;}
+.col-w-email{width:24%;}
+.col-w-status{width:14%;}
+.col-w-actions{width:26%;}
+
+/* Industry dot */
+.ind-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;flex-shrink:0;vertical-align:middle;}
+.d-plumber{background:var(--ind-plumber);}
+.d-electric{background:var(--ind-electric);}
+.d-hvac{background:var(--ind-hvac);}
+.d-handyman{background:var(--ind-handyman);}
+.d-contractor{background:var(--ind-contractor);}
+
+/* Name cell */
+.name-line{font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;display:flex;align-items:center;}
+.name-sub{font-size:10px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.notes-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-left:5px;flex-shrink:0;}
+
+/* Email cell */
+.email-cell{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.email-cell.guessed{color:#f59e0b;}
+
+/* Status badge */
+.sbadge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap;}
+.b-not-sent{background:#f1f5f9;color:#64748b;}
+.b-pitched{background:#fef3c7;color:#92400e;}
+.b-replied{background:#dbeafe;color:#1e40af;}
+.b-booked{background:#ede9fe;color:#5b21b6;}
+.b-closed{background:#dcfce7;color:#166534;}
+.b-lost{background:#fee2e2;color:#991b1b;}
+
+/* Action buttons — labeled */
+.actions-cell{white-space:nowrap;display:flex;gap:4px;align-items:center;}
+.abtn{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:36px;height:32px;border-radius:6px;border:none;cursor:pointer;font-size:14px;text-decoration:none;gap:1px;transition:opacity .15s;flex-shrink:0;}
+.abtn:hover{opacity:.75;}
+.abtn-label{font-size:8px;font-weight:700;line-height:1;letter-spacing:.2px;}
+.ab-call{background:#dcfce7;color:#166534;}
+.ab-site{background:#dbeafe;color:#1e40af;}
+.ab-video{background:#ede9fe;color:#5b21b6;}
+
+/* EMPTY */
+.empty{text-align:center;padding:48px 20px;color:var(--muted);}
+
+/* PANEL */
+.panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.25);z-index:100;}
 .panel-overlay.open{display:block;}
-.panel{position:fixed;right:0;top:0;bottom:0;width:360px;background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,0.12);z-index:101;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s ease;}
+.panel{position:fixed;right:0;top:0;bottom:0;width:340px;background:#fff;box-shadow:-4px 0 20px rgba(0,0,0,0.1);z-index:101;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .22s ease;}
 .panel.open{transform:translateX(0);}
-.panel-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;background:#f8fafc;}
-.panel-name{font-size:16px;font-weight:800;color:var(--dark);line-height:1.3;}
-.panel-industry{font-size:12px;color:var(--muted);margin-top:3px;}
-.panel-close{background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;padding:2px 6px;border-radius:4px;}
+.panel-head{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;background:#f8fafc;flex-shrink:0;}
+.panel-name{font-size:14px;font-weight:800;color:var(--dark);line-height:1.3;padding-right:8px;}
+.panel-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+.panel-close{background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;padding:2px 6px;border-radius:4px;flex-shrink:0;}
 .panel-close:hover{background:var(--border);}
-.panel-body{flex:1;overflow-y:auto;padding:16px 20px;}
-.panel-section{margin-bottom:20px;}
-.panel-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
-.panel-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
-.panel-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:opacity .15s;}
-.panel-btn:hover{opacity:.85;}
-.pb-call{background:var(--green);color:#fff;}
-.pb-zoom{background:var(--booked);color:#fff;}
-.pb-preview{background:var(--dark);color:#fff;}
-.pb-video{background:var(--blue);color:#fff;}
-.info-row{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
-.info-row-label{font-size:11px;font-weight:700;color:var(--muted);min-width:60px;margin-top:1px;}
-.info-row-value{font-size:13px;color:var(--text);flex:1;word-break:break-all;}
-.info-row-value a{color:var(--green);text-decoration:none;}
-.status-select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-weight:600;outline:none;margin-bottom:12px;}
-.status-select:focus{border-color:var(--green);}
-.notes-textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none;height:90px;resize:none;font-family:inherit;}
-.notes-textarea:focus{border-color:var(--green);}
-.save-btn{width:100%;background:var(--green);color:#fff;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:10px;}
-.save-btn:hover{opacity:.9;}
-.pipeline-steps{display:flex;gap:3px;margin-bottom:16px;}
-.ps{flex:1;height:4px;border-radius:2px;background:var(--border);}
-.ps.done{background:var(--green);}
-.ps.current{background:var(--blue);}
+.panel-body{flex:1;overflow-y:auto;padding:14px 16px;}
 
-.empty{text-align:center;padding:60px 20px;color:var(--muted);}
+/* Pipeline bar */
+.pipe-wrap{margin-bottom:16px;}
+.pipe-label-row{display:flex;justify-content:space-between;margin-bottom:5px;}
+.pipe-lbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+.pipe-lbl.active{color:var(--dark);}
+.pipe-steps{display:flex;gap:3px;height:6px;}
+.ps{flex:1;border-radius:3px;background:var(--border);}
+.ps.done{background:var(--green);}
+.ps.active{background:var(--blue);}
+
+/* Panel actions */
+.p-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:16px;}
+.pbtn{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 10px;border-radius:7px;font-size:12px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:opacity .15s;}
+.pbtn:hover{opacity:.85;}
+.pb-call{background:var(--green);color:#fff;}
+.pb-zoom{background:#6366f1;color:#fff;}
+.pb-site{background:var(--dark);color:#fff;}
+.pb-vid{background:var(--blue);color:#fff;}
+
+/* Info rows */
+.p-section{margin-bottom:14px;}
+.p-section-label{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;}
+.p-row{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start;}
+.p-row-key{font-size:10px;font-weight:700;color:var(--muted);min-width:52px;padding-top:1px;}
+.p-row-val{font-size:12px;color:var(--text);flex:1;word-break:break-all;}
+.p-row-val a{color:var(--green);text-decoration:none;}
+
+/* Status select */
+.p-select{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-weight:600;outline:none;margin-bottom:10px;background:#fff;}
+.p-select:focus{border-color:var(--green);}
+
+/* Notes */
+.p-notes{width:100%;padding:9px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;outline:none;height:80px;resize:none;font-family:inherit;background:#fff;}
+.p-notes:focus{border-color:var(--green);}
+.save-btn{width:100%;background:var(--green);color:#fff;border:none;padding:11px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;}
+.save-btn:hover{opacity:.9;}
+
 .hidden{display:none!important;}
 </style>
 </head>
@@ -130,117 +183,126 @@ tr.selected td{background:#f0f9ff;}
 <div class="login" id="loginScreen">
   <div class="login-card">
     <div class="login-logo">
-      <img src="DigiWEI_logo.jpg" alt="Digiwei" onerror="this.style.display='none'">
+      <img src="DigiWEI_logo.jpg" alt="Digiwei" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=\'color:#8DC63F;font-weight:900;font-size:20px;letter-spacing:1px;\'>digiWEI</span>')">
     </div>
-    <div class="login-title">Lead Management Dashboard</div>
-    <input type="password" class="login-input" id="passwordInput" placeholder="Password" onkeypress="if(event.key==='Enter')login()">
-    <button class="login-btn" onclick="login()">Sign In</button>
-    <div class="login-error" id="loginError">Incorrect password</div>
+    <div class="login-title">Campaign Dashboard</div>
+    <input type="password" class="login-input" id="pwInput" placeholder="Enter password" onkeypress="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="loginErr">Incorrect password</div>
   </div>
 </div>
 
 <!-- APP -->
 <div class="app hidden" id="app">
 
-  <!-- Header -->
   <div class="header">
     <div class="header-logo">
-      <img src="DigiWEI_logo.jpg" alt="Digiwei" onerror="this.outerHTML='<span style=\'color:#8DC63F;font-weight:900;font-size:16px;\'>digiWEI</span>'">
+      <img src="DigiWEI_logo.jpg" alt="Digiwei" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'header-logo-text\'>digiWEI</span>')">
     </div>
     <div class="header-right">
-      <div class="header-date" id="headerDate"></div>
-      <button class="logout-btn" onclick="logout()">Logout</button>
+      <div class="header-date" id="hDate"></div>
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
     </div>
   </div>
 
-  <!-- Stats -->
+  <!-- Stats — all 6 visible -->
   <div class="stats">
     <div class="stat"><div class="stat-num" id="sTotal">0</div><div class="stat-label">Total</div></div>
-    <div class="stat"><div class="stat-num yellow" id="sPitched">0</div><div class="stat-label">Pitched</div></div>
-    <div class="stat"><div class="stat-num blue" id="sReplied">0</div><div class="stat-label">Replied</div></div>
-    <div class="stat"><div class="stat-num purple" id="sBooked">0</div><div class="stat-label">Booked</div></div>
-    <div class="stat"><div class="stat-num green" id="sClosed">0</div><div class="stat-label">Closed</div></div>
+    <div class="stat"><div class="stat-num c-yellow" id="sPitched">0</div><div class="stat-label">Pitched</div></div>
+    <div class="stat"><div class="stat-num c-blue" id="sReplied">0</div><div class="stat-label">Replied</div></div>
+    <div class="stat"><div class="stat-num c-purple" id="sBooked">0</div><div class="stat-label">Booked</div></div>
+    <div class="stat"><div class="stat-num c-green" id="sClosed">0</div><div class="stat-label">Closed</div></div>
+    <div class="stat"><div class="stat-num c-red" id="sLost">0</div><div class="stat-label">Lost</div></div>
   </div>
 
   <!-- Toolbar -->
   <div class="toolbar">
-    <div class="search-box">
+    <div class="search-wrap">
       <span class="search-icon">&#128269;</span>
-      <input type="search" placeholder="Search businesses..." oninput="renderTable()" id="searchInput">
+      <input type="search" id="srch" placeholder="Search..." oninput="render()">
     </div>
     <div class="filter-tabs">
-      <button class="filter-tab active" onclick="setFilter('all',this)">All</button>
-      <button class="filter-tab" onclick="setFilter('not-sent',this)">Not Sent</button>
-      <button class="filter-tab" onclick="setFilter('pitched',this)">Pitched</button>
-      <button class="filter-tab" onclick="setFilter('replied',this)">Replied</button>
-      <button class="filter-tab" onclick="setFilter('booked',this)">Booked</button>
-      <button class="filter-tab" onclick="setFilter('closed',this)">Closed</button>
+      <button class="ftab active" onclick="setFilter('all',this)">All</button>
+      <button class="ftab" onclick="setFilter('not-sent',this)">Not Sent</button>
+      <button class="ftab" onclick="setFilter('pitched',this)">Pitched</button>
+      <button class="ftab" onclick="setFilter('replied',this)">Replied</button>
+      <button class="ftab" onclick="setFilter('booked',this)">Booked</button>
+      <button class="ftab" onclick="setFilter('closed',this)">Closed</button>
+      <button class="ftab" onclick="setFilter('lost',this)">Lost</button>
     </div>
   </div>
 
   <!-- Table -->
   <div class="table-wrap">
     <table>
+      <colgroup>
+        <col class="col-w-name"><col class="col-w-email"><col class="col-w-status"><col class="col-w-actions">
+      </colgroup>
       <thead>
         <tr>
-          <th style="width:220px;">Business</th>
-          <th style="width:170px;">Email</th>
-          <th style="width:100px;">Status</th>
-          <th style="width:90px;">Actions</th>
-          <th></th>
+          <th>Business</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
-      <tbody id="tableBody"></tbody>
+      <tbody id="tbody"></tbody>
     </table>
-    <div class="empty hidden" id="emptyState">&#128270; No leads found</div>
+    <div class="empty hidden" id="empty">No leads found</div>
   </div>
-
 </div>
 
-<!-- Panel Overlay -->
-<div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
-
-<!-- Slide Panel -->
+<!-- Panel -->
+<div class="panel-overlay" id="overlay" onclick="closePanel()"></div>
 <div class="panel" id="panel">
-  <div class="panel-header">
+  <div class="panel-head">
     <div>
-      <div class="panel-name" id="panelName"></div>
-      <div class="panel-industry" id="panelIndustry"></div>
+      <div class="panel-name" id="pName"></div>
+      <div class="panel-sub" id="pSub"></div>
     </div>
     <button class="panel-close" onclick="closePanel()">&#10005;</button>
   </div>
   <div class="panel-body">
 
-    <!-- Pipeline -->
-    <div class="pipeline-steps" id="panelPipeline">
-      <div class="ps" id="pp1"></div>
-      <div class="ps" id="pp2"></div>
-      <div class="ps" id="pp3"></div>
-      <div class="ps" id="pp4"></div>
-      <div class="ps" id="pp5"></div>
+    <!-- Pipeline progress -->
+    <div class="pipe-wrap">
+      <div class="pipe-label-row">
+        <span class="pipe-lbl" id="pl1">Not Sent</span>
+        <span class="pipe-lbl" id="pl2">Pitched</span>
+        <span class="pipe-lbl" id="pl3">Replied</span>
+        <span class="pipe-lbl" id="pl4">Booked</span>
+        <span class="pipe-lbl" id="pl5">Closed</span>
+      </div>
+      <div class="pipe-steps">
+        <div class="ps" id="pp1"></div>
+        <div class="ps" id="pp2"></div>
+        <div class="ps" id="pp3"></div>
+        <div class="ps" id="pp4"></div>
+        <div class="ps" id="pp5"></div>
+      </div>
     </div>
 
-    <!-- Actions -->
-    <div class="panel-actions">
-      <a class="panel-btn pb-call" id="panelCall" href="#">&#9742; Call Now</a>
-      <a class="panel-btn pb-zoom" href="https://calendly.com/digiwei/meet" target="_blank">&#128197; Book Zoom</a>
-      <a class="panel-btn pb-preview" id="panelPreview" href="#" target="_blank">&#128279; Preview Site</a>
-      <a class="panel-btn pb-video" id="panelVideo" href="#" target="_blank">&#9654; Watch Video</a>
+    <!-- Quick actions -->
+    <div class="p-actions">
+      <a class="pbtn pb-call" id="pCall" href="#">&#9742; Call Now</a>
+      <a class="pbtn pb-zoom" href="https://calendly.com/digiwei/meet" target="_blank">&#128197; Book Zoom</a>
+      <a class="pbtn pb-site" id="pSite" href="#" target="_blank">&#128279; Preview Site</a>
+      <a class="pbtn pb-vid" id="pVid" href="#" target="_blank">&#9654; Watch Video</a>
     </div>
 
-    <!-- Info -->
-    <div class="panel-section">
-      <div class="panel-label">Contact Info</div>
-      <div class="info-row"><div class="info-row-label">Phone</div><div class="info-row-value" id="panelPhone"></div></div>
-      <div class="info-row"><div class="info-row-label">Email</div><div class="info-row-value" id="panelEmail"></div></div>
-      <div class="info-row"><div class="info-row-label">Website</div><div class="info-row-value" id="panelWebsite"></div></div>
-      <div class="info-row"><div class="info-row-label">Rating</div><div class="info-row-value" id="panelRating"></div></div>
+    <!-- Contact info -->
+    <div class="p-section">
+      <div class="p-section-label">Contact</div>
+      <div class="p-row"><div class="p-row-key">Phone</div><div class="p-row-val" id="pPhone"></div></div>
+      <div class="p-row"><div class="p-row-key">Email</div><div class="p-row-val" id="pEmail"></div></div>
+      <div class="p-row"><div class="p-row-key">Website</div><div class="p-row-val" id="pWeb"></div></div>
+      <div class="p-row"><div class="p-row-key">Rating</div><div class="p-row-val" id="pRating"></div></div>
     </div>
 
     <!-- Status -->
-    <div class="panel-section">
-      <div class="panel-label">Pipeline Status</div>
-      <select class="status-select" id="panelStatus">
+    <div class="p-section">
+      <div class="p-section-label">Pipeline Status</div>
+      <select class="p-select" id="pStatus">
         <option value="not-sent">Not Sent</option>
         <option value="pitched">Pitched</option>
         <option value="replied">Replied</option>
@@ -251,9 +313,9 @@ tr.selected td{background:#f0f9ff;}
     </div>
 
     <!-- Notes -->
-    <div class="panel-section">
-      <div class="panel-label">Notes</div>
-      <textarea class="notes-textarea" id="panelNotes" placeholder="Add notes..."></textarea>
+    <div class="p-section">
+      <div class="p-section-label">Notes</div>
+      <textarea class="p-notes" id="pNotes" placeholder="Add notes about this lead..."></textarea>
     </div>
 
     <button class="save-btn" onclick="saveLead()">Save Changes</button>
@@ -261,964 +323,193 @@ tr.selected td{background:#f0f9ff;}
 </div>
 
 <script>
-const PASSWORD = 'digiwei2026';
-const PREVIEW_BASE = 'https://digiweipreview.com';
-const VIDEO_BASE = 'https://digiweipreview.com/videos';
+const PW = 'digiwei2026';
+const PB = 'https://digiweipreview.com';
+const VB = 'https://digiweipreview.com/videos';
+const PIPE = ['not-sent','pitched','replied','booked','closed'];
 
-let allLeads = [];
-let leadData = {};
-let currentFilter = 'all';
-let currentLead = null;
+let leads = [], ldata = {}, filter = 'all', curLead = null;
 
-function loadData() {
-  try { leadData = JSON.parse(localStorage.getItem('digiwei_leads') || '{}'); } catch(e) { leadData = {}; }
+function slug(n){ return n.replace(/[^a-z0-9]/gi,'_').toLowerCase(); }
+function pslug(n){ return n.replace(/[^a-z0-9]/gi,'-').toLowerCase().replace(/-+/g,'-').replace(/^-|-$/g,''); }
+function ld(){ try{ ldata=JSON.parse(localStorage.getItem('dw_leads')||'{}'); }catch(e){ ldata={}; } }
+function sd(){ localStorage.setItem('dw_leads',JSON.stringify(ldata)); }
+
+function getStatus(l){
+  const d=ldata[slug(l.name)];
+  if(d&&d.status) return d.status;
+  if(l.pitched) return 'pitched';
+  return 'not-sent';
 }
-function saveData() {
-  localStorage.setItem('digiwei_leads', JSON.stringify(leadData));
+
+function statusLabel(s){ return {'not-sent':'Not Sent','pitched':'Pitched','replied':'Replied','booked':'Booked','closed':'Closed','lost':'Lost'}[s]||'Not Sent'; }
+function badgeClass(s){ return {'not-sent':'b-not-sent','pitched':'b-pitched','replied':'b-replied','booked':'b-booked','closed':'b-closed','lost':'b-lost'}[s]||'b-not-sent'; }
+
+function indDot(v){
+  v=(v||'').toLowerCase();
+  if(v.includes('plumb')) return '<span class="ind-dot d-plumber"></span>';
+  if(v.includes('electric')) return '<span class="ind-dot d-electric"></span>';
+  if(v.includes('hvac')||v.includes('heat')||v.includes('air')) return '<span class="ind-dot d-hvac"></span>';
+  if(v.includes('handyman')) return '<span class="ind-dot d-handyman"></span>';
+  return '<span class="ind-dot d-contractor"></span>';
 }
-function login() {
-  if (document.getElementById('passwordInput').value === PASSWORD) {
-    localStorage.setItem('digiwei_auth', '1');
+
+function indLabel(v){
+  v=(v||'').toLowerCase();
+  if(v.includes('plumb')) return 'Plumber';
+  if(v.includes('electric')) return 'Electrician';
+  if(v.includes('hvac')||v.includes('heat')||v.includes('air')) return 'HVAC';
+  if(v.includes('handyman')) return 'Handyman';
+  return 'Contractor';
+}
+
+function updateStats(){
+  document.getElementById('sTotal').textContent=leads.length;
+  document.getElementById('sPitched').textContent=leads.filter(l=>['pitched','replied','booked','closed'].includes(getStatus(l))).length;
+  document.getElementById('sReplied').textContent=leads.filter(l=>['replied','booked'].includes(getStatus(l))).length;
+  document.getElementById('sBooked').textContent=leads.filter(l=>getStatus(l)==='booked').length;
+  document.getElementById('sClosed').textContent=leads.filter(l=>getStatus(l)==='closed').length;
+  document.getElementById('sLost').textContent=leads.filter(l=>getStatus(l)==='lost').length;
+}
+
+function setFilter(f,btn){
+  filter=f;
+  document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function render(){
+  const q=(document.getElementById('srch').value||'').toLowerCase();
+  const visible=leads.filter(l=>{
+    const ms=filter==='all'||getStatus(l)===filter;
+    const mq=!q||l.name.toLowerCase().includes(q)||(l.found_via||'').toLowerCase().includes(q)||(l.phone||'').includes(q);
+    return ms&&mq;
+  });
+
+  const tbody=document.getElementById('tbody');
+  const empty=document.getElementById('empty');
+
+  if(!visible.length){ tbody.innerHTML=''; empty.classList.remove('hidden'); updateStats(); return; }
+  empty.classList.add('hidden');
+
+  tbody.innerHTML=visible.map(l=>{
+    const s=getStatus(l);
+    const sl=slug(l.name);
+    const ps=pslug(l.name);
+    const d=ldata[sl]||{};
+    const hasNotes=d.notes&&d.notes.trim().length>0;
+    const phone=(l.phone||'').replace(/\D/g,'');
+
+    return `<tr class="${s}" onclick="openPanel('${sl}')" id="row-${sl}">
+      <td>
+        <div class="name-line">${indDot(l.found_via)}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${l.name}</span>${hasNotes?'<span class="notes-dot"></span>':''}</div>
+        <div class="name-sub">${indLabel(l.found_via)} &bull; ${l.phone||'No phone'}</div>
+      </td>
+      <td class="email-cell${l.emailGuessed?' guessed':''}" title="${l.email||''}">${l.email||'—'}</td>
+      <td><span class="sbadge ${badgeClass(s)}">${statusLabel(s)}</span></td>
+      <td onclick="event.stopPropagation()">
+        <div class="actions-cell">
+          <a class="abtn ab-call" href="tel:${phone}" title="Call"><span>&#9742;</span><span class="abtn-label">CALL</span></a>
+          <a class="abtn ab-site" href="${PB}/${ps}.html" target="_blank" title="Preview Site"><span>&#128279;</span><span class="abtn-label">SITE</span></a>
+          <a class="abtn ab-video" href="${VB}/${sl}.mp4" target="_blank" title="Watch Video"><span>&#9654;</span><span class="abtn-label">VIDEO</span></a>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  if(curLead){
+    const row=document.getElementById('row-'+slug(curLead.name));
+    if(row) row.classList.add('selected');
+  }
+  updateStats();
+}
+
+function openPanel(sl){
+  curLead=leads.find(l=>slug(l.name)===sl);
+  if(!curLead) return;
+
+  const d=ldata[sl]||{};
+  const s=getStatus(curLead);
+  const ps=pslug(curLead.name);
+
+  document.getElementById('pName').textContent=curLead.name;
+  document.getElementById('pSub').textContent=indLabel(curLead.found_via)+(curLead.googleRating?' · '+curLead.googleRating+'★ ('+curLead.googleReviews+' reviews)':'');
+  document.getElementById('pCall').href='tel:'+(curLead.phone||'').replace(/\D/g,'');
+  document.getElementById('pSite').href=PB+'/'+ps+'.html';
+  document.getElementById('pVid').href=VB+'/'+sl+'.mp4';
+  document.getElementById('pPhone').textContent=curLead.phone||'No phone';
+  document.getElementById('pEmail').innerHTML=curLead.email?'<a href="mailto:'+curLead.email+'">'+curLead.email+'</a>':'—';
+  document.getElementById('pWeb').innerHTML=curLead.website?'<a href="'+curLead.website+'" target="_blank">'+curLead.website+'</a>':'—';
+  document.getElementById('pRating').textContent=curLead.googleRating?curLead.googleRating+'★ ('+curLead.googleReviews+' reviews)':'No data';
+  document.getElementById('pStatus').value=s;
+  document.getElementById('pNotes').value=d.notes||'';
+
+  // Pipeline bar
+  const idx=PIPE.indexOf(s);
+  PIPE.forEach((_,i)=>{
+    const el=document.getElementById('pp'+(i+1));
+    const lbl=document.getElementById('pl'+(i+1));
+    el.className='ps'+(i<idx?' done':i===idx?' active':'');
+    lbl.className='pipe-lbl'+(i===idx?' active':'');
+  });
+
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('panel').classList.add('open');
+  document.querySelectorAll('tr.selected').forEach(r=>r.classList.remove('selected'));
+  const row=document.getElementById('row-'+sl);
+  if(row) row.classList.add('selected');
+}
+
+function closePanel(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('panel').classList.remove('open');
+  document.querySelectorAll('tr.selected').forEach(r=>r.classList.remove('selected'));
+  curLead=null;
+}
+
+function saveLead(){
+  if(!curLead) return;
+  const sl=slug(curLead.name);
+  if(!ldata[sl]) ldata[sl]={};
+  ldata[sl].status=document.getElementById('pStatus').value;
+  ldata[sl].notes=document.getElementById('pNotes').value;
+  ldata[sl].updated=new Date().toISOString();
+  sd(); render(); closePanel();
+}
+
+function doLogin(){
+  if(document.getElementById('pwInput').value===PW){
+    localStorage.setItem('dw_auth','1');
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('app').classList.remove('hidden');
     init();
   } else {
-    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('loginErr').style.display='block';
   }
 }
-function logout() {
-  localStorage.removeItem('digiwei_auth');
+
+function doLogout(){
+  localStorage.removeItem('dw_auth');
   location.reload();
 }
-function getSlug(name) { return name.replace(/[^a-z0-9]/gi,'_').toLowerCase(); }
-function getPreviewSlug(name) { return name.replace(/[^a-z0-9]/gi,'-').toLowerCase().replace(/-+/g,'-').replace(/^-|-$/g,''); }
-function setFilter(f, btn) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderTable();
-}
-function getStatus(lead) {
-  const d = leadData[getSlug(lead.name)];
-  if (d && d.status) return d.status;
-  if (lead.pitched) return 'pitched';
-  return 'not-sent';
-}
-function statusLabel(s) {
-  return {
-    'not-sent':'Not Sent','pitched':'Pitched','replied':'Replied',
-    'booked':'Booked','closed':'Closed','lost':'Lost'
-  }[s] || 'Not Sent';
-}
-function statusClass(s) {
-  return {'not-sent':'s-not-sent','pitched':'s-pitched','replied':'s-replied','booked':'s-booked','closed':'s-closed','lost':'s-lost'}[s] || 's-not-sent';
-}
-function pipelineSteps(s) {
-  const order = ['not-sent','pitched','replied','booked','closed'];
-  const idx = order.indexOf(s);
-  return order.map((x,i) => i < idx ? 'done' : i === idx ? 'current' : '');
-}
-function updateStats() {
-  document.getElementById('sTotal').textContent = allLeads.length;
-  document.getElementById('sPitched').textContent = allLeads.filter(l => ['pitched','replied','booked','closed'].includes(getStatus(l))).length;
-  document.getElementById('sReplied').textContent = allLeads.filter(l => ['replied','booked'].includes(getStatus(l))).length;
-  document.getElementById('sBooked').textContent = allLeads.filter(l => getStatus(l) === 'booked').length;
-  document.getElementById('sClosed').textContent = allLeads.filter(l => getStatus(l) === 'closed').length;
-}
-function renderTable() {
-  const search = (document.getElementById('searchInput').value || '').toLowerCase();
-  const leads = allLeads.filter(l => {
-    const matchFilter = currentFilter === 'all' || getStatus(l) === currentFilter;
-    const matchSearch = !search || l.name.toLowerCase().includes(search) || (l.found_via||'').toLowerCase().includes(search);
-    return matchFilter && matchSearch;
-  });
 
-  const tbody = document.getElementById('tableBody');
-  const empty = document.getElementById('emptyState');
-
-  if (leads.length === 0) {
-    tbody.innerHTML = '';
-    empty.classList.remove('hidden');
-    updateStats();
-    return;
-  }
-  empty.classList.add('hidden');
-
-  const industry = v => (v||'').split(' in ')[0].split(' ')[0];
-  const phoneRaw = p => (p||'').replace(/\D/g,'');
-
-  tbody.innerHTML = leads.map(lead => {
-    const slug = getSlug(lead.name);
-    const status = getStatus(lead);
-    const data = leadData[slug] || {};
-    const previewSlug = getPreviewSlug(lead.name);
-    const hasNotes = data.notes && data.notes.trim().length > 0;
-    const emailGuessed = lead.emailGuessed;
-
-    return `<tr onclick="openPanel('${slug}')" id="row-${slug}">
-      <td class="col-name">${lead.name}${hasNotes ? '<span class="notes-indicator"></span>' : ''}<span>${industry(lead.found_via)} &bull; ${lead.phone||'No phone'}</span></td>
-      <td class="col-email ${emailGuessed ? 'guessed' : ''}" title="${lead.email||''}">${lead.email||'No email'}</td>
-      <td><span class="status-badge ${statusClass(status)}">${statusLabel(status)}</span></td>
-      <td class="col-actions" onclick="event.stopPropagation()">
-        <a class="action-icon ai-call" href="tel:${phoneRaw(lead.phone)}" title="Call">&#9742;</a>
-        <a class="action-icon ai-preview" href="${PREVIEW_BASE}/${previewSlug}.html" target="_blank" title="Preview">&#128279;</a>
-        <a class="action-icon ai-video" href="${VIDEO_BASE}/${slug}.mp4" target="_blank" title="Video">&#9654;</a>
-      </td>
-      <td></td>
-    </tr>`;
-  }).join('');
-
-  // Highlight selected row
-  if (currentLead) {
-    const row = document.getElementById('row-' + getSlug(currentLead.name));
-    if (row) row.classList.add('selected');
-  }
-
-  updateStats();
+function init(){
+  ld();
+  leads=LEADS_DATA;
+  document.getElementById('hDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+  render();
 }
 
-function openPanel(slug) {
-  currentLead = allLeads.find(l => getSlug(l.name) === slug);
-  if (!currentLead) return;
-
-  const data = leadData[slug] || {};
-  const status = getStatus(currentLead);
-  const previewSlug = getPreviewSlug(currentLead.name);
-
-  document.getElementById('panelName').textContent = currentLead.name;
-  document.getElementById('panelIndustry').textContent = (currentLead.found_via || '') + (currentLead.googleRating ? ' · ' + currentLead.googleRating + '★' : '');
-  document.getElementById('panelCall').href = 'tel:' + (currentLead.phone||'').replace(/\D/g,'');
-  document.getElementById('panelPreview').href = PREVIEW_BASE + '/' + previewSlug + '.html';
-  document.getElementById('panelVideo').href = VIDEO_BASE + '/' + slug + '.mp4';
-  document.getElementById('panelPhone').textContent = currentLead.phone || 'No phone';
-  document.getElementById('panelEmail').innerHTML = currentLead.email ? '<a href="mailto:' + currentLead.email + '">' + currentLead.email + '</a>' : 'No email';
-  document.getElementById('panelWebsite').innerHTML = currentLead.website ? '<a href="' + currentLead.website + '" target="_blank">' + currentLead.website + '</a>' : 'No website';
-  document.getElementById('panelRating').textContent = currentLead.googleRating ? currentLead.googleRating + '★ (' + currentLead.googleReviews + ' reviews)' : 'No data';
-  document.getElementById('panelStatus').value = status;
-  document.getElementById('panelNotes').value = data.notes || '';
-
-  const steps = pipelineSteps(status);
-  steps.forEach((s, i) => {
-    const el = document.getElementById('pp' + (i+1));
-    el.className = 'ps' + (s ? ' ' + s : '');
-  });
-
-  document.getElementById('panelOverlay').classList.add('open');
-  document.getElementById('panel').classList.add('open');
-
-  // Highlight row
-  document.querySelectorAll('tr.selected').forEach(r => r.classList.remove('selected'));
-  const row = document.getElementById('row-' + slug);
-  if (row) row.classList.add('selected');
-}
-
-function closePanel() {
-  document.getElementById('panelOverlay').classList.remove('open');
-  document.getElementById('panel').classList.remove('open');
-  document.querySelectorAll('tr.selected').forEach(r => r.classList.remove('selected'));
-  currentLead = null;
-}
-
-function saveLead() {
-  if (!currentLead) return;
-  const slug = getSlug(currentLead.name);
-  if (!leadData[slug]) leadData[slug] = {};
-  leadData[slug].status = document.getElementById('panelStatus').value;
-  leadData[slug].notes = document.getElementById('panelNotes').value;
-  leadData[slug].updated = new Date().toISOString();
-  saveData();
-  renderTable();
-  closePanel();
-}
-
-function init() {
-  loadData();
-  allLeads = LEADS_DATA;
-  document.getElementById('headerDate').textContent = new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-  renderTable();
-  updateStats();
-}
-
-window.onload = function() {
-  allLeads = LEADS_DATA;
-  if (localStorage.getItem('digiwei_auth') === '1') {
+window.onload=function(){
+  leads=LEADS_DATA;
+  if(localStorage.getItem('dw_auth')==='1'){
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('app').classList.remove('hidden');
     init();
   }
 };
 </script>
-
-<script>
-const LEADS_DATA = [
-  {
-    "name": "V-Max Plumbing Torrance",
-    "phone": "(310) 614-3579",
-    "address": "21250 Hawthorne Blvd Suite 500, Torrance, CA 90503, USA",
-    "website": "https://vmaxplumbing.com/about/plumber-torrance/",
-    "found_via": "plumber in Torrance CA",
-    "email": "operations@vmaxplumbing.com",
-    "previewUrl": "https://digiweipreview.com/v-max-plumbing-torrance.html",
-    "googleRating": 5,
-    "googleReviews": 145,
-    "pitched": true,
-    "pitched_at": "2026-05-16T21:14:42.883Z"
-  },
-  {
-    "name": "Top Plumbers of Torrance",
-    "phone": "(424) 208-0492",
-    "address": "1309 Cabrillo Ave, Torrance, CA 90501, USA",
-    "website": "http://topplumbersoftorrance.com/",
-    "found_via": "plumber in Torrance CA",
-    "email": "info@topplumbersoftorrance.com",
-    "previewUrl": "https://digiweipreview.com/top-plumbers-of-torrance.html",
-    "googleRating": 5,
-    "googleReviews": 11,
-    "pitched": true,
-    "pitched_at": "2026-05-16T21:14:46.409Z"
-  },
-  {
-    "name": "Sal's Plumbing Company Inc",
-    "phone": "(310) 782-1978",
-    "address": "20602 Normandie Ave, Torrance, CA 90502, USA",
-    "website": "http://salsplumbing.com/",
-    "found_via": "plumber in Torrance CA",
-    "email": "info@salsplumbing.com",
-    "previewUrl": "https://digiweipreview.com/sal-s-plumbing-company-inc.html",
-    "googleRating": 4.5,
-    "googleReviews": 240,
-    "pitched": true,
-    "pitched_at": "2026-05-18T02:29:40.491Z"
-  },
-  {
-    "name": "3 Ten Plumbing",
-    "phone": "(310) 461-9691",
-    "address": "2802 Winlock Rd, Torrance, CA 90505, USA",
-    "website": "http://www.3tenplumbing.com/",
-    "found_via": "plumber in Torrance CA",
-    "email": "3tenplumbing@gmail.com",
-    "previewUrl": "https://digiweipreview.com/3-ten-plumbing.html",
-    "googleRating": 5,
-    "googleReviews": 83,
-    "pitched": true,
-    "pitched_at": "2026-05-18T02:29:49.674Z"
-  },
-  {
-    "name": "LA Plumbing Company | Plumber in Torrance Redondo Beach, CA",
-    "phone": "(424) 677-2359",
-    "address": "609 Amapola Ave, Torrance, CA 90501, USA",
-    "website": "http://losangelescaplumbing.com/",
-    "found_via": "plumber in Torrance CA",
-    "email": "info@losangelescaplumbing.com",
-    "previewUrl": "https://digiweipreview.com/la-plumbing-company-plumber-in-torrance-redondo-beach-ca.html",
-    "googleRating": 4.9,
-    "googleReviews": 107,
-    "pitched": true,
-    "pitched_at": "2026-05-18T02:29:58.754Z"
-  },
-  {
-    "name": "FlowFix Plumber Torrance",
-    "phone": "(424) 507-3273",
-    "address": "4743 Torrance Blvd, Torrance, CA 90503, USA",
-    "website": "http://flowfixplumbertorrance.com/",
-    "found_via": "plumber in Torrance CA",
-    "email": "info@flowfixplumbertorrance.com",
-    "previewUrl": "https://digiweipreview.com/flowfix-plumber-torrance.html",
-    "googleRating": 5,
-    "googleReviews": 15,
-    "pitched": true,
-    "pitched_at": "2026-05-18T02:30:07.853Z"
-  },
-  {
-    "name": "Soo Hipp Plumbing and Drains",
-    "phone": "(310) 697-5822",
-    "address": "3655 Torrance Blvd STE 300, Torrance, CA 90503, USA",
-    "website": "https://www.soohippplumbing.com/",
-    "found_via": "plumber in Torrance CA",
-    "email": "info@soohippplumbing.com",
-    "previewUrl": "https://digiweipreview.com/soo-hipp-plumbing-and-drains.html",
-    "googleRating": 4.9,
-    "googleReviews": 204,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Plumber Torrance",
-    "phone": "(424) 360-2451",
-    "address": "20500 Hawthorne Blvd, Torrance, CA 90503, USA",
-    "website": "http://plumbertorranceco.com/",
-    "found_via": "plumber in Torrance CA",
-    "email": "info@plumbertorranceco.com",
-    "previewUrl": "https://digiweipreview.com/plumber-torrance.html",
-    "googleRating": 5,
-    "googleReviews": 145,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "South Park Plumber's",
-    "phone": "(310) 388-3890",
-    "address": "1316 Sartori Ave #57b, Torrance, CA 90501, USA",
-    "website": "https://sounthparkplumbers.com/Torrance-plumbing-services/",
-    "found_via": "plumber in Torrance CA",
-    "email": "info@sounthparkplumbers.com",
-    "previewUrl": "https://digiweipreview.com/south-park-plumber-s.html",
-    "googleRating": 5,
-    "googleReviews": 117,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Fast Response Plumbers Torrance",
-    "phone": "(310) 504-2481",
-    "address": "22932 Lockness Ave, Torrance, CA 90501, USA",
-    "website": "http://fastresponseplumberstorrance.com/",
-    "found_via": "plumber in Torrance CA",
-    "email": "info@fastresponseplumberstorrance.com",
-    "previewUrl": "https://digiweipreview.com/fast-response-plumbers-torrance.html",
-    "googleRating": 5,
-    "googleReviews": 13,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Peacock Plumbing",
-    "phone": "(888) 650-3880",
-    "address": "2539 W 237th St Ste B, Torrance, CA 90505, USA",
-    "website": "http://www.callpeacockplumbing.com/",
-    "found_via": "plumber in Torrance CA",
-    "email": "info@callpeacockplumbing.com",
-    "previewUrl": "https://digiweipreview.com/peacock-plumbing.html",
-    "googleRating": 4.8,
-    "googleReviews": 234,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "So Cal Plumbing Heating & Air Conditioning",
-    "phone": "(310) 686-0777",
-    "address": "4811 Darien St, Torrance, CA 90503, USA",
-    "website": "https://socalphac.com/",
-    "found_via": "plumber in Torrance CA",
-    "email": "socalconstruction1@yahoo.com",
-    "previewUrl": "https://digiweipreview.com/so-cal-plumbing-heating-air-conditioning.html",
-    "googleRating": 4.9,
-    "googleReviews": 195,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:26:56.886Z"
-  },
-  {
-    "name": "Most Valuable Plumber",
-    "phone": "(818) 714-7812",
-    "address": "2029 Border Ave, Torrance, CA 90501, USA",
-    "website": "https://mvp-plumbing.com/torrance/?utm_source=GBP&utm_medium=organic",
-    "found_via": "plumber in Torrance CA",
-    "email": "info@mvp-plumbing.com",
-    "previewUrl": "https://digiweipreview.com/most-valuable-plumber.html",
-    "googleRating": 4.9,
-    "googleReviews": 40,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Plumber's Kingdom",
-    "phone": "(310) 388-4002",
-    "address": "23473 Hawthorne Blvd, Torrance, CA 90505, USA",
-    "website": "https://plumbingkingdom.com/Torrance",
-    "found_via": "plumber in Torrance CA",
-    "email": "info@plumbingkingdom.com",
-    "previewUrl": "https://digiweipreview.com/plumber-s-kingdom.html",
-    "googleRating": 5,
-    "googleReviews": 58,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Cornett Plumbing & Heating",
-    "phone": "(310) 320-6171",
-    "address": "1715 Cabrillo Ave, Torrance, CA 90501, USA",
-    "website": "http://www.cornettplumbing.com/",
-    "found_via": "plumber in Torrance CA",
-    "email": "info@cornettplumbing.com",
-    "previewUrl": "https://digiweipreview.com/cornett-plumbing-heating.html",
-    "googleRating": 4.3,
-    "googleReviews": 49,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Vando Construction",
-    "phone": "(310) 978-5437",
-    "address": "22629 Ellinwood Dr, Torrance, CA 90505, USA",
-    "website": "http://vandoconstruction.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "sep@vandoconstruction.com",
-    "previewUrl": "https://digiweipreview.com/vando-construction.html",
-    "googleRating": 5,
-    "googleReviews": 54,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:27:06.509Z"
-  },
-  {
-    "name": "Pulsar Construction Inc. Bathroom Remodel & Kitchen Remodel Torrance, Rancho Palos Verdes",
-    "phone": "(424) 241-0577",
-    "address": "3868 W Carson St #300, Torrance, CA 90503, USA",
-    "website": "https://www.pulsarconst.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "pulsarconst@gmail.com",
-    "previewUrl": "https://digiweipreview.com/pulsar-construction-inc-bathroom-remodel-kitchen-remodel-torrance-rancho-palos-verdes.html",
-    "googleRating": 4.9,
-    "googleReviews": 38,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:27:17.081Z"
-  },
-  {
-    "name": "AK PRO CONSTRUCTION",
-    "phone": "(310) 320-5757",
-    "address": "1840 W 220th St #370, Torrance, CA 90501, USA",
-    "website": "http://akproconstruction.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "info@akproconstruction.com",
-    "previewUrl": "https://digiweipreview.com/ak-pro-construction.html",
-    "googleRating": 4.8,
-    "googleReviews": 17,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Bay Cities Construction",
-    "phone": "(888) 881-7355",
-    "address": "22760 Hawthorne Blvd #230, Torrance, CA 90505, USA",
-    "website": "http://www.baycitiesconstruction.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "info@baycitiesconstruction.com",
-    "previewUrl": "https://digiweipreview.com/bay-cities-construction.html",
-    "googleRating": 5,
-    "googleReviews": 8,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Hiva & Sons Construction",
-    "phone": "(424) 200-7664",
-    "address": "2119 Gramercy Ave, Torrance, CA 90501, USA",
-    "website": "https://hivansonsconstruction.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "contact@hivansonsconstruction.com",
-    "previewUrl": "https://digiweipreview.com/hiva-sons-construction.html",
-    "googleRating": 5,
-    "googleReviews": 14,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:27:27.424Z"
-  },
-  {
-    "name": "Del Amo Construction",
-    "phone": "(310) 378-6203",
-    "address": "19191 S Vermont Ave Suite 950, Torrance, CA 90502, USA",
-    "website": "http://www.delamoconstruction.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "info@delamoconstruction.com",
-    "previewUrl": "https://digiweipreview.com/del-amo-construction.html",
-    "googleRating": 4.3,
-    "googleReviews": 7,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Cut Once Remodeling",
-    "phone": "(888) 655-0125",
-    "address": "22828 Lockness Ave, Torrance, CA 90501, USA",
-    "website": "http://www.cutonceremodeling.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "coradmin@cutonceremodeling.com",
-    "previewUrl": "https://digiweipreview.com/cut-once-remodeling.html",
-    "googleRating": 4.4,
-    "googleReviews": 189,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:27:37.814Z"
-  },
-  {
-    "name": "McGuire Builders, Inc.",
-    "phone": "(562) 424-3636",
-    "address": "2293 W 190th St, Torrance, CA 90504, USA",
-    "website": "http://www.mcguirebuilders.net/",
-    "found_via": "contractor in Torrance CA",
-    "email": "contact@mcguirebuilders.net",
-    "previewUrl": "https://digiweipreview.com/mcguire-builders-inc.html",
-    "googleRating": 5,
-    "googleReviews": 5,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:36:27.921Z"
-  },
-  {
-    "name": "F. Roberts Construction",
-    "phone": "(949) 689-6711",
-    "address": "19807 Hamilton Ave, Torrance, CA 90502, USA",
-    "website": "https://www.frobertsconstruction.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "info@rnrcgroup.com",
-    "previewUrl": "https://digiweipreview.com/f-roberts-construction.html",
-    "googleRating": 4.8,
-    "googleReviews": 13,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:36:37.678Z"
-  },
-  {
-    "name": "Southline Construction",
-    "phone": "(310) 347-9131",
-    "address": "3476 Garnet St Apt #343, Torrance, CA 90503, USA",
-    "website": "http://www.southlineconstruction.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "info@southlineconstruction.com",
-    "previewUrl": "https://digiweipreview.com/southline-construction.html",
-    "googleRating": 5,
-    "googleReviews": 3,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Horizon Construction & Remodeling -Torrance",
-    "phone": "(424) 484-5858",
-    "address": "21250 Hawthorne Blvd Suite 500, Torrance, CA 90503, USA",
-    "website": "https://horizonremodelinginc.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "%20h@horizon-cr.com",
-    "previewUrl": "https://digiweipreview.com/horizon-construction-remodeling-torrance.html",
-    "googleRating": 4.8,
-    "googleReviews": 69,
-    "pitched": true,
-    "pitched_at": "2026-05-18T21:36:21.881Z"
-  },
-  {
-    "name": "Build Pros Construction",
-    "phone": "(424) 376-3311",
-    "address": "4025 Spencer St # 104, Torrance, CA 90503, USA",
-    "website": "http://buildpros.la/",
-    "found_via": "contractor in Torrance CA",
-    "email": "info@buildpros.la",
-    "previewUrl": "https://digiweipreview.com/build-pros-construction.html",
-    "googleRating": 4,
-    "googleReviews": 82,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:36:57.667Z"
-  },
-  {
-    "name": "Envision More Renovations",
-    "phone": "(310) 736-7990",
-    "address": "21515 Hawthorne Blvd, Torrance, CA 90503, USA",
-    "website": "http://www.emrbuilds.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "miguel@emrbuilds.com",
-    "previewUrl": "https://digiweipreview.com/envision-more-renovations.html",
-    "googleRating": 5,
-    "googleReviews": 36,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:37:07.044Z"
-  },
-  {
-    "name": "Arias General Construction, Inc",
-    "phone": "(310) 350-8198",
-    "address": "17015 Casimir Ave, Torrance, CA 90504, USA",
-    "website": "http://ariasgeneral.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "sal@ariasgeneral.com",
-    "previewUrl": "https://digiweipreview.com/arias-general-construction-inc.html",
-    "googleRating": 4.3,
-    "googleReviews": 3,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:37:16.149Z"
-  },
-  {
-    "name": "Torrance Kitchens, Baths and Flooring",
-    "phone": "(310) 370-1911",
-    "address": "3953 Artesia Blvd, Torrance, CA 90504, USA",
-    "website": "https://torrancekitchenbathandflooring.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "info@remodelinno.com",
-    "previewUrl": "https://digiweipreview.com/torrance-kitchens-baths-and-flooring.html",
-    "googleRating": 4.8,
-    "googleReviews": 61,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:37:25.680Z"
-  },
-  {
-    "name": "Sucro Painting Contractors",
-    "phone": "(424) 484-6956",
-    "address": "4203 Spencer St, Torrance, CA 90503, USA",
-    "website": "https://sucropainting.com/?utm_campaign=gmb",
-    "found_via": "contractor in Torrance CA",
-    "email": "info@sucropainting.com",
-    "previewUrl": "https://digiweipreview.com/sucro-painting-contractors.html",
-    "googleRating": 4.9,
-    "googleReviews": 151,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Aza Construction",
-    "phone": "(310) 713-5160",
-    "address": "4304 W 149th St, Lawndale, CA 90260, USA",
-    "website": "https://azaconstructioninc.com/",
-    "found_via": "contractor in Torrance CA",
-    "email": "azaconstructioninc@gmail.com",
-    "previewUrl": "https://digiweipreview.com/aza-construction.html",
-    "googleRating": 5,
-    "googleReviews": 17,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:37:34.383Z"
-  },
-  {
-    "name": "GetPro Handyman Services",
-    "phone": "(424) 376-7520",
-    "address": "3138 Newton St, Torrance, CA 90505, USA",
-    "website": "https://getpro.now/",
-    "found_via": "handyman in Torrance CA",
-    "email": "info@getpro.now",
-    "previewUrl": "https://digiweipreview.com/getpro-handyman-services.html",
-    "googleRating": 5,
-    "googleReviews": 6,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Aska Handyman Services",
-    "phone": "(213) 293-5095",
-    "address": "1337 252nd St, Harbor City, CA 90710, USA",
-    "website": "https://askahandymanandremodelingservices.com/",
-    "found_via": "handyman in Torrance CA",
-    "email": "askaprohandyman@gmail.com",
-    "previewUrl": "https://digiweipreview.com/aska-handyman-services.html",
-    "googleRating": 5,
-    "googleReviews": 37,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:37:44.613Z"
-  },
-  {
-    "name": "The Handy Geeks",
-    "phone": "(818) 835-0556",
-    "address": "1219 Steinhart Ave, Redondo Beach, CA 90278, USA",
-    "website": "https://www.thehandygeeks.co/",
-    "found_via": "handyman in Torrance CA",
-    "email": "info@thehandygeeks.co",
-    "previewUrl": "https://digiweipreview.com/the-handy-geeks.html",
-    "googleRating": 5,
-    "googleReviews": 104,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "The Fix It Lass",
-    "phone": "(310) 947-6131",
-    "address": "1820 W Carson St #202-208, Torrance, CA 90501, USA",
-    "website": "http://thefixitlass.com/",
-    "found_via": "handyman in Torrance CA",
-    "email": "info@thefixitlass.com",
-    "previewUrl": "https://digiweipreview.com/the-fix-it-lass.html",
-    "googleRating": 5,
-    "googleReviews": 3,
-    "pitched": true,
-    "pitched_at": "2026-05-18T20:37:54.990Z"
-  },
-  {
-    "name": "AMI Handyman Services LLC",
-    "phone": "(424) 264-7207",
-    "address": "646 W 23rd St, San Pedro, CA 90731, USA",
-    "website": "http://amihandyman.com/",
-    "found_via": "handyman in Torrance CA",
-    "email": "info@amihandyman.com",
-    "previewUrl": "https://digiweipreview.com/ami-handyman-services-llc.html",
-    "googleRating": 4.7,
-    "googleReviews": 12,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Flash Electrician Service",
-    "phone": "(844) 760-2924",
-    "address": "1315 El Prado Ave #315, Torrance, CA 90501, USA",
-    "website": "https://flash-electrician-service.com/",
-    "found_via": "electrician in Torrance CA",
-    "email": "info@flash-electrician-service.com",
-    "previewUrl": "https://digiweipreview.com/flash-electrician-service.html",
-    "googleRating": 5,
-    "googleReviews": 73,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Marvel Electricians",
-    "phone": "(310) 388-3878",
-    "address": "1212 Felbar Ave, Torrance, CA 90503, USA",
-    "website": "https://marvelelectricians.com/torrance/",
-    "found_via": "electrician in Torrance CA",
-    "email": "info@marvelelectricians.com",
-    "previewUrl": "https://digiweipreview.com/marvel-electricians.html",
-    "googleRating": 4.8,
-    "googleReviews": 80,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Electricians Service Team",
-    "phone": "(424) 349-7844",
-    "address": "1005 Hickory Ave, Torrance, CA 90503, USA",
-    "website": "https://electriciansserviceteam.com/locations/Torrance",
-    "found_via": "electrician in Torrance CA",
-    "email": "info@electriciansserviceteam.com",
-    "previewUrl": "https://digiweipreview.com/electricians-service-team.html",
-    "googleRating": 4.9,
-    "googleReviews": 57,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Seaside Electric",
-    "phone": "(310) 487-2137",
-    "address": "4314 Cathann St, Torrance, CA 90503, USA",
-    "website": "https://seaside-electric310.com/",
-    "found_via": "electrician in Torrance CA",
-    "email": "tyler@seaside-electric310.com",
-    "previewUrl": "https://digiweipreview.com/seaside-electric.html",
-    "googleRating": 5,
-    "googleReviews": 8,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Armor Electric",
-    "phone": "(310) 773-9938",
-    "address": "1556 W 214th St, Torrance, CA 90501, USA",
-    "website": "http://www.armorelectric.com/",
-    "found_via": "electrician in Torrance CA",
-    "email": "info@armorelectric.com",
-    "previewUrl": "https://digiweipreview.com/armor-electric.html",
-    "googleRating": 4.8,
-    "googleReviews": 26,
-    "pitched": true,
-    "pitched_at": "2026-05-13T01:35:02.939Z"
-  },
-  {
-    "name": "Magnum Electric",
-    "phone": "(310) 340-1640",
-    "address": "1737 Border Ave B, Torrance, CA 90501, USA",
-    "website": "https://magnumelectric.net/",
-    "found_via": "electrician in Torrance CA",
-    "email": "info@magnumelectric.net",
-    "previewUrl": "https://digiweipreview.com/magnum-electric.html",
-    "googleRating": 5,
-    "googleReviews": 14,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Electrical Help",
-    "phone": "(310) 906-5944",
-    "address": "23104 Samuel St, Torrance, CA 90505, USA",
-    "website": "https://electricalhelp.us/",
-    "found_via": "electrician in Torrance CA",
-    "email": "contact@electricalhelp.us",
-    "previewUrl": "https://digiweipreview.com/electrical-help.html",
-    "googleRating": 5,
-    "googleReviews": 15,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "The Torrance Electrician",
-    "phone": "(310) 361-2453",
-    "address": "5409 Clearsite St, Torrance, CA 90505, USA",
-    "website": "http://www.electriciantorranceca.com/",
-    "found_via": "electrician in Torrance CA",
-    "email": "info@electriciantorranceca.com",
-    "previewUrl": "https://digiweipreview.com/the-torrance-electrician.html",
-    "googleRating": null,
-    "googleReviews": null,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Kings Electric",
-    "phone": "(424) 215-1991",
-    "address": "1414 Plaza del Amo, Torrance, CA 90501, USA",
-    "website": "https://gokingselectric.com/",
-    "found_via": "electrician in Torrance CA",
-    "email": "info@gokingselectric.com",
-    "previewUrl": "https://digiweipreview.com/kings-electric.html",
-    "googleRating": 5,
-    "googleReviews": 3,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "FirstToCall Electrician Lawndale",
-    "phone": "(818) 322-0248",
-    "address": "15705 Hawthorne Blvd, Lawndale, CA 90260, USA",
-    "website": "https://electricianlawndale.com/",
-    "found_via": "electrician in Torrance CA",
-    "email": "info@electricianlawndale.com",
-    "previewUrl": "https://digiweipreview.com/firsttocall-electrician-lawndale.html",
-    "googleRating": 5,
-    "googleReviews": 35,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Fastwire Electric",
-    "phone": "(310) 896-1944",
-    "address": "2537 CA-1 d190, Torrance, CA 90505, USA",
-    "website": "http://www.fastwireelectric.com/?utm_source=GBP&utm_medium=google&utm_campaign=click",
-    "found_via": "electrician in Torrance CA",
-    "email": "info@fastwireelectric.com",
-    "previewUrl": "https://digiweipreview.com/fastwire-electric.html",
-    "googleRating": 5,
-    "googleReviews": 17,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Torrance Air Conditioning Experts",
-    "phone": "(424) 888-6431",
-    "address": "4608 Pacific Coast Hwy, Torrance, CA 90505, USA",
-    "website": "http://torranceacrepair.com/",
-    "found_via": "HVAC in Torrance CA",
-    "email": "info@torranceacrepair.com",
-    "previewUrl": "https://digiweipreview.com/torrance-air-conditioning-experts.html",
-    "googleRating": 4.9,
-    "googleReviews": 36,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Lucas & Son AC Repair Torrance",
-    "phone": "(424) 492-2228",
-    "address": "385 Van Ness Ave #182, Torrance, CA 90501, USA",
-    "website": "https://modernfamilyairconditioning.com/torrance/",
-    "found_via": "HVAC in Torrance CA",
-    "email": "info@modernfamilyairconditioning.com",
-    "previewUrl": "https://digiweipreview.com/lucas-son-ac-repair-torrance.html",
-    "googleRating": 4.9,
-    "googleReviews": 96,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Royal Heating & AC Repair Torrance",
-    "phone": "(424) 305-1170",
-    "address": "1618 Cabrillo Ave, Torrance, CA 90501, USA",
-    "website": "https://royalheatingairllc.com/",
-    "found_via": "HVAC in Torrance CA",
-    "email": "info@royalheatingairllc.com",
-    "previewUrl": "https://digiweipreview.com/royal-heating-ac-repair-torrance.html",
-    "googleRating": 5,
-    "googleReviews": 6,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "74 Degrees Heating & Air, Inc.",
-    "phone": "(310) 431-4444",
-    "address": "2367 W 208th St UNIT 7, Torrance, CA 90501, USA",
-    "website": "https://www.74degreesheatandair.com/",
-    "found_via": "HVAC in Torrance CA",
-    "email": "info@74degreesheatandair.com",
-    "previewUrl": "https://digiweipreview.com/74-degrees-heating-air-inc.html",
-    "googleRating": 4.9,
-    "googleReviews": 131,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "HVAC Pros Torrance",
-    "phone": "(424) 306-1757",
-    "address": "2703 Arlington Ave, Torrance, CA 90501, USA",
-    "website": "http://hvac-pros-torrance.com/",
-    "found_via": "HVAC in Torrance CA",
-    "email": "info@hvac-pros-torrance.com",
-    "previewUrl": "https://digiweipreview.com/hvac-pros-torrance.html",
-    "googleRating": 4.8,
-    "googleReviews": 17,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "HVAC Expert - Heating & Air Conditioning",
-    "phone": "(310) 861-4144",
-    "address": "22255 S Western Ave, Torrance, CA 90501, USA",
-    "website": "https://hvacallianceexpert.com/locations/torrance/",
-    "found_via": "HVAC in Torrance CA",
-    "email": "info@hvacallianceexpert.com",
-    "previewUrl": "https://digiweipreview.com/hvac-expert-heating-air-conditioning.html",
-    "googleRating": 4.7,
-    "googleReviews": 47,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "P & M Mechanical Heating & AC",
-    "phone": "(310) 530-6642",
-    "address": "23991 Arlington Ave, Torrance, CA 90501, USA",
-    "website": "http://www.pmmech.com/",
-    "found_via": "HVAC in Torrance CA",
-    "email": "info@pmmech.com",
-    "previewUrl": "https://digiweipreview.com/p-m-mechanical-heating-ac.html",
-    "googleRating": 4.9,
-    "googleReviews": 73,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Torrance Cooling & Heating",
-    "phone": "(304) 453-4350",
-    "address": "20051 S Vermont Ave, Torrance, CA 90502, USA",
-    "website": "http://roofingforless.shop/",
-    "found_via": "HVAC in Torrance CA",
-    "email": "info@roofingforless.shop",
-    "previewUrl": "https://digiweipreview.com/torrance-cooling-heating.html",
-    "googleRating": 4.6,
-    "googleReviews": 18,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "K & L HVAC & Construction",
-    "phone": "(424) 258-0945",
-    "address": "3525 W Carson St, Torrance, CA 90503, USA",
-    "website": "https://www.kandlhvacandconstruction.com/",
-    "found_via": "HVAC in Torrance CA",
-    "email": "info@kandlhvacandconstruction.com",
-    "previewUrl": "https://digiweipreview.com/k-l-hvac-construction.html",
-    "googleRating": 5,
-    "googleReviews": 69,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "Torrance Central HVAC & Heating",
-    "phone": "(424) 279-5985",
-    "address": "1914 S Pacific Coast Hwy, Redondo Beach, CA 90277, USA",
-    "website": "https://greenairconditioningservice.com/redondo-beach/",
-    "found_via": "HVAC in Torrance CA",
-    "email": "info@greenairconditioningservice.com",
-    "previewUrl": "https://digiweipreview.com/torrance-central-hvac-heating.html",
-    "googleRating": 4.8,
-    "googleReviews": 70,
-    "pitched": false,
-    "pitched_at": null
-  },
-  {
-    "name": "One Way Heating & Air Conditioning",
-    "phone": "(310) 212-5554",
-    "address": "22395 S Western Ave UNIT 301, Torrance, CA 90501, USA",
-    "website": "https://www.onewayair.com/",
-    "found_via": "HVAC in Torrance CA",
-    "email": "onewayair@hotmail.com",
-    "previewUrl": "https://digiweipreview.com/one-way-heating-air-conditioning.html",
-    "googleRating": 3.9,
-    "googleReviews": 31,
-    "pitched": false,
-    "pitched_at": null
-  }
-];
-</script>
+<script>const LEADS_DATA=[];</script>
 </body>
 </html>
