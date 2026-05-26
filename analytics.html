@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digiwei Campaign Analytics</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --green:#8DC63F;--dark:#58595B;--blue:#29ABE2;--purple:#6366f1;
+  --yellow:#f59e0b;--red:#ef4444;--bg:#f1f5f9;--card:#fff;
+  --border:#e2e8f0;--text:#1e293b;--muted:#64748b;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:13px;}
+.login{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--dark);}
+.login-card{background:#fff;border-radius:16px;padding:40px 32px;width:100%;max-width:320px;text-align:center;}
+.login-logo{font-size:24px;font-weight:900;color:var(--green);margin-bottom:8px;letter-spacing:1px;}
+.login-title{font-size:12px;color:var(--muted);margin-bottom:24px;text-transform:uppercase;letter-spacing:.5px;}
+.login-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;margin-bottom:10px;outline:none;}
+.login-input:focus{border-color:var(--green);}
+.login-btn{width:100%;background:var(--green);color:#fff;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;}
+.login-error{color:var(--red);font-size:12px;margin-top:6px;display:none;}
+.app{min-height:100vh;}
+.header{background:var(--dark);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;}
+.header-left{display:flex;align-items:center;gap:16px;}
+.logo{color:var(--green);font-weight:900;font-size:16px;letter-spacing:1px;}
+.header-title{color:rgba(255,255,255,0.6);font-size:13px;}
+.header-right{display:flex;align-items:center;gap:12px;}
+.refresh-btn{background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);padding:5px 12px;border-radius:5px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px;}
+.logout-btn{background:transparent;color:rgba(255,255,255,0.5);border:none;font-size:12px;cursor:pointer;}
+.main{max-width:1200px;margin:0 auto;padding:20px;}
+.section-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;}
+
+/* AI ANALYSIS CARD */
+.ai-card{background:linear-gradient(135deg,#1e293b 0%,#334155 100%);border-radius:12px;padding:20px 24px;margin-bottom:20px;position:relative;overflow:hidden;}
+.ai-card::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:rgba(141,198,63,0.1);border-radius:50%;}
+.ai-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ai-badge{background:var(--green);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.5px;}
+.ai-title{color:#fff;font-size:14px;font-weight:700;}
+.ai-updated{color:rgba(255,255,255,0.4);font-size:11px;margin-left:auto;}
+.health-row{display:flex;align-items:center;gap:16px;margin-bottom:16px;}
+.health-score{font-size:48px;font-weight:900;line-height:1;}
+.health-score.green{color:var(--green);}
+.health-score.yellow{color:var(--yellow);}
+.health-score.red{color:var(--red);}
+.health-label{color:rgba(255,255,255,0.7);font-size:13px;margin-top:4px;}
+.health-bar{flex:1;height:8px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;}
+.health-fill{height:100%;border-radius:4px;transition:width .8s ease;}
+.ai-analysis{color:rgba(255,255,255,0.85);font-size:13px;line-height:1.7;margin-bottom:14px;}
+.ai-loading{color:rgba(255,255,255,0.5);font-size:13px;font-style:italic;}
+.ai-recs{display:flex;flex-direction:column;gap:8px;}
+.ai-rec{background:rgba(255,255,255,0.06);border-radius:8px;padding:10px 14px;border-left:3px solid var(--green);}
+.ai-rec.warning{border-left-color:var(--yellow);}
+.ai-rec.danger{border-left-color:var(--red);}
+.ai-rec-title{color:#fff;font-size:12px;font-weight:700;margin-bottom:3px;}
+.ai-rec-desc{color:rgba(255,255,255,0.6);font-size:11px;line-height:1.5;}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px;}
+.stat-card{background:var(--card);border-radius:10px;padding:14px 12px;text-align:center;border:1px solid var(--border);}
+.stat-num{font-size:28px;font-weight:800;line-height:1;}
+.stat-sub{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:3px;}
+.stat-rate{font-size:11px;color:var(--muted);margin-top:2px;}
+.c-green{color:var(--green);}
+.c-blue{color:var(--blue);}
+.c-yellow{color:var(--yellow);}
+.c-purple{color:var(--purple);}
+.c-red{color:var(--red);}
+.c-dark{color:var(--dark);}
+
+/* ALERTS */
+.alerts{margin-bottom:20px;}
+.alert{display:flex;align-items:flex-start;gap:10px;background:var(--card);border-radius:8px;padding:12px 14px;margin-bottom:8px;border-left:3px solid var(--border);border:1px solid var(--border);}
+.alert.danger{border-left:3px solid var(--red);background:#fff5f5;}
+.alert.warning{border-left:3px solid var(--yellow);background:#fffbf0;}
+.alert.success{border-left:3px solid var(--green);background:#f0fdf4;}
+.alert.info{border-left:3px solid var(--blue);background:#f0f9ff;}
+.alert-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.alert-body{flex:1;}
+.alert-msg{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.alert-action{font-size:11px;color:var(--muted);}
+
+/* TWO COLUMN */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.card{background:var(--card);border-radius:10px;padding:16px 18px;border:1px solid var(--border);}
+
+/* FUNNEL */
+.funnel{display:flex;flex-direction:column;gap:4px;}
+.funnel-step{display:flex;align-items:center;gap:10px;}
+.funnel-bar-wrap{flex:1;height:28px;background:#f1f5f9;border-radius:6px;overflow:hidden;}
+.funnel-bar{height:100%;border-radius:6px;display:flex;align-items:center;padding:0 10px;font-size:11px;font-weight:700;color:#fff;white-space:nowrap;transition:width 1s ease;}
+.funnel-label{font-size:12px;color:var(--muted);min-width:70px;text-align:right;}
+.funnel-num{font-size:13px;font-weight:700;color:var(--text);min-width:30px;}
+.funnel-pct{font-size:10px;color:var(--muted);min-width:36px;}
+
+/* INDUSTRY TABLE */
+.ind-table{width:100%;border-collapse:collapse;}
+.ind-table th{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;padding:6px 8px;text-align:left;border-bottom:2px solid var(--border);}
+.ind-table td{padding:8px;border-bottom:1px solid var(--border);font-size:12px;}
+.ind-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;}
+.bar-cell{min-width:80px;}
+.mini-bar{height:6px;border-radius:3px;background:var(--green);display:inline-block;}
+
+/* LEAD TIMELINE */
+.timeline-table{width:100%;border-collapse:collapse;}
+.timeline-table th{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;padding:6px 8px;text-align:left;border-bottom:2px solid var(--border);}
+.timeline-table td{padding:7px 8px;border-bottom:1px solid var(--border);font-size:11px;}
+.step-dot{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:9px;font-weight:700;margin-right:2px;}
+.dot-done{background:#dcfce7;color:#166534;}
+.dot-skip{background:#f1f5f9;color:#94a3b8;}
+.dot-warn{background:#fef3c7;color:#92400e;}
+.dot-danger{background:#fee2e2;color:#991b1b;}
+.name-cell{font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* REVENUE */
+.revenue-section{background:var(--card);border-radius:10px;padding:16px 18px;border:1px solid var(--border);margin-bottom:20px;}
+.revenue-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px;}
+.rev-item{text-align:center;padding:12px;background:#f8fafc;border-radius:8px;}
+.rev-num{font-size:20px;font-weight:800;color:var(--dark);}
+.rev-label{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;margin-top:3px;}
+
+/* REVENUE INPUT */
+.rev-inputs{display:flex;gap:10px;margin-top:12px;align-items:center;}
+.rev-input{padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;width:100px;outline:none;}
+.rev-input:focus{border-color:var(--green);}
+.rev-label-text{font-size:12px;color:var(--muted);}
+
+.hidden{display:none!important;}
+.spin{animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<div class="login" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">digiWEI</div>
+    <div class="login-title">Campaign Analytics</div>
+    <input type="password" class="login-input" id="pwInput" placeholder="Password" onkeypress="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="loginErr">Incorrect password</div>
+  </div>
+</div>
+
+<div class="app hidden" id="app">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">digiWEI</div>
+      <div class="header-title">Campaign Analytics</div>
+    </div>
+    <div class="header-right">
+      <button class="refresh-btn" onclick="loadAnalytics()">&#8635; Refresh</button>
+      <a href="dashboard.html" style="color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;">Dashboard</a>
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- AI Analysis Card -->
+    <div class="ai-card" id="aiCard">
+      <div class="ai-header">
+        <span class="ai-badge">AI ANALYSIS</span>
+        <span class="ai-title">Campaign Intelligence</span>
+        <span class="ai-updated" id="aiUpdated">Loading...</span>
+      </div>
+      <div class="health-row">
+        <div>
+          <div class="health-score" id="healthScore">--</div>
+          <div class="health-label" id="healthLabel">Calculating...</div>
+        </div>
+        <div class="health-bar">
+          <div class="health-fill" id="healthFill" style="width:0%;background:var(--green);"></div>
+        </div>
+      </div>
+      <div class="ai-analysis" id="aiAnalysis">
+        <span class="ai-loading">&#9679; Analyzing your campaign data with Claude AI...</span>
+      </div>
+      <div class="ai-recs" id="aiRecs"></div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="section-title">Campaign Overview</div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num c-dark" id="sSent">0</div><div class="stat-sub">Sent</div><div class="stat-rate" id="sSentSub">—</div></div>
+      <div class="stat-card"><div class="stat-num c-green" id="sDelivered">0</div><div class="stat-sub">Delivered</div><div class="stat-rate" id="sDeliveredRate">0%</div></div>
+      <div class="stat-card"><div class="stat-num c-red" id="sBounced">0</div><div class="stat-sub">Bounced</div><div class="stat-rate" id="sBouncedRate">0%</div></div>
+      <div class="stat-card"><div class="stat-num c-blue" id="sClicked">0</div><div class="stat-sub">Clicked</div><div class="stat-rate" id="sClickRate">0%</div></div>
+      <div class="stat-card"><div class="stat-num c-yellow" id="sReplied">0</div><div class="stat-sub">Replied</div><div class="stat-rate" id="sReplyRate">0%</div></div>
+      <div class="stat-card"><div class="stat-num c-purple" id="sPositive">0</div><div class="stat-sub">Positive</div><div class="stat-rate" id="sPositiveRate">0%</div></div>
+    </div>
+
+    <!-- Alerts -->
+    <div class="section-title">Alerts & Actions</div>
+    <div class="alerts" id="alertsContainer">
+      <div class="alert info"><span class="alert-icon">&#8505;</span><div class="alert-body"><div class="alert-msg">Loading alerts...</div></div></div>
+    </div>
+
+    <!-- Funnel + Industry -->
+    <div class="two-col">
+      <div class="card">
+        <div class="section-title">Conversion Funnel</div>
+        <div class="funnel" id="funnelContainer"></div>
+      </div>
+      <div class="card">
+        <div class="section-title">By Industry</div>
+        <table class="ind-table" id="industryTable">
+          <thead><tr><th>Industry</th><th>Sent</th><th>Clicked</th><th>Replied</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Revenue Tracker -->
+    <div class="revenue-section">
+      <div class="section-title">Revenue Tracker</div>
+      <div class="rev-inputs">
+        <span class="rev-label-text">Deals closed:</span>
+        <input type="number" class="rev-input" id="dealsClosed" value="0" min="0" oninput="updateRevenue()">
+        <span class="rev-label-text">Avg deal value: $</span>
+        <input type="number" class="rev-input" id="avgDeal" value="1200" min="0" oninput="updateRevenue()">
+        <span class="rev-label-text">Monthly retainers:</span>
+        <input type="number" class="rev-input" id="retainers" value="0" min="0" oninput="updateRevenue()">
+        <span class="rev-label-text">Avg retainer: $</span>
+        <input type="number" class="rev-input" id="avgRetainer" value="500" min="0" oninput="updateRevenue()">
+      </div>
+      <div class="revenue-grid">
+        <div class="rev-item"><div class="rev-num" id="revTotal">$0</div><div class="rev-label">Total Revenue</div></div>
+        <div class="rev-item"><div class="rev-num" id="revMonthly">$0</div><div class="rev-label">Monthly Recurring</div></div>
+        <div class="rev-item"><div class="rev-num" id="revAnnual">$0</div><div class="rev-label">Annual Run Rate</div></div>
+        <div class="rev-item"><div class="rev-num" id="revCloseRate">0%</div><div class="rev-label">Close Rate</div></div>
+      </div>
+    </div>
+
+    <!-- Lead Timeline -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="section-title">Lead Timeline</div>
+      <div style="overflow-x:auto;">
+        <table class="timeline-table" id="timelineTable">
+          <thead>
+            <tr>
+              <th>Business</th>
+              <th>Industry</th>
+              <th>Pitched</th>
+              <th>F/U 1</th>
+              <th>F/U 2</th>
+              <th>Clicked</th>
+              <th>Replied</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="timelineBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const PW = 'digiwei2026';
+const ANTHROPIC_API = 'https://api.anthropic.com/v1/messages';
+let stats = null;
+let aiCacheTime = null;
+let aiCacheResult = null;
+const AI_CACHE_MS = 60 * 60 * 1000; // 1 hour cache
+
+function doLogin() {
+  if (document.getElementById('pwInput').value === PW) {
+    localStorage.setItem('dw_analytics_auth', '1');
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    loadAnalytics();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+function doLogout() {
+  localStorage.removeItem('dw_analytics_auth');
+  location.reload();
+}
+
+async function loadAnalytics() {
+  try {
+    const res = await fetch('campaign_stats.json?t=' + Date.now());
+    if (!res.ok) throw new Error('Stats not found');
+    stats = await res.json();
+    renderStats();
+    renderAlerts();
+    renderFunnel();
+    renderIndustry();
+    renderTimeline();
+    updateRevenue();
+    await runAIAnalysis();
+  } catch (e) {
+    document.getElementById('aiAnalysis').innerHTML =
+      '<span style="color:rgba(255,255,255,0.5)">No campaign data found. Run analytics.js first: node analytics.js</span>';
+    renderEmptyState();
+  }
+}
+
+function renderStats() {
+  const e = stats.email, g = stats.engagement;
+  setText('sSent', e.totalSent);
+  setText('sDeliveredRate', e.totalSent > 0 ? ((e.totalDelivered/e.totalSent)*100).toFixed(1)+'%' : '0%');
+  setText('sDelivered', e.totalDelivered);
+  setText('sBounced', e.totalBounced);
+  setText('sBouncedRate', e.totalSent > 0 ? e.bounceRate+'%' : '0%');
+  setText('sClicked', g.uniqueClickers);
+  setText('sClickRate', g.clickRate+'%');
+  setText('sReplied', g.totalReplied);
+  setText('sReplyRate', g.replyRate+'%');
+  setText('sPositive', g.totalPositiveReplies);
+  setText('sPositiveRate', g.totalReplied > 0 ? g.positiveRate+'%' : '0%');
+  setText('sSentSub', stats.campaign?.startDate ? 'Since '+stats.campaign.startDate : '—');
+}
+
+function renderAlerts() {
+  const container = document.getElementById('alertsContainer');
+  const alerts = stats.alerts || [];
+  if (alerts.length === 0) {
+    container.innerHTML = '<div class="alert success"><span class="alert-icon">&#10003;</span><div class="alert-body"><div class="alert-msg">No alerts — campaign is running smoothly</div></div></div>';
+    return;
+  }
+  const icons = { danger:'&#9888;', warning:'&#9651;', success:'&#10003;', info:'&#8505;' };
+  container.innerHTML = alerts.map(a => `
+    <div class="alert ${a.level}">
+      <span class="alert-icon">${icons[a.level]||'&#8505;'}</span>
+      <div class="alert-body">
+        <div class="alert-msg">${a.message}</div>
+        ${a.action ? '<div class="alert-action">&#8594; '+a.action+'</div>' : ''}
+      </div>
+    </div>`).join('');
+}
+
+function renderFunnel() {
+  const p = stats.pipeline;
+  const max = Math.max(p.pitched || 1, 1);
+  const steps = [
+    { label:'Sent', num: p.pitched, color:'#58595B' },
+    { label:'Clicked', num: p.clicked, color:'#29ABE2' },
+    { label:'Replied', num: p.replied, color:'#f59e0b' },
+    { label:'Positive', num: p.positive, color:'#6366f1' },
+    { label:'Booked', num: p.booked, color:'#8DC63F' },
+    { label:'Closed', num: p.closed, color:'#166534' }
+  ];
+  document.getElementById('funnelContainer').innerHTML = steps.map(s => {
+    const pct = max > 0 ? Math.max((s.num/max)*100, s.num > 0 ? 8 : 0) : 0;
+    const convPct = p.pitched > 0 ? ((s.num/p.pitched)*100).toFixed(0)+'%' : '0%';
+    return `<div class="funnel-step">
+      <div class="funnel-label">${s.label}</div>
+      <div class="funnel-bar-wrap">
+        <div class="funnel-bar" style="width:${pct}%;background:${s.color};">${s.num > 0 ? s.num : ''}</div>
+      </div>
+      <div class="funnel-num">${s.num}</div>
+      <div class="funnel-pct">${convPct}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderIndustry() {
+  const sends = stats.byIndustry?.sends || {};
+  const clicks = stats.byIndustry?.clicks || {};
+  const replies = stats.byIndustry?.replies || {};
+  const colors = { Plumbing:'#8DC63F', Electrical:'#f59e0b', HVAC:'#29ABE2', Handyman:'#6366f1', Contractor:'#ec4899' };
+  const industries = Object.keys(sends);
+  const maxSends = Math.max(...Object.values(sends), 1);
+  const tbody = document.querySelector('#industryTable tbody');
+  if (industries.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:20px;">No data yet</td></tr>';
+    return;
+  }
+  tbody.innerHTML = industries.map(ind => {
+    const s = sends[ind]||0, c = clicks[ind]||0, r = replies[ind]||0;
+    const barW = Math.round((s/maxSends)*60);
+    return `<tr>
+      <td><span class="ind-dot" style="background:${colors[ind]||'#888'}"></span>${ind}</td>
+      <td><span class="mini-bar" style="width:${barW}px;background:${colors[ind]||'#888'};"></span> ${s}</td>
+      <td>${c}</td>
+      <td>${r}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderTimeline() {
+  const leads = stats.leadTimeline || [];
+  const tbody = document.getElementById('timelineBody');
+  if (leads.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="color:var(--muted);text-align:center;padding:20px;">No leads yet</td></tr>';
+    return;
+  }
+  tbody.innerHTML = leads.map(l => {
+    const dot = (done, warn) => done
+      ? '<span class="step-dot dot-done">&#10003;</span>'
+      : warn
+        ? '<span class="step-dot dot-warn">!</span>'
+        : '<span class="step-dot dot-skip">-</span>';
+    const replyDot = l.replied
+      ? (l.replyData?.positive ? '<span class="step-dot dot-done">&#9733;</span>' : '<span class="step-dot dot-done">&#10003;</span>')
+      : '<span class="step-dot dot-skip">-</span>';
+    const status = l.bounced ? '<span style="color:var(--red);font-weight:600;">Bounced</span>'
+      : l.optedOut ? '<span style="color:var(--muted);">Opted Out</span>'
+      : l.replied && l.replyData?.positive ? '<span style="color:var(--green);font-weight:600;">Positive &#9733;</span>'
+      : l.replied ? '<span style="color:var(--yellow);font-weight:600;">Replied</span>'
+      : l.clicks > 0 ? '<span style="color:var(--blue);">Clicked ('+l.clicks+')</span>'
+      : l.pitched ? '<span style="color:var(--muted);">Pitched</span>'
+      : '<span style="color:var(--muted);">Not Sent</span>';
+    return `<tr>
+      <td class="name-cell" title="${l.name}">${l.name}</td>
+      <td>${l.industry}</td>
+      <td>${dot(l.pitched)}</td>
+      <td>${dot(l.followup1)}</td>
+      <td>${dot(l.followup2)}</td>
+      <td>${dot(l.clicks > 0)}</td>
+      <td>${replyDot}</td>
+      <td>${status}</td>
+    </tr>`;
+  }).join('');
+}
+
+function updateRevenue() {
+  const closed = parseInt(document.getElementById('dealsClosed').value)||0;
+  const avg = parseInt(document.getElementById('avgDeal').value)||0;
+  const retainers = parseInt(document.getElementById('retainers').value)||0;
+  const avgR = parseInt(document.getElementById('avgRetainer').value)||0;
+  const total = closed * avg;
+  const monthly = retainers * avgR;
+  const annual = monthly * 12 + total;
+  const sent = stats?.email?.totalSent || 0;
+  const closeRate = sent > 0 ? ((closed/sent)*100).toFixed(1)+'%' : '0%';
+  setText('revTotal', '$'+total.toLocaleString());
+  setText('revMonthly', '$'+monthly.toLocaleString());
+  setText('revAnnual', '$'+annual.toLocaleString());
+  setText('revCloseRate', closeRate);
+}
+
+async function runAIAnalysis() {
+  const now = Date.now();
+  if (aiCacheResult && aiCacheTime && (now - aiCacheTime) < AI_CACHE_MS) {
+    renderAIResult(aiCacheResult);
+    return;
+  }
+
+  document.getElementById('aiAnalysis').innerHTML =
+    '<span class="ai-loading">&#9679; Analyzing your campaign data with Claude AI...</span>';
+
+  const prompt = buildAnalyticsPrompt();
+
+  try {
+    const res = await fetch(ANTHROPIC_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: prompt
+        }]
+      })
+    });
+
+    const data = await res.json();
+    const text = data.content?.map(c => c.text||'').join('') || '';
+
+    let parsed;
+    try {
+      const clean = text.replace(/```json|```/g, '').trim();
+      parsed = JSON.parse(clean);
+    } catch (e) {
+      parsed = {
+        healthScore: 50,
+        healthLabel: 'Analyzing',
+        summary: text,
+        recommendations: []
+      };
+    }
+
+    aiCacheResult = parsed;
+    aiCacheTime = now;
+    renderAIResult(parsed);
+  } catch (e) {
+    document.getElementById('aiAnalysis').innerHTML =
+      '<span style="color:rgba(255,255,255,0.5)">AI analysis unavailable — check your Anthropic API key</span>';
+    renderFallbackHealth();
+  }
+}
+
+function buildAnalyticsPrompt() {
+  const e = stats.email, g = stats.engagement, p = stats.pipeline;
+  return `You are a digital marketing expert analyzing a cold email campaign for Digiwei, a web design agency targeting local service businesses in Torrance, CA.
+
+Campaign data:
+- Emails sent: ${e.totalSent}
+- Delivered: ${e.totalDelivered} (${100-e.bounceRate}% delivery rate)
+- Bounced: ${e.totalBounced} (${e.bounceRate}% bounce rate)
+- Preview page clicks: ${g.uniqueClickers} (${g.clickRate}% click rate)
+- Replies: ${g.totalReplied} (${g.replyRate}% reply rate)
+- Positive replies: ${g.totalPositiveReplies}
+- Follow up 1 sent: ${e.followup1Sent}
+- Follow up 2 sent: ${e.followup2Sent}
+- Industries: ${JSON.stringify(stats.byIndustry?.sends||{})}
+- Industry replies: ${JSON.stringify(stats.byIndustry?.replies||{})}
+- Industry clicks: ${JSON.stringify(stats.byIndustry?.clicks||{})}
+- Campaign started: ${stats.campaign?.startDate || 'recently'}
+- Total leads found: ${stats.campaign?.totalLeadsFound || 0}
+- Total qualified leads: ${stats.campaign?.totalQualified || 0}
+
+Services offered: Website builds ($750-$2,000), Monthly SEO, Google Ads, AI Search Optimization
+Target: Local plumbers, electricians, HVAC, contractors, handymen in Torrance CA
+
+Analyze this data and respond ONLY with a JSON object (no markdown, no preamble):
+{
+  "healthScore": <number 0-100>,
+  "healthLabel": "<one of: Excellent, Good, Fair, Needs Attention, Critical>",
+  "summary": "<2-3 sentences analyzing what the data shows and what it means for the campaign>",
+  "recommendations": [
+    {
+      "title": "<short action title>",
+      "description": "<specific actionable recommendation based on the data>",
+      "priority": "<high|medium|low>",
+      "type": "<one of: danger|warning|success|info>"
+    }
+  ]
+}
+
+Be specific and data-driven. If data is limited (early campaign), say so and give early-stage advice.
+Give 3-5 recommendations maximum. Focus on what will most improve conversions.`;
+}
+
+function renderAIResult(parsed) {
+  const score = parsed.healthScore || 50;
+  const label = parsed.healthLabel || 'Analyzing';
+  const scoreEl = document.getElementById('healthScore');
+  const labelEl = document.getElementById('healthLabel');
+  const fillEl = document.getElementById('healthFill');
+
+  scoreEl.textContent = score;
+  labelEl.textContent = label;
+  fillEl.style.width = score + '%';
+
+  scoreEl.className = 'health-score ' + (score >= 70 ? 'green' : score >= 40 ? 'yellow' : 'red');
+  fillEl.style.background = score >= 70 ? 'var(--green)' : score >= 40 ? 'var(--yellow)' : 'var(--red)';
+
+  document.getElementById('aiAnalysis').textContent = parsed.summary || '';
+  document.getElementById('aiUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString();
+
+  const recs = parsed.recommendations || [];
+  document.getElementById('aiRecs').innerHTML = recs.map(r => `
+    <div class="ai-rec ${r.type||''}">
+      <div class="ai-rec-title">${r.title}</div>
+      <div class="ai-rec-desc">${r.description}</div>
+    </div>`).join('');
+}
+
+function renderFallbackHealth() {
+  const sent = stats?.email?.totalSent || 0;
+  const score = sent === 0 ? 20 : sent < 10 ? 40 : 60;
+  document.getElementById('healthScore').textContent = score;
+  document.getElementById('healthScore').className = 'health-score yellow';
+  document.getElementById('healthFill').style.width = score + '%';
+  document.getElementById('healthLabel').textContent = 'Early Stage';
+}
+
+function renderEmptyState() {
+  ['sSent','sDelivered','sBounced','sClicked','sReplied','sPositive'].forEach(id => setText(id, '0'));
+  document.getElementById('alertsContainer').innerHTML =
+    '<div class="alert info"><span class="alert-icon">&#8505;</span><div class="alert-body"><div class="alert-msg">Run <code>node analytics.js</code> to generate campaign stats</div></div></div>';
+  document.getElementById('funnelContainer').innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px;">No data yet</p>';
+}
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+window.onload = function() {
+  if (localStorage.getItem('dw_analytics_auth') === '1') {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    loadAnalytics();
+  }
+};
+</script>
+</body>
+</html>
