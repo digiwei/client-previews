@@ -2,514 +2,1396 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Digiwei Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digiwei Client Previews Dashboard</title>
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --green:#8DC63F;--dark:#58595B;--blue:#29ABE2;
-  --s-not-sent:#94a3b8;--s-pitched:#f59e0b;--s-replied:#29ABE2;
-  --s-booked:#6366f1;--s-closed:#8DC63F;--s-lost:#ef4444;
-  --bg:#f1f5f9;--card:#fff;--border:#e2e8f0;--text:#1e293b;--muted:#64748b;
-  --ind-plumber:#8DC63F;--ind-electric:#f59e0b;--ind-hvac:#29ABE2;
-  --ind-handyman:#6366f1;--ind-contractor:#ec4899;
-}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:13px;}
-
-/* LOGIN */
-.login{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--dark);}
-.login-card{background:#fff;border-radius:16px;padding:40px 32px;width:100%;max-width:320px;text-align:center;}
-.login-logo{height:40px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;}
-.login-logo img{height:40px;width:auto;}
-.login-title{font-size:12px;color:var(--muted);margin-bottom:24px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;}
-.login-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;margin-bottom:10px;outline:none;}
-.login-input:focus{border-color:var(--green);}
-.login-btn{width:100%;background:var(--green);color:#fff;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;}
-.login-error{color:#ef4444;font-size:12px;margin-top:6px;display:none;}
-
-/* LAYOUT */
-.app{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
-
-/* HEADER */
-.header{background:var(--dark);padding:0 16px;height:48px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.header-logo{height:26px;display:flex;align-items:center;}
-.header-logo img{height:100%;width:auto;}
-.header-logo-text{color:#8DC63F;font-weight:900;font-size:15px;letter-spacing:1px;}
-.header-right{display:flex;align-items:center;gap:12px;}
-.header-date{font-size:11px;color:rgba(255,255,255,0.45);}
-.logout-btn{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.12);padding:4px 10px;border-radius:5px;font-size:11px;cursor:pointer;}
-
-/* STATS — 6 stats, all visible */
-.stats{background:#fff;border-bottom:1px solid var(--border);display:flex;flex-shrink:0;}
-.stat{flex:1;text-align:center;padding:10px 4px 8px;border-right:1px solid var(--border);min-width:0;}
-.stat:last-child{border-right:none;}
-.stat-num{font-size:20px;font-weight:800;line-height:1;color:var(--dark);}
-.stat-num.c-yellow{color:#f59e0b;}
-.stat-num.c-blue{color:var(--blue);}
-.stat-num.c-purple{color:#6366f1;}
-.stat-num.c-green{color:var(--green);}
-.stat-num.c-red{color:#ef4444;}
-.stat-label{font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:2px;white-space:nowrap;}
-
-/* TOOLBAR */
-.toolbar{background:#fff;border-bottom:1px solid var(--border);padding:7px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.search-wrap{position:relative;flex:1;min-width:0;}
-.search-wrap input{width:100%;padding:6px 10px 6px 28px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;outline:none;background:#f8fafc;}
-.search-wrap input:focus{border-color:var(--green);background:#fff;}
-.search-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;}
-/* Filter tabs — horizontally scrollable */
-.filter-tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;flex-shrink:0;}
-.filter-tabs::-webkit-scrollbar{display:none;}
-.ftab{padding:5px 10px;border-radius:5px;font-size:11px;font-weight:600;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;white-space:nowrap;flex-shrink:0;}
-.ftab.active{background:var(--dark);color:#fff;border-color:var(--dark);}
-
-/* TABLE */
-.table-wrap{flex:1;overflow-y:auto;}
-table{width:100%;border-collapse:collapse;table-layout:fixed;}
-thead{position:sticky;top:0;z-index:10;background:#f8fafc;}
-th{padding:6px 10px;text-align:left;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid var(--border);white-space:nowrap;overflow:hidden;}
-td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
-tr{cursor:pointer;transition:background .1s;}
-tr:hover td{background:#f8fafc;}
-tr.selected td{background:#f0f9ff;}
-
-/* Status-based left border on first cell */
-tr.s-not-sent td:first-child{border-left:3px solid var(--s-not-sent);}
-tr.s-pitched td:first-child{border-left:3px solid var(--s-pitched);}
-tr.s-replied td:first-child{border-left:3px solid var(--s-replied);}
-tr.s-booked td:first-child{border-left:3px solid var(--s-booked);}
-tr.s-closed td:first-child{border-left:3px solid var(--s-closed);}
-tr.s-lost td:first-child{border-left:3px solid var(--s-lost);}
-
-/* Column widths */
-.col-w-name{width:36%;}
-.col-w-email{width:24%;}
-.col-w-status{width:14%;}
-.col-w-actions{width:26%;}
-
-/* Industry dot */
-.ind-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;flex-shrink:0;vertical-align:middle;}
-.d-plumber{background:var(--ind-plumber);}
-.d-electric{background:var(--ind-electric);}
-.d-hvac{background:var(--ind-hvac);}
-.d-handyman{background:var(--ind-handyman);}
-.d-contractor{background:var(--ind-contractor);}
-
-/* Name cell */
-.name-line{font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;display:flex;align-items:center;}
-.name-sub{font-size:10px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.notes-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-left:5px;flex-shrink:0;}
-
-/* Email cell */
-.email-cell{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.email-cell.guessed{color:#f59e0b;}
-
-/* Status badge */
-.sbadge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap;}
-.b-not-sent{background:#f1f5f9;color:#64748b;}
-.b-pitched{background:#fef3c7;color:#92400e;}
-.b-replied{background:#dbeafe;color:#1e40af;}
-.b-booked{background:#ede9fe;color:#5b21b6;}
-.b-closed{background:#dcfce7;color:#166534;}
-.b-lost{background:#fee2e2;color:#991b1b;}
-
-/* Action buttons — labeled */
-.actions-cell{white-space:nowrap;display:flex;gap:4px;align-items:center;}
-.abtn{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:36px;height:32px;border-radius:6px;border:none;cursor:pointer;font-size:14px;text-decoration:none;gap:1px;transition:opacity .15s;flex-shrink:0;}
-.abtn:hover{opacity:.75;}
-.abtn-label{font-size:8px;font-weight:700;line-height:1;letter-spacing:.2px;}
-.ab-call{background:#dcfce7;color:#166534;}
-.ab-site{background:#dbeafe;color:#1e40af;}
-.ab-video{background:#ede9fe;color:#5b21b6;}
-
-/* EMPTY */
-.empty{text-align:center;padding:48px 20px;color:var(--muted);}
-
-/* PANEL */
-.panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.25);z-index:100;}
-.panel-overlay.open{display:block;}
-.panel{position:fixed;right:0;top:0;bottom:0;width:340px;background:#fff;box-shadow:-4px 0 20px rgba(0,0,0,0.1);z-index:101;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .22s ease;}
-.panel.open{transform:translateX(0);}
-.panel-head{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;background:#f8fafc;flex-shrink:0;}
-.panel-name{font-size:14px;font-weight:800;color:var(--dark);line-height:1.3;padding-right:8px;}
-.panel-sub{font-size:11px;color:var(--muted);margin-top:3px;}
-.panel-close{background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;padding:2px 6px;border-radius:4px;flex-shrink:0;}
-.panel-close:hover{background:var(--border);}
-.panel-body{flex:1;overflow-y:auto;padding:14px 16px;}
-
-/* Pipeline bar */
-.pipe-wrap{margin-bottom:16px;}
-.pipe-label-row{display:flex;justify-content:space-between;margin-bottom:5px;}
-.pipe-lbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
-.pipe-lbl.active{color:var(--dark);}
-.pipe-steps{display:flex;gap:3px;height:6px;}
-.ps{flex:1;border-radius:3px;background:var(--border);}
-.ps.done{background:var(--green);}
-.ps.active{background:var(--blue);}
-
-/* Panel actions */
-.p-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:16px;}
-.pbtn{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 10px;border-radius:7px;font-size:12px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:opacity .15s;}
-.pbtn:hover{opacity:.85;}
-.pb-call{background:var(--green);color:#fff;}
-.pb-zoom{background:#6366f1;color:#fff;}
-.pb-site{background:var(--dark);color:#fff;}
-.pb-vid{background:var(--blue);color:#fff;}
-
-/* Info rows */
-.p-section{margin-bottom:14px;}
-.p-section-label{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;}
-.p-row{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start;}
-.p-row-key{font-size:10px;font-weight:700;color:var(--muted);min-width:52px;padding-top:1px;}
-.p-row-val{font-size:12px;color:var(--text);flex:1;word-break:break-all;}
-.p-row-val a{color:var(--green);text-decoration:none;}
-
-/* Status select */
-.p-select{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-weight:600;outline:none;margin-bottom:10px;background:#fff;}
-.p-select:focus{border-color:var(--green);}
-
-/* Notes */
-.p-notes{width:100%;padding:9px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;outline:none;height:80px;resize:none;font-family:inherit;background:#fff;}
-.p-notes:focus{border-color:var(--green);}
-.save-btn{width:100%;background:var(--green);color:#fff;border:none;padding:11px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;}
-.save-btn:hover{opacity:.9;}
-
-.hidden{display:none!important;}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #333; }
+.header { background: #1a1a2e; color: white; padding: 24px 32px; }
+.header h1 { font-size: 22px; font-weight: 600; color: #8DC63F; }
+.header p { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+.stats { display: flex; gap: 16px; padding: 20px 32px; background: white; border-bottom: 1px solid #eee; flex-wrap: wrap; }
+.stat { text-align: center; padding: 12px 20px; background: #f9f9f9; border-radius: 8px; min-width: 100px; }
+.stat-num { font-size: 28px; font-weight: 600; color: #1a1a2e; }
+.stat-label { font-size: 11px; color: #888; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+.stat-num.green { color: #8DC63F; }
+.stat-num.blue { color: #378ADD; }
+.stat-num.red { color: #E24B4A; }
+.filters { padding: 12px 32px; background: white; border-bottom: 1px solid #eee; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.filter-btn { padding: 6px 14px; border: 1px solid #ddd; border-radius: 20px; background: white; cursor: pointer; font-size: 12px; transition: all 0.15s; }
+.filter-btn:hover, .filter-btn.active { background: #8DC63F; color: white; border-color: #8DC63F; }
+.filter-label { font-size: 12px; color: #888; margin-right: 4px; }
+.search-box { margin-left: auto; padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; width: 200px; }
+.table-wrap { padding: 20px 32px; }
+table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+th { background: #f0f0f0; padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #666; border-bottom: 1px solid #e5e5e5; }
+td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; font-size: 13px; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fafafa; }
+.row-replied td { background: #f0fff4; }
+.row-bounced td { background: #fff8f8; }
+.row-pitched td { background: #fafffe; }
+.business-name { font-weight: 500; color: #1a1a2e; text-decoration: none; }
+.business-name:hover { color: #8DC63F; }
+.link-small { font-size: 11px; color: #888; text-decoration: none; }
+.date-small { font-size: 11px; color: #aaa; }
+.email-small { font-size: 11px; color: #555; word-break: break-all; }
+.badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+.badge-replied { background: #d4edda; color: #155724; }
+.badge-pitched { background: #cce5ff; color: #004085; }
+.badge-bounced { background: #f8d7da; color: #721c24; }
+.badge-ready { background: #fff3cd; color: #856404; }
+.btn-preview { display: inline-block; padding: 4px 10px; background: #8DC63F; color: white; border-radius: 5px; text-decoration: none; font-size: 11px; font-weight: 500; }
+.btn-preview:hover { background: #7ab535; }
+.updated { padding: 12px 32px; font-size: 11px; color: #aaa; text-align: right; }
 </style>
 </head>
 <body>
-
-<!-- LOGIN -->
-<div class="login" id="loginScreen">
-  <div class="login-card">
-    <div class="login-logo">
-      <img src="DigiWEI_logo.jpg" alt="Digiwei" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=\'color:#8DC63F;font-weight:900;font-size:20px;letter-spacing:1px;\'>digiWEI</span>')">
-    </div>
-    <div class="login-title">Campaign Dashboard</div>
-    <input type="password" class="login-input" id="pwInput" placeholder="Enter password" onkeypress="if(event.key==='Enter')doLogin()">
-    <button class="login-btn" onclick="doLogin()">Sign In</button>
-    <div class="login-error" id="loginErr">Incorrect password</div>
-  </div>
+<div class="header">
+  <h1>Digiwei Client Previews</h1>
+  <p>185 preview pages · Last updated: Jul 8, 2026, 8:41 AM</p>
 </div>
-
-<!-- APP -->
-<div class="app hidden" id="app">
-
-  <div class="header">
-    <div class="header-logo">
-      <img src="DigiWEI_logo.jpg" alt="Digiwei" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'header-logo-text\'>digiWEI</span>')">
-    </div>
-    <div class="header-right">
-      <div class="header-date" id="hDate"></div>
-      <button class="logout-btn" onclick="doLogout()">Logout</button>
-    </div>
-  </div>
-
-  <!-- Stats — all 6 visible -->
-  <div class="stats">
-    <div class="stat"><div class="stat-num" id="sTotal">0</div><div class="stat-label">Total</div></div>
-    <div class="stat"><div class="stat-num c-yellow" id="sPitched">0</div><div class="stat-label">Pitched</div></div>
-    <div class="stat"><div class="stat-num c-blue" id="sReplied">0</div><div class="stat-label">Replied</div></div>
-    <div class="stat"><div class="stat-num c-purple" id="sBooked">0</div><div class="stat-label">Booked</div></div>
-    <div class="stat"><div class="stat-num c-green" id="sClosed">0</div><div class="stat-label">Closed</div></div>
-    <div class="stat"><div class="stat-num c-red" id="sLost">0</div><div class="stat-label">Lost</div></div>
-  </div>
-
-  <!-- Toolbar -->
-  <div class="toolbar">
-    <div class="search-wrap">
-      <span class="search-icon">&#128269;</span>
-      <input type="search" id="srch" placeholder="Search..." oninput="render()">
-    </div>
-    <div class="filter-tabs">
-      <button class="ftab active" onclick="setFilter('all',this)">All</button>
-      <button class="ftab" onclick="setFilter('not-sent',this)">Not Sent</button>
-      <button class="ftab" onclick="setFilter('pitched',this)">Pitched</button>
-      <button class="ftab" onclick="setFilter('replied',this)">Replied</button>
-      <button class="ftab" onclick="setFilter('booked',this)">Booked</button>
-      <button class="ftab" onclick="setFilter('closed',this)">Closed</button>
-      <button class="ftab" onclick="setFilter('lost',this)">Lost</button>
-    </div>
-  </div>
-
-  <!-- Table -->
-  <div class="table-wrap">
-    <table>
-      <colgroup>
-        <col class="col-w-name"><col class="col-w-email"><col class="col-w-status"><col class="col-w-actions">
-      </colgroup>
-      <thead>
-        <tr>
-          <th>Business</th>
-          <th>Email</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
-    <div class="empty hidden" id="empty">No leads found</div>
-  </div>
+<div class="stats">
+  <div class="stat"><div class="stat-num">185</div><div class="stat-label">Total Built</div></div>
+  <div class="stat"><div class="stat-num blue">0</div><div class="stat-label">Pitched</div></div>
+  <div class="stat"><div class="stat-num green">0</div><div class="stat-label">Replied</div></div>
+  <div class="stat"><div class="stat-num">185</div><div class="stat-label">Not Sent</div></div>
+  <div class="stat"><div class="stat-num red">0</div><div class="stat-label">Bounced</div></div>
 </div>
-
-<!-- Panel -->
-<div class="panel-overlay" id="overlay" onclick="closePanel()"></div>
-<div class="panel" id="panel">
-  <div class="panel-head">
-    <div>
-      <div class="panel-name" id="pName"></div>
-      <div class="panel-sub" id="pSub"></div>
-    </div>
-    <button class="panel-close" onclick="closePanel()">&#10005;</button>
-  </div>
-  <div class="panel-body">
-
-    <!-- Pipeline progress -->
-    <div class="pipe-wrap">
-      <div class="pipe-label-row">
-        <span class="pipe-lbl" id="pl1">Not Sent</span>
-        <span class="pipe-lbl" id="pl2">Pitched</span>
-        <span class="pipe-lbl" id="pl3">Replied</span>
-        <span class="pipe-lbl" id="pl4">Booked</span>
-        <span class="pipe-lbl" id="pl5">Closed</span>
-      </div>
-      <div class="pipe-steps">
-        <div class="ps" id="pp1"></div>
-        <div class="ps" id="pp2"></div>
-        <div class="ps" id="pp3"></div>
-        <div class="ps" id="pp4"></div>
-        <div class="ps" id="pp5"></div>
-      </div>
-    </div>
-
-    <!-- Quick actions -->
-    <div class="p-actions">
-      <a class="pbtn pb-call" id="pCall" href="#">&#9742; Call Now</a>
-      <a class="pbtn pb-zoom" href="https://calendly.com/digiwei/meet" target="_blank">&#128197; Book Zoom</a>
-      <a class="pbtn pb-site" id="pSite" href="#" target="_blank">&#128279; Preview Site</a>
-      <a class="pbtn pb-vid" id="pVid" href="#" target="_blank">&#9654; Watch Video</a>
-    </div>
-
-    <!-- Contact info -->
-    <div class="p-section">
-      <div class="p-section-label">Contact</div>
-      <div class="p-row"><div class="p-row-key">Phone</div><div class="p-row-val" id="pPhone"></div></div>
-      <div class="p-row"><div class="p-row-key">Email</div><div class="p-row-val" id="pEmail"></div></div>
-      <div class="p-row"><div class="p-row-key">Website</div><div class="p-row-val" id="pWeb"></div></div>
-      <div class="p-row"><div class="p-row-key">Rating</div><div class="p-row-val" id="pRating"></div></div>
-    </div>
-
-    <!-- Status -->
-    <div class="p-section">
-      <div class="p-section-label">Pipeline Status</div>
-      <select class="p-select" id="pStatus">
-        <option value="not-sent">Not Sent</option>
-        <option value="pitched">Pitched</option>
-        <option value="replied">Replied</option>
-        <option value="booked">Call Booked</option>
-        <option value="closed">Closed — Won</option>
-        <option value="lost">Closed — Lost</option>
-      </select>
-    </div>
-
-    <!-- Notes -->
-    <div class="p-section">
-      <div class="p-section-label">Notes</div>
-      <textarea class="p-notes" id="pNotes" placeholder="Add notes about this lead..."></textarea>
-    </div>
-
-    <button class="save-btn" onclick="saveLead()">Save Changes</button>
-  </div>
+<div class="filters">
+  <span class="filter-label">Filter:</span>
+  <button class="filter-btn active" onclick="filterTable('all',this)">All</button>
+  <button class="filter-btn" onclick="filterTable('replied',this)">💬 Replied</button>
+  <button class="filter-btn" onclick="filterTable('pitched',this)">✉ Pitched</button>
+  <button class="filter-btn" onclick="filterTable('ready',this)">⏳ Not Sent</button>
+  <button class="filter-btn" onclick="filterTable('bounced',this)">❌ Bounced</button>
+  <input type="text" class="search-box" id="searchBox" placeholder="Search businesses..." oninput="searchTable(this.value)">
 </div>
-
+<div class="table-wrap">
+  <table id="mainTable">
+    <thead><tr><th>Business</th><th>Status</th><th>Google</th><th>Email</th><th>Phone</th><th>Preview</th></tr></thead>
+    <tbody id="tableBody"><tr class="">
+      <td><a href="https://digiweipreview.com/3-ten-plumbing.html" target="_blank" class="business-name">3-Ten-Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/3-ten-plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/74-degrees-heating---air--inc-.html" target="_blank" class="business-name">74-Degrees-Heating---Air--Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/74-degrees-heating---air--inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/a-f--brown-electrical-contractor--inc-.html" target="_blank" class="business-name">A-F--Brown-Electrical-Contractor--Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/a-f--brown-electrical-contractor--inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/a-first-electric.html" target="_blank" class="business-name">A-First-Electric</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/a-first-electric.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/a2z-home-remodel---restoration.html" target="_blank" class="business-name">A2z-Home-Remodel---Restoration</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/a2z-home-remodel---restoration.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/ac-plumbing--heating---air-conditioning.html" target="_blank" class="business-name">Ac-Plumbing--Heating---Air-Conditioning</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/ac-plumbing--heating---air-conditioning.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/ace-handyman-services-south-bay.html" target="_blank" class="business-name">Ace-Handyman-Services-South-Bay</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/ace-handyman-services-south-bay.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/air-tec.html" target="_blank" class="business-name">Air-Tec</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/air-tec.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/air-tech-24-heating-and-air-conditioning.html" target="_blank" class="business-name">Air-Tech-24-Heating-And-Air-Conditioning</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/air-tech-24-heating-and-air-conditioning.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/ak-pro-construction.html" target="_blank" class="business-name">Ak-Pro-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/ak-pro-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/aloha-air-conditioning-and-heating.html" target="_blank" class="business-name">Aloha-Air-Conditioning-And-Heating</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/aloha-air-conditioning-and-heating.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/american-ac-heat-plumbing.html" target="_blank" class="business-name">American-Ac-Heat-Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/american-ac-heat-plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/americano-electrical-solutions-llc.html" target="_blank" class="business-name">Americano-Electrical-Solutions-Llc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/americano-electrical-solutions-llc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/amg-construction-inc-.html" target="_blank" class="business-name">Amg-Construction-Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/amg-construction-inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/ami-handyman-services-llc.html" target="_blank" class="business-name">Ami-Handyman-Services-Llc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/ami-handyman-services-llc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/anchor-heating---ac-repair-service-carson.html" target="_blank" class="business-name">Anchor-Heating---Ac-Repair-Service-Carson</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/anchor-heating---ac-repair-service-carson.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/archer-building-group--inc-.html" target="_blank" class="business-name">Archer-Building-Group--Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/archer-building-group--inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/arias-general-construction--inc.html" target="_blank" class="business-name">Arias-General-Construction--Inc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/arias-general-construction--inc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/armor-electric.html" target="_blank" class="business-name">Armor-Electric</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/armor-electric.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/aska-handyman-services.html" target="_blank" class="business-name">Aska-Handyman-Services</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/aska-handyman-services.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/avenida-air-duct-care.html" target="_blank" class="business-name">Avenida-Air-Duct-Care</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/avenida-air-duct-care.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/aza-construction.html" target="_blank" class="business-name">Aza-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/aza-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/b-m-electric.html" target="_blank" class="business-name">B-M-Electric</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/b-m-electric.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/barden-electric-inc.html" target="_blank" class="business-name">Barden-Electric-Inc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/barden-electric-inc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/bay-cities-construction.html" target="_blank" class="business-name">Bay-Cities-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/bay-cities-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/best-way-plumbing.html" target="_blank" class="business-name">Best-Way-Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/best-way-plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/brand-new-electric-inc-.html" target="_blank" class="business-name">Brand-New-Electric-Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/brand-new-electric-inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/bucaro-construction.html" target="_blank" class="business-name">Bucaro-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/bucaro-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/budget-heating-and-ac-repair.html" target="_blank" class="business-name">Budget-Heating-And-Ac-Repair</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/budget-heating-and-ac-repair.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/build-pros-construction.html" target="_blank" class="business-name">Build-Pros-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/build-pros-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/california-air-conditioning-systems.html" target="_blank" class="business-name">California-Air-Conditioning-Systems</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/california-air-conditioning-systems.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/carson-bathroom-solutions.html" target="_blank" class="business-name">Carson-Bathroom-Solutions</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/carson-bathroom-solutions.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/carson-certified-electrician.html" target="_blank" class="business-name">Carson-Certified-Electrician</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/carson-certified-electrician.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/carson-heating-and-air.html" target="_blank" class="business-name">Carson-Heating-And-Air</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/carson-heating-and-air.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/carson-heating-and-air-conditioning.html" target="_blank" class="business-name">Carson-Heating-And-Air-Conditioning</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/carson-heating-and-air-conditioning.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/carson-licensed-electrician.html" target="_blank" class="business-name">Carson-Licensed-Electrician</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/carson-licensed-electrician.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/carter-services.html" target="_blank" class="business-name">Carter-Services</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/carter-services.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/castaneda-s-plumbing-and-rooter.html" target="_blank" class="business-name">Castaneda-S-Plumbing-And-Rooter</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/castaneda-s-plumbing-and-rooter.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/cloud-comfort-hvac.html" target="_blank" class="business-name">Cloud-Comfort-Hvac</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/cloud-comfort-hvac.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/coastal-creations-inc----home-builders.html" target="_blank" class="business-name">Coastal-Creations-Inc----Home-Builders</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/coastal-creations-inc----home-builders.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/continental-contractors-inc.html" target="_blank" class="business-name">Continental-Contractors-Inc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/continental-contractors-inc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/contractor-response-plumbing-experienced-and-licensed-professionals.html" target="_blank" class="business-name">Contractor-Response-Plumbing-Experienced-And-Licensed-Professionals</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/contractor-response-plumbing-experienced-and-licensed-professionals.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/controlled-comfort.html" target="_blank" class="business-name">Controlled-Comfort</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/controlled-comfort.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/cornett-plumbing---heating.html" target="_blank" class="business-name">Cornett-Plumbing---Heating</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/cornett-plumbing---heating.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/courselle-plumbing.html" target="_blank" class="business-name">Courselle-Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/courselle-plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/current-electric-construction--inc.html" target="_blank" class="business-name">Current-Electric-Construction--Inc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/current-electric-construction--inc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/cut-once-remodeling.html" target="_blank" class="business-name">Cut-Once-Remodeling</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/cut-once-remodeling.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/dds-plumbing-inc-.html" target="_blank" class="business-name">Dds-Plumbing-Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/dds-plumbing-inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/del-amo-construction.html" target="_blank" class="business-name">Del-Amo-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/del-amo-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/dr-cool-refrigeration---hvac.html" target="_blank" class="business-name">Dr-Cool-Refrigeration---Hvac</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/dr-cool-refrigeration---hvac.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/drain-ez-plumbing.html" target="_blank" class="business-name">Drain-Ez-Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/drain-ez-plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/drain-force-plumbing.html" target="_blank" class="business-name">Drain-Force-Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/drain-force-plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/drain-right-services.html" target="_blank" class="business-name">Drain-Right-Services</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/drain-right-services.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/el-nido-electrical-service.html" target="_blank" class="business-name">El-Nido-Electrical-Service</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/el-nido-electrical-service.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/electrical-help.html" target="_blank" class="business-name">Electrical-Help</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/electrical-help.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/electrichead--inc-.html" target="_blank" class="business-name">Electrichead--Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/electrichead--inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/electricians-service-team.html" target="_blank" class="business-name">Electricians-Service-Team</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/electricians-service-team.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/elias-construction-company.html" target="_blank" class="business-name">Elias-Construction-Company</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/elias-construction-company.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/elite-upgrades.html" target="_blank" class="business-name">Elite-Upgrades</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/elite-upgrades.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/envision-more-renovations.html" target="_blank" class="business-name">Envision-More-Renovations</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/envision-more-renovations.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/esplanade-builders.html" target="_blank" class="business-name">Esplanade-Builders</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/esplanade-builders.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/ewell-construction.html" target="_blank" class="business-name">Ewell-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/ewell-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/f--roberts-construction.html" target="_blank" class="business-name">F--Roberts-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/f--roberts-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/fast-response-plumbers-torrance.html" target="_blank" class="business-name">Fast-Response-Plumbers-Torrance</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/fast-response-plumbers-torrance.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/fastwire-electric.html" target="_blank" class="business-name">Fastwire-Electric</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/fastwire-electric.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/figo-heating---cooling.html" target="_blank" class="business-name">Figo-Heating---Cooling</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/figo-heating---cooling.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/firsttocall-electrician-lawndale.html" target="_blank" class="business-name">Firsttocall-Electrician-Lawndale</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/firsttocall-electrician-lawndale.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/fixx-all-llc.html" target="_blank" class="business-name">Fixx-All-Llc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/fixx-all-llc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/flash-electrician-service.html" target="_blank" class="business-name">Flash-Electrician-Service</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/flash-electrician-service.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/flowfix-plumber-torrance.html" target="_blank" class="business-name">Flowfix-Plumber-Torrance</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/flowfix-plumber-torrance.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/gaines-general-contracting.html" target="_blank" class="business-name">Gaines-General-Contracting</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/gaines-general-contracting.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/gardena-24-hour-electrician.html" target="_blank" class="business-name">Gardena-24-Hour-Electrician</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/gardena-24-hour-electrician.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/getpro-handyman-services.html" target="_blank" class="business-name">Getpro-Handyman-Services</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/getpro-handyman-services.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/golden-state-construction.html" target="_blank" class="business-name">Golden-State-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/golden-state-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/good-guy-plumbing.html" target="_blank" class="business-name">Good-Guy-Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/good-guy-plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/green-home-builders-inc.html" target="_blank" class="business-name">Green-Home-Builders-Inc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/green-home-builders-inc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/handy-door-man.html" target="_blank" class="business-name">Handy-Door-Man</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/handy-door-man.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/hawthorne-hvac-proz.html" target="_blank" class="business-name">Hawthorne-Hvac-Proz</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/hawthorne-hvac-proz.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/hawthorne-hvac-service.html" target="_blank" class="business-name">Hawthorne-Hvac-Service</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/hawthorne-hvac-service.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/heating---air-conditioning.html" target="_blank" class="business-name">Heating---Air-Conditioning</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/heating---air-conditioning.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/hermosa-beach-dreamland-roofing---construction.html" target="_blank" class="business-name">Hermosa-Beach-Dreamland-Roofing---Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/hermosa-beach-dreamland-roofing---construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/hiva---sons-construction.html" target="_blank" class="business-name">Hiva---Sons-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/hiva---sons-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/home-climate-heating---ac-repair-redondo-beach.html" target="_blank" class="business-name">Home-Climate-Heating---Ac-Repair-Redondo-Beach</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/home-climate-heating---ac-repair-redondo-beach.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/horizon-construction---remodeling--torrance.html" target="_blank" class="business-name">Horizon-Construction---Remodeling--Torrance</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/horizon-construction---remodeling--torrance.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/horizon-roof-works-la.html" target="_blank" class="business-name">Horizon-Roof-Works-La</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/horizon-roof-works-la.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/hvac-expert---heating---air-conditioning.html" target="_blank" class="business-name">Hvac-Expert---Heating---Air-Conditioning</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/hvac-expert---heating---air-conditioning.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/hvac-pros-torrance.html" target="_blank" class="business-name">Hvac-Pros-Torrance</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/hvac-pros-torrance.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/ice-cold-heating-and-air.html" target="_blank" class="business-name">Ice-Cold-Heating-And-Air</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/ice-cold-heating-and-air.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/islander-concrete-construction.html" target="_blank" class="business-name">Islander-Concrete-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/islander-concrete-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/k---l-hvac---construction.html" target="_blank" class="business-name">K---L-Hvac---Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/k---l-hvac---construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/k---l-hvac---construction-services.html" target="_blank" class="business-name">K---L-Hvac---Construction-Services</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/k---l-hvac---construction-services.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/karmic-electrical.html" target="_blank" class="business-name">Karmic-Electrical</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/karmic-electrical.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/kings-electric.html" target="_blank" class="business-name">Kings-Electric</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/kings-electric.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/l---r-heating---air-conditioning-inc.html" target="_blank" class="business-name">L---R-Heating---Air-Conditioning-Inc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/l---r-heating---air-conditioning-inc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/la-plumbing-company---plumber-in-torrance-redondo-beach--ca.html" target="_blank" class="business-name">La-Plumbing-Company---Plumber-In-Torrance-Redondo-Beach--Ca</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/la-plumbing-company---plumber-in-torrance-redondo-beach--ca.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/lc-doctor-plumber-inc-.html" target="_blank" class="business-name">Lc-Doctor-Plumber-Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/lc-doctor-plumber-inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/leak-hounds-plumbing--leak-detection---repiping.html" target="_blank" class="business-name">Leak-Hounds-Plumbing--Leak-Detection---Repiping</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/leak-hounds-plumbing--leak-detection---repiping.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/lucas---son-ac-repair-torrance.html" target="_blank" class="business-name">Lucas---Son-Ac-Repair-Torrance</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/lucas---son-ac-repair-torrance.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/lux-builders---remodeling-inc-.html" target="_blank" class="business-name">Lux-Builders---Remodeling-Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/lux-builders---remodeling-inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/magnum-electric.html" target="_blank" class="business-name">Magnum-Electric</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/magnum-electric.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/major-league-plumbing.html" target="_blank" class="business-name">Major-League-Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/major-league-plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/mario-castillo-electric.html" target="_blank" class="business-name">Mario-Castillo-Electric</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/mario-castillo-electric.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/marvel-electricians.html" target="_blank" class="business-name">Marvel-Electricians</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/marvel-electricians.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/master-plumber-torrance-ca.html" target="_blank" class="business-name">Master-Plumber-Torrance-Ca</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/master-plumber-torrance-ca.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/mattucci-plumbing.html" target="_blank" class="business-name">Mattucci-Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/mattucci-plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/mcguire-builders--inc-.html" target="_blank" class="business-name">Mcguire-Builders--Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/mcguire-builders--inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/monkey-wrench-plumbing--heating--air---electric.html" target="_blank" class="business-name">Monkey-Wrench-Plumbing--Heating--Air---Electric</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/monkey-wrench-plumbing--heating--air---electric.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/most-valuable-plumber.html" target="_blank" class="business-name">Most-Valuable-Plumber</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/most-valuable-plumber.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/mr--harris-plumbing-and-handyman-services.html" target="_blank" class="business-name">Mr--Harris-Plumbing-And-Handyman-Services</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/mr--harris-plumbing-and-handyman-services.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/mr--rooter-plumbing-of-torrance.html" target="_blank" class="business-name">Mr--Rooter-Plumbing-Of-Torrance</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/mr--rooter-plumbing-of-torrance.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/mrock-construction.html" target="_blank" class="business-name">Mrock-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/mrock-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/ms-construction.html" target="_blank" class="business-name">Ms-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/ms-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/new-look-roofers.html" target="_blank" class="business-name">New-Look-Roofers</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/new-look-roofers.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/nexgen-hvac---plumbing.html" target="_blank" class="business-name">Nexgen-Hvac---Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/nexgen-hvac---plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/nexx-electrical-service.html" target="_blank" class="business-name">Nexx-Electrical-Service</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/nexx-electrical-service.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/norris-ac---heat.html" target="_blank" class="business-name">Norris-Ac---Heat</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/norris-ac---heat.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/nuvision-design---build.html" target="_blank" class="business-name">Nuvision-Design---Build</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/nuvision-design---build.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/one-way-heating---air-conditioning.html" target="_blank" class="business-name">One-Way-Heating---Air-Conditioning</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/one-way-heating---air-conditioning.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/owl-tower-construction-group.html" target="_blank" class="business-name">Owl-Tower-Construction-Group</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/owl-tower-construction-group.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/p---m-mechanical-heating---ac.html" target="_blank" class="business-name">P---M-Mechanical-Heating---Ac</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/p---m-mechanical-heating---ac.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/pacific-plumbing-team.html" target="_blank" class="business-name">Pacific-Plumbing-Team</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/pacific-plumbing-team.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/peacock-plumbing.html" target="_blank" class="business-name">Peacock-Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/peacock-plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/penna-electric-inc-.html" target="_blank" class="business-name">Penna-Electric-Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/penna-electric-inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/plumber-s-kingdom.html" target="_blank" class="business-name">Plumber-S-Kingdom</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/plumber-s-kingdom.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/plumber-torrance.html" target="_blank" class="business-name">Plumber-Torrance</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/plumber-torrance.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/plumbing-service-solutions---harbor-city.html" target="_blank" class="business-name">Plumbing-Service-Solutions---Harbor-City</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/plumbing-service-solutions---harbor-city.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/power-pro-plumbing-heating---air.html" target="_blank" class="business-name">Power-Pro-Plumbing-Heating---Air</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/power-pro-plumbing-heating---air.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/power-wholesale-electric--inc-.html" target="_blank" class="business-name">Power-Wholesale-Electric--Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/power-wholesale-electric--inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/prc-inc-.html" target="_blank" class="business-name">Prc-Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/prc-inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/prc-restoration-inc-.html" target="_blank" class="business-name">Prc-Restoration-Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/prc-restoration-inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/precision-carson-plumbing-solutions.html" target="_blank" class="business-name">Precision-Carson-Plumbing-Solutions</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/precision-carson-plumbing-solutions.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/premium-home-service-long-beach.html" target="_blank" class="business-name">Premium-Home-Service-Long-Beach</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/premium-home-service-long-beach.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/primetime-plumbing---rooter.html" target="_blank" class="business-name">Primetime-Plumbing---Rooter</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/primetime-plumbing---rooter.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/pro-handyman-repair-and-maintenance.html" target="_blank" class="business-name">Pro-Handyman-Repair-And-Maintenance</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/pro-handyman-repair-and-maintenance.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/pro-plumber-redondo-beach.html" target="_blank" class="business-name">Pro-Plumber-Redondo-Beach</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/pro-plumber-redondo-beach.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/pro-plumbers-inc-carson--ca.html" target="_blank" class="business-name">Pro-Plumbers-Inc-Carson--Ca</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/pro-plumbers-inc-carson--ca.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/pulsar-construction-inc--bathroom-remodel---kitchen-remodel-torrance--rancho-palos-verdes.html" target="_blank" class="business-name">Pulsar-Construction-Inc--Bathroom-Remodel---Kitchen-Remodel-Torrance--Rancho-Palos-Verdes</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/pulsar-construction-inc--bathroom-remodel---kitchen-remodel-torrance--rancho-palos-verdes.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/rama-air---heating---cooling.html" target="_blank" class="business-name">Rama-Air---Heating---Cooling</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/rama-air---heating---cooling.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/redondo-beach-electricians.html" target="_blank" class="business-name">Redondo-Beach-Electricians</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/redondo-beach-electricians.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/redondo-beach-roof-masters.html" target="_blank" class="business-name">Redondo-Beach-Roof-Masters</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/redondo-beach-roof-masters.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/redondo-beach-roofing-co-.html" target="_blank" class="business-name">Redondo-Beach-Roofing-Co-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/redondo-beach-roofing-co-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/right-flow-plumbing.html" target="_blank" class="business-name">Right-Flow-Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/right-flow-plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/royal-heating---ac-repair-torrance.html" target="_blank" class="business-name">Royal-Heating---Ac-Repair-Torrance</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/royal-heating---ac-repair-torrance.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/sal-s-plumbing-company-inc.html" target="_blank" class="business-name">Sal-S-Plumbing-Company-Inc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/sal-s-plumbing-company-inc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/sals-plumbing-redondo.html" target="_blank" class="business-name">Sals-Plumbing-Redondo</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/sals-plumbing-redondo.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/seaside-electric.html" target="_blank" class="business-name">Seaside-Electric</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/seaside-electric.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/shamrock-plumbing--inc.html" target="_blank" class="business-name">Shamrock-Plumbing--Inc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/shamrock-plumbing--inc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/so-cal-plumbing-heating---air-conditioning.html" target="_blank" class="business-name">So-Cal-Plumbing-Heating---Air-Conditioning</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/so-cal-plumbing-heating---air-conditioning.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/soo-hipp-plumbing-and-drains.html" target="_blank" class="business-name">Soo-Hipp-Plumbing-And-Drains</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/soo-hipp-plumbing-and-drains.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/south-bay-contractors-llc.html" target="_blank" class="business-name">South-Bay-Contractors-Llc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/south-bay-contractors-llc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/south-bay-plumbing-and-heating.html" target="_blank" class="business-name">South-Bay-Plumbing-And-Heating</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/south-bay-plumbing-and-heating.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/south-park-plumber-s.html" target="_blank" class="business-name">South-Park-Plumber-S</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/south-park-plumber-s.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/southline-construction.html" target="_blank" class="business-name">Southline-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/southline-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/southwood-plumbing-inc.html" target="_blank" class="business-name">Southwood-Plumbing-Inc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/southwood-plumbing-inc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/sucro-painting-contractors.html" target="_blank" class="business-name">Sucro-Painting-Contractors</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/sucro-painting-contractors.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/suncraft-roofing.html" target="_blank" class="business-name">Suncraft-Roofing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/suncraft-roofing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/the-adu-guys.html" target="_blank" class="business-name">The-Adu-Guys</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/the-adu-guys.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/the-fix-it-lass.html" target="_blank" class="business-name">The-Fix-It-Lass</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/the-fix-it-lass.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/the-handy-geeks.html" target="_blank" class="business-name">The-Handy-Geeks</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/the-handy-geeks.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/the-torrance-electrician.html" target="_blank" class="business-name">The-Torrance-Electrician</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/the-torrance-electrician.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/tis-construction-services--inc-.html" target="_blank" class="business-name">Tis-Construction-Services--Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/tis-construction-services--inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/tj-plumbing-and-heating.html" target="_blank" class="business-name">Tj-Plumbing-And-Heating</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/tj-plumbing-and-heating.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/tony-s-plumbing-inc-.html" target="_blank" class="business-name">Tony-S-Plumbing-Inc-</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/tony-s-plumbing-inc-.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/top-construction-pros.html" target="_blank" class="business-name">Top-Construction-Pros</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/top-construction-pros.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/top-plumbers-of-torrance.html" target="_blank" class="business-name">Top-Plumbers-Of-Torrance</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/top-plumbers-of-torrance.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/torrance-24-hour-electrician.html" target="_blank" class="business-name">Torrance-24-Hour-Electrician</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/torrance-24-hour-electrician.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/torrance-air-conditioning-experts.html" target="_blank" class="business-name">Torrance-Air-Conditioning-Experts</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/torrance-air-conditioning-experts.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/torrance-central-hvac---heating.html" target="_blank" class="business-name">Torrance-Central-Hvac---Heating</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/torrance-central-hvac---heating.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/torrance-cooling---heating.html" target="_blank" class="business-name">Torrance-Cooling---Heating</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/torrance-cooling---heating.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/torrance-hvac-services---ac-installation-hvac-replacement-by-dusty-ducts.html" target="_blank" class="business-name">Torrance-Hvac-Services---Ac-Installation-Hvac-Replacement-By-Dusty-Ducts</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/torrance-hvac-services---ac-installation-hvac-replacement-by-dusty-ducts.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/torrance-kitchens--baths-and-flooring.html" target="_blank" class="business-name">Torrance-Kitchens--Baths-And-Flooring</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/torrance-kitchens--baths-and-flooring.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/torrance-stucco---plastering.html" target="_blank" class="business-name">Torrance-Stucco---Plastering</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/torrance-stucco---plastering.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/total-home-environmental-hvac.html" target="_blank" class="business-name">Total-Home-Environmental-Hvac</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/total-home-environmental-hvac.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/triage-carpentry.html" target="_blank" class="business-name">Triage-Carpentry</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/triage-carpentry.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/trublue-serving-coastal-south-bay.html" target="_blank" class="business-name">Trublue-Serving-Coastal-South-Bay</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/trublue-serving-coastal-south-bay.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/tyler-electric-contracting.html" target="_blank" class="business-name">Tyler-Electric-Contracting</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/tyler-electric-contracting.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/united-refrigeration-inc.html" target="_blank" class="business-name">United-Refrigeration-Inc</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/united-refrigeration-inc.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/v-max-plumbing-torrance.html" target="_blank" class="business-name">V-Max-Plumbing-Torrance</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/v-max-plumbing-torrance.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/vader-air-conditioning---heating.html" target="_blank" class="business-name">Vader-Air-Conditioning---Heating</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/vader-air-conditioning---heating.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/vando-construction.html" target="_blank" class="business-name">Vando-Construction</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/vando-construction.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/victor-and-sons-drain-solutions.html" target="_blank" class="business-name">Victor-And-Sons-Drain-Solutions</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/victor-and-sons-drain-solutions.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/victor-white-handyman.html" target="_blank" class="business-name">Victor-White-Handyman</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/victor-white-handyman.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/west-carson-electrician-service.html" target="_blank" class="business-name">West-Carson-Electrician-Service</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/west-carson-electrician-service.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/wiseway-plumbing.html" target="_blank" class="business-name">Wiseway-Plumbing</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/wiseway-plumbing.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr><tr class="">
+      <td><a href="https://digiweipreview.com/ziello-electric.html" target="_blank" class="business-name">Ziello-Electric</a></td>
+      <td><span class="badge badge-ready">⏳ Not sent</span></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><a href="https://digiweipreview.com/ziello-electric.html" target="_blank" class="btn-preview">View →</a></td>
+    </tr></tbody>
+  </table>
+</div>
+<div class="updated">Password: digiwei2026 · digiwei.com</div>
 <script>
-const PW = 'digiwei2026';
-const PB = 'https://digiweipreview.com';
-const VB = 'https://digiweipreview.com/videos';
-const PIPE = ['not-sent','pitched','replied','booked','closed'];
-
-let leads = [], ldata = {}, filter = 'all', curLead = null;
-
-function slug(n){ return n.replace(/[^a-z0-9]/gi,'_').toLowerCase(); }
-function pslug(n){ return n.replace(/[^a-z0-9]/gi,'-').toLowerCase().replace(/-+/g,'-').replace(/^-|-$/g,''); }
-function ld(){ try{ ldata=JSON.parse(localStorage.getItem('dw_leads')||'{}'); }catch(e){ ldata={}; } }
-function sd(){ localStorage.setItem('dw_leads',JSON.stringify(ldata)); }
-
-function getStatus(l){
-  const d=ldata[slug(l.name)];
-  if(d&&d.status) return d.status;
-  if(l.pitched) return 'pitched';
-  return 'not-sent';
-}
-
-function statusLabel(s){ return {'not-sent':'Not Sent','pitched':'Pitched','replied':'Replied','booked':'Booked','closed':'Closed','lost':'Lost'}[s]||'Not Sent'; }
-function badgeClass(s){ return {'not-sent':'b-not-sent','pitched':'b-pitched','replied':'b-replied','booked':'b-booked','closed':'b-closed','lost':'b-lost'}[s]||'b-not-sent'; }
-
-function indDot(v){
-  v=(v||'').toLowerCase();
-  if(v.includes('plumb')) return '<span class="ind-dot d-plumber"></span>';
-  if(v.includes('electric')) return '<span class="ind-dot d-electric"></span>';
-  if(v.includes('hvac')||v.includes('heat')||v.includes('air')) return '<span class="ind-dot d-hvac"></span>';
-  if(v.includes('handyman')) return '<span class="ind-dot d-handyman"></span>';
-  return '<span class="ind-dot d-contractor"></span>';
-}
-
-function indLabel(v){
-  v=(v||'').toLowerCase();
-  if(v.includes('plumb')) return 'Plumber';
-  if(v.includes('electric')) return 'Electrician';
-  if(v.includes('hvac')||v.includes('heat')||v.includes('air')) return 'HVAC';
-  if(v.includes('handyman')) return 'Handyman';
-  return 'Contractor';
-}
-
-function updateStats(){
-  document.getElementById('sTotal').textContent=leads.length;
-  document.getElementById('sPitched').textContent=leads.filter(l=>['pitched','replied','booked','closed'].includes(getStatus(l))).length;
-  document.getElementById('sReplied').textContent=leads.filter(l=>['replied','booked'].includes(getStatus(l))).length;
-  document.getElementById('sBooked').textContent=leads.filter(l=>getStatus(l)==='booked').length;
-  document.getElementById('sClosed').textContent=leads.filter(l=>getStatus(l)==='closed').length;
-  document.getElementById('sLost').textContent=leads.filter(l=>getStatus(l)==='lost').length;
-}
-
-function setFilter(f,btn){
-  filter=f;
-  document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+function filterTable(type,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  render();
-}
-
-function render(){
-  const q=(document.getElementById('srch').value||'').toLowerCase();
-  const visible=leads.filter(l=>{
-    const ms=filter==='all'||getStatus(l)===filter;
-    const mq=!q||l.name.toLowerCase().includes(q)||(l.found_via||'').toLowerCase().includes(q)||(l.phone||'').includes(q);
-    return ms&&mq;
+  document.getElementById('searchBox').value='';
+  document.querySelectorAll('#tableBody tr').forEach(row=>{
+    const badge=row.querySelector('.badge');
+    if(!badge){row.style.display='';return;}
+    const t=badge.textContent.toLowerCase();
+    if(type==='all')row.style.display='';
+    else if(type==='replied')row.style.display=t.includes('replied')?'':'none';
+    else if(type==='pitched')row.style.display=t.includes('pitched')?'':'none';
+    else if(type==='ready')row.style.display=t.includes('not sent')?'':'none';
+    else if(type==='bounced')row.style.display=t.includes('bounced')?'':'none';
   });
-
-  const tbody=document.getElementById('tbody');
-  const empty=document.getElementById('empty');
-
-  if(!visible.length){ tbody.innerHTML=''; empty.classList.remove('hidden'); updateStats(); return; }
-  empty.classList.add('hidden');
-
-  tbody.innerHTML=visible.map(l=>{
-    const s=getStatus(l);
-    const sl=slug(l.name);
-    const ps=pslug(l.name);
-    const d=ldata[sl]||{};
-    const hasNotes=d.notes&&d.notes.trim().length>0;
-    const phone=(l.phone||'').replace(/\D/g,'');
-
-    return `<tr class="${s}" onclick="openPanel('${sl}')" id="row-${sl}">
-      <td>
-        <div class="name-line">${indDot(l.found_via)}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${l.name}</span>${hasNotes?'<span class="notes-dot"></span>':''}</div>
-        <div class="name-sub">${indLabel(l.found_via)} &bull; ${l.phone||'No phone'}</div>
-      </td>
-      <td class="email-cell${l.emailGuessed?' guessed':''}" title="${l.email||''}">${l.email||'—'}</td>
-      <td><span class="sbadge ${badgeClass(s)}">${statusLabel(s)}</span></td>
-      <td onclick="event.stopPropagation()">
-        <div class="actions-cell">
-          <a class="abtn ab-call" href="tel:${phone}" title="Call"><span>&#9742;</span><span class="abtn-label">CALL</span></a>
-          <a class="abtn ab-site" href="${PB}/${ps}.html" target="_blank" title="Preview Site"><span>&#128279;</span><span class="abtn-label">SITE</span></a>
-          <a class="abtn ab-video" href="${VB}/${sl}.mp4" target="_blank" title="Watch Video"><span>&#9654;</span><span class="abtn-label">VIDEO</span></a>
-        </div>
-      </td>
-    </tr>`;
-  }).join('');
-
-  if(curLead){
-    const row=document.getElementById('row-'+slug(curLead.name));
-    if(row) row.classList.add('selected');
-  }
-  updateStats();
 }
-
-function openPanel(sl){
-  curLead=leads.find(l=>slug(l.name)===sl);
-  if(!curLead) return;
-
-  const d=ldata[sl]||{};
-  const s=getStatus(curLead);
-  const ps=pslug(curLead.name);
-
-  document.getElementById('pName').textContent=curLead.name;
-  document.getElementById('pSub').textContent=indLabel(curLead.found_via)+(curLead.googleRating?' · '+curLead.googleRating+'★ ('+curLead.googleReviews+' reviews)':'');
-  document.getElementById('pCall').href='tel:'+(curLead.phone||'').replace(/\D/g,'');
-  document.getElementById('pSite').href=PB+'/'+ps+'.html';
-  document.getElementById('pVid').href=VB+'/'+sl+'.mp4';
-  document.getElementById('pPhone').textContent=curLead.phone||'No phone';
-  document.getElementById('pEmail').innerHTML=curLead.email?'<a href="mailto:'+curLead.email+'">'+curLead.email+'</a>':'—';
-  document.getElementById('pWeb').innerHTML=curLead.website?'<a href="'+curLead.website+'" target="_blank">'+curLead.website+'</a>':'—';
-  document.getElementById('pRating').textContent=curLead.googleRating?curLead.googleRating+'★ ('+curLead.googleReviews+' reviews)':'No data';
-  document.getElementById('pStatus').value=s;
-  document.getElementById('pNotes').value=d.notes||'';
-
-  // Pipeline bar
-  const idx=PIPE.indexOf(s);
-  PIPE.forEach((_,i)=>{
-    const el=document.getElementById('pp'+(i+1));
-    const lbl=document.getElementById('pl'+(i+1));
-    el.className='ps'+(i<idx?' done':i===idx?' active':'');
-    lbl.className='pipe-lbl'+(i===idx?' active':'');
+function searchTable(q){
+  q=q.toLowerCase();
+  document.querySelectorAll('#tableBody tr').forEach(row=>{
+    row.style.display=row.textContent.toLowerCase().includes(q)?'':'none';
   });
-
-  document.getElementById('overlay').classList.add('open');
-  document.getElementById('panel').classList.add('open');
-  document.querySelectorAll('tr.selected').forEach(r=>r.classList.remove('selected'));
-  const row=document.getElementById('row-'+sl);
-  if(row) row.classList.add('selected');
+  if(q)document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
 }
-
-function closePanel(){
-  document.getElementById('overlay').classList.remove('open');
-  document.getElementById('panel').classList.remove('open');
-  document.querySelectorAll('tr.selected').forEach(r=>r.classList.remove('selected'));
-  curLead=null;
-}
-
-function saveLead(){
-  if(!curLead) return;
-  const sl=slug(curLead.name);
-  if(!ldata[sl]) ldata[sl]={};
-  ldata[sl].status=document.getElementById('pStatus').value;
-  ldata[sl].notes=document.getElementById('pNotes').value;
-  ldata[sl].updated=new Date().toISOString();
-  sd(); render(); closePanel();
-}
-
-function doLogin(){
-  if(document.getElementById('pwInput').value===PW){
-    localStorage.setItem('dw_auth','1');
-    document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('app').classList.remove('hidden');
-    init();
-  } else {
-    document.getElementById('loginErr').style.display='block';
-  }
-}
-
-function doLogout(){
-  localStorage.removeItem('dw_auth');
-  location.reload();
-}
-
-function init(){
-  ld();
-  leads=LEADS_DATA;
-  document.getElementById('hDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-  render();
-}
-
-window.onload=function(){
-  leads=LEADS_DATA;
-  if(localStorage.getItem('dw_auth')==='1'){
-    document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('app').classList.remove('hidden');
-    init();
-  }
-};
 </script>
-<script>const LEADS_DATA=[{"name":"V-Max Plumbing Torrance","phone":"(310) 614-3579","address":"21250 Hawthorne Blvd Suite 500, Torrance, CA 90503, USA","website":"https://vmaxplumbing.com/about/plumber-torrance/","found_via":"plumber in Torrance CA","email":"operations@vmaxplumbing.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/v-max-plumbing-torrance.html","googleRating":5,"googleReviews":145,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-05-27T00:48:00.846Z"},{"name":"Top Plumbers of Torrance","phone":"(424) 208-0492","address":"1309 Cabrillo Ave, Torrance, CA 90501, USA","website":"http://topplumbersoftorrance.com/","found_via":"plumber in Torrance CA","email":"info@topplumbersoftorrance.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/top-plumbers-of-torrance.html","googleRating":5,"googleReviews":11,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Sal's Plumbing Company Inc","phone":"(310) 782-1978","address":"20602 Normandie Ave, Torrance, CA 90502, USA","website":"http://salsplumbing.com/","found_via":"plumber in Torrance CA","email":"info@salsplumbing.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/sal-s-plumbing-company-inc.html","googleRating":4.5,"googleReviews":240,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-05-27T00:48:10.926Z"},{"name":"3 Ten Plumbing","phone":"(310) 461-9691","address":"2802 Winlock Rd, Torrance, CA 90505, USA","website":"http://www.3tenplumbing.com/","found_via":"plumber in Torrance CA","email":"3tenplumbing@gmail.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/3-ten-plumbing.html","googleRating":5,"googleReviews":83,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-05-27T00:48:19.531Z"},{"name":"LA Plumbing Company | Plumber in Torrance Redondo Beach, CA","phone":"(424) 677-2359","address":"609 Amapola Ave, Torrance, CA 90501, USA","website":"http://losangelescaplumbing.com/","found_via":"plumber in Torrance CA","email":"info@losangelescaplumbing.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/la-plumbing-company-plumber-in-torrance-redondo-beach-ca.html","googleRating":4.9,"googleReviews":107,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"FlowFix Plumber Torrance","phone":"(424) 507-3273","address":"4743 Torrance Blvd, Torrance, CA 90503, USA","website":"http://flowfixplumbertorrance.com/","found_via":"plumber in Torrance CA","email":"info@flowfixplumbertorrance.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/flowfix-plumber-torrance.html","googleRating":5,"googleReviews":15,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Soo Hipp Plumbing and Drains","phone":"(310) 697-5822","address":"3655 Torrance Blvd STE 300, Torrance, CA 90503, USA","website":"https://www.soohippplumbing.com/","found_via":"plumber in Torrance CA","email":"info@soohippplumbing.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/soo-hipp-plumbing-and-drains.html","googleRating":4.9,"googleReviews":204,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Plumber Torrance","phone":"(424) 360-2451","address":"20500 Hawthorne Blvd, Torrance, CA 90503, USA","website":"http://plumbertorranceco.com/","found_via":"plumber in Torrance CA","email":"info@plumbertorranceco.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/plumber-torrance.html","googleRating":5,"googleReviews":145,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"South Park Plumber's","phone":"(310) 388-3890","address":"1316 Sartori Ave #57b, Torrance, CA 90501, USA","website":"https://sounthparkplumbers.com/Torrance-plumbing-services/","found_via":"plumber in Torrance CA","email":"info@sounthparkplumbers.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/south-park-plumber-s.html","googleRating":5,"googleReviews":117,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Fast Response Plumbers Torrance","phone":"(310) 504-2481","address":"22932 Lockness Ave, Torrance, CA 90501, USA","website":"http://fastresponseplumberstorrance.com/","found_via":"plumber in Torrance CA","email":"info@fastresponseplumberstorrance.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/fast-response-plumbers-torrance.html","googleRating":5,"googleReviews":13,"pagespeed_score":74,"pitched":false,"pitched_at":null},{"name":"Peacock Plumbing","phone":"(888) 650-3880","address":"2539 W 237th St Ste B, Torrance, CA 90505, USA","website":"http://www.callpeacockplumbing.com/","found_via":"plumber in Torrance CA","email":"info@callpeacockplumbing.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/peacock-plumbing.html","googleRating":4.8,"googleReviews":234,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"So Cal Plumbing Heating & Air Conditioning","phone":"(310) 686-0777","address":"4811 Darien St, Torrance, CA 90503, USA","website":"https://socalphac.com/","found_via":"plumber in Torrance CA","email":"socalconstruction1@yahoo.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/so-cal-plumbing-heating-air-conditioning.html","googleRating":4.9,"googleReviews":195,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-05-27T00:48:28.974Z"},{"name":"Most Valuable Plumber","phone":"(818) 714-7812","address":"2029 Border Ave, Torrance, CA 90501, USA","website":"https://mvp-plumbing.com/torrance/?utm_source=GBP&utm_medium=organic","found_via":"plumber in Torrance CA","email":"info@mvp-plumbing.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/most-valuable-plumber.html","googleRating":4.9,"googleReviews":40,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Plumber's Kingdom","phone":"(310) 388-4002","address":"23473 Hawthorne Blvd, Torrance, CA 90505, USA","website":"https://plumbingkingdom.com/Torrance","found_via":"plumber in Torrance CA","email":"info@plumbingkingdom.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/plumber-s-kingdom.html","googleRating":5,"googleReviews":58,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Cornett Plumbing & Heating","phone":"(310) 320-6171","address":"1715 Cabrillo Ave, Torrance, CA 90501, USA","website":"http://www.cornettplumbing.com/","found_via":"plumber in Torrance CA","email":"info@cornettplumbing.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/cornett-plumbing-heating.html","googleRating":4.3,"googleReviews":49,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Vando Construction","phone":"(310) 978-5437","address":"22629 Ellinwood Dr, Torrance, CA 90505, USA","website":"http://vandoconstruction.com/","found_via":"contractor in Torrance CA","email":"sep@vandoconstruction.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/vando-construction.html","googleRating":5,"googleReviews":54,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-05-27T00:48:38.760Z"},{"name":"Pulsar Construction Inc. Bathroom Remodel & Kitchen Remodel Torrance, Rancho Palos Verdes","phone":"(424) 241-0577","address":"3868 W Carson St #300, Torrance, CA 90503, USA","website":"https://www.pulsarconst.com/","found_via":"contractor in Torrance CA","email":"pulsarconst@gmail.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/pulsar-construction-inc-bathroom-remodel-kitchen-remodel-torrance-rancho-palos-verdes.html","googleRating":4.9,"googleReviews":38,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-05-27T00:48:47.312Z"},{"name":"AK PRO CONSTRUCTION","phone":"(310) 320-5757","address":"1840 W 220th St #370, Torrance, CA 90501, USA","website":"http://akproconstruction.com/","found_via":"contractor in Torrance CA","email":"info@akproconstruction.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/ak-pro-construction.html","googleRating":4.8,"googleReviews":17,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Bay Cities Construction","phone":"(888) 881-7355","address":"22760 Hawthorne Blvd #230, Torrance, CA 90505, USA","website":"http://www.baycitiesconstruction.com/","found_via":"contractor in Torrance CA","email":"info@baycitiesconstruction.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/bay-cities-construction.html","googleRating":5,"googleReviews":8,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Hiva & Sons Construction","phone":"(424) 200-7664","address":"2119 Gramercy Ave, Torrance, CA 90501, USA","website":"https://hivansonsconstruction.com/","found_via":"contractor in Torrance CA","email":"contact@hivansonsconstruction.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/hiva-sons-construction.html","googleRating":5,"googleReviews":14,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-05-27T00:48:56.973Z"},{"name":"Del Amo Construction","phone":"(310) 378-6203","address":"19191 S Vermont Ave Suite 950, Torrance, CA 90502, USA","website":"http://www.delamoconstruction.com/","found_via":"contractor in Torrance CA","email":"info@delamoconstruction.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/del-amo-construction.html","googleRating":4.3,"googleReviews":7,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Cut Once Remodeling","phone":"(888) 655-0125","address":"22828 Lockness Ave, Torrance, CA 90501, USA","website":"http://www.cutonceremodeling.com/","found_via":"contractor in Torrance CA","email":"coradmin@cutonceremodeling.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/cut-once-remodeling.html","googleRating":4.4,"googleReviews":189,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-05-27T00:49:05.954Z"},{"name":"F. Roberts Construction","phone":"(949) 689-6711","address":"19807 Hamilton Ave, Torrance, CA 90502, USA","website":"https://www.frobertsconstruction.com/","found_via":"contractor in Torrance CA","email":"info@rnrcgroup.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/f-roberts-construction.html","googleRating":4.8,"googleReviews":13,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-05-27T00:49:25.278Z"},{"name":"Southline Construction","phone":"(310) 347-9131","address":"3476 Garnet St Apt #343, Torrance, CA 90503, USA","website":"http://www.southlineconstruction.com/","found_via":"contractor in Torrance CA","email":"info@southlineconstruction.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/southline-construction.html","googleRating":5,"googleReviews":3,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Horizon Construction & Remodeling -Torrance","phone":"(424) 484-5858","address":"21250 Hawthorne Blvd Suite 500, Torrance, CA 90503, USA","website":"https://horizonremodelinginc.com/","found_via":"contractor in Torrance CA","email":"%20h@horizon-cr.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/horizon-construction-remodeling-torrance.html","googleRating":4.8,"googleReviews":69,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-05-27T00:49:33.957Z"},{"name":"Build Pros Construction","phone":"(424) 376-3311","address":"4025 Spencer St # 104, Torrance, CA 90503, USA","website":"http://buildpros.la/","found_via":"contractor in Torrance CA","email":"info@buildpros.la","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/build-pros-construction.html","googleRating":4,"googleReviews":82,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-05-27T00:49:44.178Z"},{"name":"Envision More Renovations","phone":"(310) 736-7990","address":"21515 Hawthorne Blvd, Torrance, CA 90503, USA","website":"http://www.emrbuilds.com/","found_via":"contractor in Torrance CA","email":"miguel@emrbuilds.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/envision-more-renovations.html","googleRating":5,"googleReviews":36,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:05:37.323Z"},{"name":"Arias General Construction, Inc","phone":"(310) 350-8198","address":"17015 Casimir Ave, Torrance, CA 90504, USA","website":"http://ariasgeneral.com/","found_via":"contractor in Torrance CA","email":"sal@ariasgeneral.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/arias-general-construction-inc.html","googleRating":4.3,"googleReviews":3,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:05:46.893Z"},{"name":"Torrance Kitchens, Baths and Flooring","phone":"(310) 370-1911","address":"3953 Artesia Blvd, Torrance, CA 90504, USA","website":"https://torrancekitchenbathandflooring.com/","found_via":"contractor in Torrance CA","email":"info@remodelinno.com","emailGuessed":false,"emailSource":"page_text","previewUrl":"https://digiweipreview.com/torrance-kitchens-baths-and-flooring.html","googleRating":4.8,"googleReviews":61,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:05:56.144Z"},{"name":"Sucro Painting Contractors","phone":"(424) 484-6956","address":"4203 Spencer St, Torrance, CA 90503, USA","website":"https://sucropainting.com/?utm_campaign=gmb","found_via":"contractor in Torrance CA","email":"info@sucropainting.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/sucro-painting-contractors.html","googleRating":4.9,"googleReviews":151,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Aza Construction","phone":"(310) 713-5160","address":"4304 W 149th St, Lawndale, CA 90260, USA","website":"https://azaconstructioninc.com/","found_via":"contractor in Torrance CA","email":"azaconstructioninc@gmail.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/aza-construction.html","googleRating":5,"googleReviews":17,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:06:05.571Z"},{"name":"GetPro Handyman Services","phone":"(424) 376-7520","address":"3138 Newton St, Torrance, CA 90505, USA","website":"https://getpro.now/","found_via":"handyman in Torrance CA","email":"info@getpro.now","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/getpro-handyman-services.html","googleRating":5,"googleReviews":6,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Aska Handyman Services","phone":"(213) 293-5095","address":"1337 252nd St, Harbor City, CA 90710, USA","website":"https://askahandymanandremodelingservices.com/","found_via":"handyman in Torrance CA","email":"askaprohandyman@gmail.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/aska-handyman-services.html","googleRating":5,"googleReviews":37,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:06:14.776Z"},{"name":"The Handy Geeks","phone":"(818) 835-0556","address":"1219 Steinhart Ave, Redondo Beach, CA 90278, USA","website":"https://www.thehandygeeks.co/","found_via":"handyman in Torrance CA","email":"info@thehandygeeks.co","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/the-handy-geeks.html","googleRating":5,"googleReviews":104,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"The Fix It Lass","phone":"(310) 947-6131","address":"1820 W Carson St #202-208, Torrance, CA 90501, USA","website":"http://thefixitlass.com/","found_via":"handyman in Torrance CA","email":"info@thefixitlass.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/the-fix-it-lass.html","googleRating":5,"googleReviews":3,"pagespeed_score":72,"pitched":true,"pitched_at":"2026-06-03T14:06:23.801Z"},{"name":"AMI Handyman Services LLC","phone":"(424) 264-7207","address":"646 W 23rd St, San Pedro, CA 90731, USA","website":"http://amihandyman.com/","found_via":"handyman in Torrance CA","email":"info@amihandyman.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/ami-handyman-services-llc.html","googleRating":4.7,"googleReviews":12,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:06:32.212Z"},{"name":"Flash Electrician Service","phone":"(844) 760-2924","address":"1315 El Prado Ave #315, Torrance, CA 90501, USA","website":"https://flash-electrician-service.com/","found_via":"electrician in Torrance CA","email":"info@flash-electrician-service.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/flash-electrician-service.html","googleRating":5,"googleReviews":73,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Marvel Electricians","phone":"(310) 388-3878","address":"1212 Felbar Ave, Torrance, CA 90503, USA","website":"https://marvelelectricians.com/torrance/","found_via":"electrician in Torrance CA","email":"info@marvelelectricians.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/marvel-electricians.html","googleRating":4.8,"googleReviews":80,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Electricians Service Team","phone":"(424) 349-7844","address":"1005 Hickory Ave, Torrance, CA 90503, USA","website":"https://electriciansserviceteam.com/locations/Torrance","found_via":"electrician in Torrance CA","email":"info@electriciansserviceteam.com","emailGuessed":false,"emailSource":"website_scrape","previewUrl":"https://digiweipreview.com/electricians-service-team.html","googleRating":4.9,"googleReviews":57,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:06:41.229Z"},{"name":"Seaside Electric","phone":"(310) 487-2137","address":"4314 Cathann St, Torrance, CA 90503, USA","website":"https://seaside-electric310.com/","found_via":"electrician in Torrance CA","email":"tyler@seaside-electric310.com","emailGuessed":false,"emailSource":"page_text","previewUrl":"https://digiweipreview.com/seaside-electric.html","googleRating":5,"googleReviews":8,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:06:51.175Z"},{"name":"Armor Electric","phone":"(310) 773-9938","address":"1556 W 214th St, Torrance, CA 90501, USA","website":"http://www.armorelectric.com/","found_via":"electrician in Torrance CA","email":"info@armorelectric.com","emailGuessed":false,"emailSource":"page_text","previewUrl":"https://digiweipreview.com/armor-electric.html","googleRating":4.8,"googleReviews":26,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:07:00.545Z"},{"name":"Magnum Electric","phone":"(310) 340-1640","address":"1737 Border Ave B, Torrance, CA 90501, USA","website":"https://magnumelectric.net/","found_via":"electrician in Torrance CA","email":"info@magnumelectric.net","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/magnum-electric.html","googleRating":5,"googleReviews":14,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:07:10.558Z"},{"name":"Electrical Help","phone":"(310) 906-5944","address":"23104 Samuel St, Torrance, CA 90505, USA","website":"https://electricalhelp.us/","found_via":"electrician in Torrance CA","email":"contact@electricalhelp.us","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/electrical-help.html","googleRating":5,"googleReviews":15,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:07:20.877Z"},{"name":"The Torrance Electrician","phone":"(310) 361-2453","address":"5409 Clearsite St, Torrance, CA 90505, USA","website":"http://www.electriciantorranceca.com/","found_via":"electrician in Torrance CA","email":"info@electriciantorranceca.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/the-torrance-electrician.html","googleRating":null,"googleReviews":null,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Kings Electric","phone":"(424) 215-1991","address":"1414 Plaza del Amo, Torrance, CA 90501, USA","website":"https://gokingselectric.com/","found_via":"electrician in Torrance CA","email":"info@gokingselectric.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/kings-electric.html","googleRating":5,"googleReviews":3,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"FirstToCall Electrician Lawndale","phone":"(818) 322-0248","address":"15705 Hawthorne Blvd, Lawndale, CA 90260, USA","website":"https://electricianlawndale.com/","found_via":"electrician in Torrance CA","email":"info@electricianlawndale.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/firsttocall-electrician-lawndale.html","googleRating":5,"googleReviews":35,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Fastwire Electric","phone":"(310) 896-1944","address":"2537 CA-1 d190, Torrance, CA 90505, USA","website":"http://www.fastwireelectric.com/?utm_source=GBP&utm_medium=google&utm_campaign=click","found_via":"electrician in Torrance CA","email":"info@fastwireelectric.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/fastwire-electric.html","googleRating":5,"googleReviews":17,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Torrance Air Conditioning Experts","phone":"(424) 888-6431","address":"4608 Pacific Coast Hwy, Torrance, CA 90505, USA","website":"http://torranceacrepair.com/","found_via":"HVAC in Torrance CA","email":"info@torranceacrepair.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/torrance-air-conditioning-experts.html","googleRating":4.9,"googleReviews":36,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Lucas & Son AC Repair Torrance","phone":"(424) 492-2228","address":"385 Van Ness Ave #182, Torrance, CA 90501, USA","website":"https://modernfamilyairconditioning.com/torrance/","found_via":"HVAC in Torrance CA","email":"info@modernfamilyairconditioning.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/lucas-son-ac-repair-torrance.html","googleRating":4.9,"googleReviews":96,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Royal Heating & AC Repair Torrance","phone":"(424) 305-1170","address":"1618 Cabrillo Ave, Torrance, CA 90501, USA","website":"https://royalheatingairllc.com/","found_via":"HVAC in Torrance CA","email":"info@royalheatingairllc.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/royal-heating-ac-repair-torrance.html","googleRating":5,"googleReviews":6,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"74 Degrees Heating & Air, Inc.","phone":"(310) 431-4444","address":"2367 W 208th St UNIT 7, Torrance, CA 90501, USA","website":"https://www.74degreesheatandair.com/","found_via":"HVAC in Torrance CA","email":"info@74degreesheatandair.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/74-degrees-heating-air-inc.html","googleRating":4.9,"googleReviews":131,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"HVAC Pros Torrance","phone":"(424) 306-1757","address":"2703 Arlington Ave, Torrance, CA 90501, USA","website":"http://hvac-pros-torrance.com/","found_via":"HVAC in Torrance CA","email":"info@hvac-pros-torrance.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/hvac-pros-torrance.html","googleRating":4.8,"googleReviews":17,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"HVAC Expert - Heating & Air Conditioning","phone":"(310) 861-4144","address":"22255 S Western Ave, Torrance, CA 90501, USA","website":"https://hvacallianceexpert.com/locations/torrance/","found_via":"HVAC in Torrance CA","email":"info@hvacallianceexpert.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/hvac-expert-heating-air-conditioning.html","googleRating":4.7,"googleReviews":47,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:17:45.742Z"},{"name":"P & M Mechanical Heating & AC","phone":"(310) 530-6642","address":"23991 Arlington Ave, Torrance, CA 90501, USA","website":"http://www.pmmech.com/","found_via":"HVAC in Torrance CA","email":"info@pmmech.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/p-m-mechanical-heating-ac.html","googleRating":4.9,"googleReviews":73,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:17:55.481Z"},{"name":"Torrance Cooling & Heating","phone":"(304) 453-4350","address":"20051 S Vermont Ave, Torrance, CA 90502, USA","website":"http://roofingforless.shop/","found_via":"HVAC in Torrance CA","email":"info@roofingforless.shop","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/torrance-cooling-heating.html","googleRating":4.6,"googleReviews":18,"pagespeed_score":69,"pitched":false,"pitched_at":null},{"name":"K & L HVAC & Construction","phone":"(424) 258-0945","address":"3525 W Carson St, Torrance, CA 90503, USA","website":"https://www.kandlhvacandconstruction.com/","found_via":"HVAC in Torrance CA","email":"info@kandlhvacandconstruction.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/k-l-hvac-construction.html","googleRating":5,"googleReviews":69,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"Torrance Central HVAC & Heating","phone":"(424) 279-5985","address":"1914 S Pacific Coast Hwy, Redondo Beach, CA 90277, USA","website":"https://greenairconditioningservice.com/redondo-beach/","found_via":"HVAC in Torrance CA","email":"info@greenairconditioningservice.com","emailGuessed":true,"emailSource":"guessed","previewUrl":"https://digiweipreview.com/torrance-central-hvac-heating.html","googleRating":4.8,"googleReviews":70,"pagespeed_score":null,"pitched":false,"pitched_at":null},{"name":"One Way Heating & Air Conditioning","phone":"(310) 212-5554","address":"22395 S Western Ave UNIT 301, Torrance, CA 90501, USA","website":"https://www.onewayair.com/","found_via":"HVAC in Torrance CA","email":"onewayair@hotmail.com","emailGuessed":false,"emailSource":"mailto_link","previewUrl":"https://digiweipreview.com/one-way-heating-air-conditioning.html","googleRating":3.9,"googleReviews":31,"pagespeed_score":null,"pitched":true,"pitched_at":"2026-06-03T14:18:04.593Z"}];</script>
 </body>
 </html>
